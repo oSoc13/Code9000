@@ -1,0 +1,73 @@
+<?php
+
+/**
+9K ROUTER
+---------
+# COPYRIGHT
+(c) 2013, OKFN. All rights reserved.
+
+# AUTHOR
+Nico Verbruggen (nico.verb@gmail.com)
+*/
+
+/***********************
+* REDBEANPHP
+***********************/
+
+require 'framework/rb.php';
+
+/***********************
+* SLIM FRAMEWORK
+* INITIALIZATION
+***********************/
+
+require 'vendor/slim/slim/Slim/Slim.php';
+// Register autoloader
+\Slim\Slim::registerAutoloader();
+// Create new Slim() instance
+$app = new \Slim\Slim();
+// Debugging status (true during development, false when deployed)
+$app->config('debug', true);
+// Start a new session
+session_start();
+/* Set base url */
+$app->hook('slim.before', function () use ($app) {
+    $app->view()->appendData(array('baseURL' => '/Code9000'));
+});
+
+/***********************
+* SLIM FRAMEWORK
+* ROUTING
+***********************/
+
+$app->get('/', function () use ($app) {
+    $app->render('index.phtml');
+});
+
+$app->get('/home', function () use ($app) {
+    $app->render('index.phtml');
+});
+
+/***********************
+* SLIM FRAMEWORK
+* ERRORS + 404
+***********************/
+
+$app->error(function (\Exception $e) use ($app) {
+    $app->render('error.phtml');
+});
+
+$app->notFound(function () use ($app) {
+     // output response
+     header("Status: 404 Not Found");
+     $app->render('404.phtml');
+});
+
+/***********************
+* SLIM FRAMEWORK
+* RUN THE APP
+***********************/
+
+$app->run();
+
+?>
