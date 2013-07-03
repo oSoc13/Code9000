@@ -1,0 +1,14 @@
+/* 
+ * (c) 2013, OKFN. All rights reserved.
+ * Author: @nicoverbruggen
+ * Index stylesheet for #code9000.
+ */
+
+/* IMPORT CSS RESET FUNCTIONALITY */
+
+@import url('normalize.css');
+
+/* IMPORT MAIN STYLESHEET */
+
+@import url('main.css');
+
