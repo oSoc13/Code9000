@@ -54,11 +54,12 @@ $app->get('/home', function () use ($app) {
 ***********************/
 
 $app->error(function (\Exception $e) use ($app) {
-    $app->render('error.phtml');
+	$errorData = array('error' => $e);
+    $app->render('error.phtml', $errorData);
 });
 
 $app->notFound(function () use ($app) {
-     // output response
+     // Output Response
      header("Status: 404 Not Found");
      $app->render('404.phtml');
 });
