@@ -19,10 +19,7 @@ include_once('routes.php');
 
 require 'framework/rb.php';
 
-//$db = new mysqli('10.54.26.60', 'code9k', 'm1Nz2nCu', 'code9k');
-//if ($db->connect_errno) {
-//    die("kut");
-//}
+
 /***********************
 * SLIM FRAMEWORK
 * INITIALIZATION
