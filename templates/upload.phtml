@@ -1,0 +1,25 @@
+<?php
+/**
+9K SPOTTER HOMEPAGE
+---------
+# COPYRIGHT
+(c) 2013, OKFN. All rights reserved.
+
+# AUTHOR
+Nico Verbruggen (nico.verb@gmail.com)
+*/
+?>
+<html>
+	<head>
+		<title>Upload</title>
+	</head>
+	<body>
+		<h1>Upload a file</h1>
+		<p>Below you can add an image to the server</p>
+		<form action="utils/do_upload.php" method="post" enctype="multipart/form-data">
+		<label for="file">Filename:</label>
+		<input type="file" name="file" id="file"><br>
+		<input type="submit" name="submit" value="Submit">
+		</form>
+	</body>
+</html>

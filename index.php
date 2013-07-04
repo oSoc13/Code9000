@@ -48,6 +48,11 @@ $app->get('/home', function () use ($app) {
     $app->render('index.phtml');
 });
 
+$app->get('/upload', function () use ($app) {
+    $app->render('upload.phtml');
+});
+
+
 /***********************
 * SLIM FRAMEWORK
 * ERRORS + 404
