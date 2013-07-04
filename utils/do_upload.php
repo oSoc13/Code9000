@@ -13,16 +13,15 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 // Include required for ensuring uploads end up in the correct folder!
 include_once('../routes.php');
 
-// include composer autoload
-require '../vendor/autoload.php';
+require PATH_WEBROOT . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 // import the Intervention Image Class
-use Intervention\Image\Image;
-    
+use \Intervention\Image\Image;
+
+ 
 $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
-
 if ((
         ($_FILES["file"]["type"] == "image/gif")
         || ($_FILES["file"]["type"] == "image/jpeg")
@@ -31,30 +30,27 @@ if ((
         || ($_FILES["file"]["type"] == "image/x-png")
         || ($_FILES["file"]["type"] == "image/png")
     )
-        && ($_FILES["file"]["size"] < 20000)
+        && ($_FILES["file"]["size"] < 9999999999999999)
         && in_array($extension, $allowedExts))
 {
     if ($_FILES["file"]["error"] > 0)
     {
-        echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+        //echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
     }
     else
     {
-        echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-        echo "Type: " . $_FILES["file"]["type"] . "<br>";
-        echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-        echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+                    
+        $milliseconds = round(microtime(true) * 1000);
+        $name = $_FILES["file"]["name"] . $milliseconds;
+        $finalName = base64_encode($name) . "." . $extension;
 
-        if (file_exists(PATH_WEBROOT . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $_FILES["file"]["name"]))
-        {
-            echo $_FILES["file"]["name"] . " already exists. ";
-        }
-        else
-        {
-            move_uploaded_file($_FILES["file"]["tmp_name"],
-            PATH_WEBROOT . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $_FILES["file"]["name"]);
-            echo "Stored in: " . PATH_WEBROOT . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $_FILES["file"]["name"];
-        }
+
+        $img = Image::make($_FILES["file"]["tmp_name"]);
+        $img->resize(300, null, true)->encode('png', 20);
+        $img->save(PATH_WEBROOT . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
+        
+        //var_dump(PATH_WEBROOT);
+        header("Location: " . DIRECTORY_SEPARATOR . BASE_URL_9K  );
     }
 }
 else

@@ -19,14 +19,18 @@ include_once('routes.php');
 
 require 'framework/rb.php';
 
+//$db = new mysqli('10.54.26.60', 'code9k', 'm1Nz2nCu', 'code9k');
+//if ($db->connect_errno) {
+//    die("kut");
+//}
 /***********************
 * SLIM FRAMEWORK
 * INITIALIZATION
 ***********************/
 
-require 'vendor/slim/slim/Slim/Slim.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 // Register autoloader
-\Slim\Slim::registerAutoloader();
+//\Slim\Slim::registerAutoloader();
 // Create new Slim() instance
 $app = new \Slim\Slim();
 // Debugging status (true during development, false when deployed)
@@ -53,6 +57,18 @@ $app->get('/home', function () use ($app) {
 
 $app->get('/upload', function () use ($app) {
     $app->render('upload.phtml');
+});
+
+$app->get('/alerts', function () use ($app) {
+    $app->render('alerts.phtml');
+});
+
+$app->get('/tips', function () use ($app) {
+    $app->render('tips.phtml');
+});
+
+$app->get('/about', function () use ($app) {
+    $app->render('about.phtml');
 });
 
 /***********************
