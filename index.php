@@ -10,6 +10,8 @@
 Nico Verbruggen (nico.verb@gmail.com)
 */
 
+include_once('routes.php');
+
 /***********************
 * REDBEANPHP
 ***********************/
@@ -32,7 +34,7 @@ $app->config('debug', true);
 session_start();
 /* Set base url */
 $app->hook('slim.before', function () use ($app) {
-    $app->view()->appendData(array('baseURL' => '/Code9000'));
+    $app->view()->appendData(array('baseURL' => BASE_URL_9K));
 });
 
 /***********************
@@ -48,17 +50,22 @@ $app->get('/home', function () use ($app) {
     $app->render('index.phtml');
 });
 
+$app->get('/upload', function () use ($app) {
+    $app->render('upload.phtml');
+});
+
 /***********************
 * SLIM FRAMEWORK
 * ERRORS + 404
 ***********************/
 
 $app->error(function (\Exception $e) use ($app) {
-    $app->render('error.phtml');
+	$errorData = array('error' => $e);
+    $app->render('error.phtml', $errorData);
 });
 
 $app->notFound(function () use ($app) {
-     // output response
+     // Output Response
      header("Status: 404 Not Found");
      $app->render('404.phtml');
 });
