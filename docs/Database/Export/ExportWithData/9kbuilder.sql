@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Genereertijd: 04 jul 2013 om 08:03
+-- Genereertijd: 04 jul 2013 om 09:46
 -- Serverversie: 5.5.27
 -- PHP-versie: 5.4.7
 
@@ -34,7 +34,15 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `fk_comments_users1_idx` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='	' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='	' AUTO_INCREMENT=3 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `comments`
+--
+
+INSERT INTO `comments` (`comment_id`, `text`, `createddate`, `modifieddate`, `user_id`) VALUES
+(1, 'Proposal is witty but shitty.', '2013-07-04 09:44:37', NULL, 1),
+(2, 'Project is cool, only lacks girls.', '2013-07-04 09:44:37', NULL, 1);
 
 --
 -- Triggers `comments`
@@ -62,14 +70,21 @@ CREATE TABLE IF NOT EXISTS `locations` (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
   `coords` text,
   `description` text,
-  `upvotes` int(10) unsigned zerofill DEFAULT NULL,
-  `downvotes` int(10) unsigned zerofill DEFAULT NULL,
+  `upvotes` int(10) unsigned zerofill DEFAULT '0000000000',
+  `downvotes` int(10) unsigned zerofill DEFAULT '0000000000',
   `user_id` int(11) NOT NULL,
-  `photo_id` int(11) NOT NULL,
+  `photo_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`location_id`),
   KEY `fk_locations_users_idx` (`user_id`),
   KEY `fk_locations_photos1_idx` (`photo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='			' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='			' AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `locations`
+--
+
+INSERT INTO `locations` (`location_id`, `coords`, `description`, `upvotes`, `downvotes`, `user_id`, `photo_id`) VALUES
+(1, '{51.053515,3.731266}', 'AC Portus', 0000000000, 0000000000, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -95,8 +110,8 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `project_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` text,
-  `upvotes` int(11) DEFAULT NULL,
-  `downvotes` int(11) DEFAULT NULL,
+  `upvotes` int(11) DEFAULT '0',
+  `downvotes` int(11) DEFAULT '0',
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `location_id` int(11) NOT NULL,
@@ -104,7 +119,14 @@ CREATE TABLE IF NOT EXISTS `projects` (
   PRIMARY KEY (`project_id`),
   KEY `fk_projects_locations1_idx` (`location_id`),
   KEY `fk_projects_users1_idx` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `projects`
+--
+
+INSERT INTO `projects` (`project_id`, `name`, `description`, `upvotes`, `downvotes`, `createddate`, `modifieddate`, `location_id`, `user_id`) VALUES
+(1, 'AC Portus is going down baby.', 'In the beginning of time, AC Portus was a giant building reknown for it''s telecommunitive potential. That is one of the reasons that Belgacome took over the buidling in 27 AD.', 0, 0, '2013-07-04 09:44:37', '2013-07-04 09:44:59', 1, 1);
 
 --
 -- Triggers `projects`
@@ -136,6 +158,13 @@ CREATE TABLE IF NOT EXISTS `projects_has_comments` (
   KEY `fk_proposal_has_comments_copy1_projects1_idx` (`project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Gegevens worden uitgevoerd voor tabel `projects_has_comments`
+--
+
+INSERT INTO `projects_has_comments` (`project_id`, `comment_id`) VALUES
+(1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -149,16 +178,23 @@ CREATE TABLE IF NOT EXISTS `proposals` (
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `deleteddate` datetime DEFAULT NULL,
-  `upvotes` int(10) unsigned zerofill DEFAULT NULL,
-  `downvotes` int(10) unsigned zerofill DEFAULT NULL,
+  `upvotes` int(10) unsigned zerofill DEFAULT '0000000000',
+  `downvotes` int(10) unsigned zerofill DEFAULT '0000000000',
   `user_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
-  `photo_id` int(11) NOT NULL,
+  `photo_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`proposal_id`),
   KEY `fk_proposals_users1_idx` (`user_id`),
   KEY `fk_proposals_locations1_idx` (`location_id`),
   KEY `fk_proposals_photos1_idx` (`photo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `proposals`
+--
+
+INSERT INTO `proposals` (`proposal_id`, `description`, `proposed`, `createddate`, `modifieddate`, `deleteddate`, `upvotes`, `downvotes`, `user_id`, `location_id`, `photo_id`) VALUES
+(1, 'Voorstel beschrijving', 'Een frigo.', '2013-07-04 09:44:37', '2013-07-04 09:45:07', NULL, 0000000000, 0000000000, 1, 1, NULL);
 
 --
 -- Triggers `proposals`
@@ -189,6 +225,13 @@ CREATE TABLE IF NOT EXISTS `proposals_has_comments` (
   KEY `fk_proposal_has_comments_comments1_idx` (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Gegevens worden uitgevoerd voor tabel `proposals_has_comments`
+--
+
+INSERT INTO `proposals_has_comments` (`proposal_id`, `comment_id`) VALUES
+(1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -213,7 +256,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lastloggedindate` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `users`
+--
+
+INSERT INTO `users` (`user_id`, `email`, `password`, `passwordsalt`, `role`, `dateofbirth`, `firstname`, `surname`, `avatar`, `activationcode`, `activationdate`, `createddate`, `modifieddate`, `deleteddate`, `lastloggedindate`) VALUES
+(1, 'stefaan.ch@gmail.com', 'admin', '9kbuildersalt', 'admin', '2013-07-04 00:00:00', 'Stefaan', 'Christiaens', NULL, '12345678910', '2013-07-04 00:00:00', '2013-07-04 09:44:37', '2013-07-04 09:46:08', NULL, NULL);
 
 --
 -- Triggers `users`
