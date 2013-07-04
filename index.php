@@ -17,6 +17,12 @@ Nico Verbruggen (nico.verb@gmail.com)
 require 'framework/rb.php';
 
 /***********************
+ * CONSTANTS
+ **********************/
+echo dirname(__DIR__ );
+define('PATH_WEBROOT', dirname(__DIR__ . $_SERVER['SCRIPT_NAME']));
+
+/***********************
 * SLIM FRAMEWORK
 * INITIALIZATION
 ***********************/

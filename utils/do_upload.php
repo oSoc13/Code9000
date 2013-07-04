@@ -8,6 +8,9 @@
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
 */
+
+echo(PATH_WEBROOT);
+
 $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
@@ -32,15 +35,15 @@ if ((($_FILES["file"]["type"] == "image/gif")
     echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
     echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
 
-    if (file_exists("uploads/" . $_FILES["file"]["name"]))
+    if (file_exists("C:\xampp\htdocs/Code9000/uploads/" . $_FILES["file"]["name"]))
       {
       echo $_FILES["file"]["name"] . " already exists. ";
       }
     else
       {
       move_uploaded_file($_FILES["file"]["tmp_name"],
-      "uploads/" . $_FILES["file"]["name"]);
-      echo "Stored in: " . "uploads/" . $_FILES["file"]["name"];
+      PATH_WEBROOT .DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $_FILES["file"]["name"]);
+      echo "Stored in: " . __DIR__ . "/uploads/" . $_FILES["file"]["name"];
       }
     }
   }
