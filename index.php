@@ -54,6 +54,18 @@ $app->get('/upload', function () use ($app) {
     $app->render('upload.phtml');
 });
 
+$app->get('/alerts', function () use ($app) {
+    $app->render('alerts.phtml');
+});
+
+$app->get('/tips', function () use ($app) {
+    $app->render('tips.phtml');
+});
+
+$app->get('/about', function () use ($app) {
+    $app->render('about.phtml');
+});
+
 /***********************
 * SLIM FRAMEWORK
 * ERRORS + 404
