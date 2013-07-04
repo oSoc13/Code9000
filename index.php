@@ -10,6 +10,8 @@
 Nico Verbruggen (nico.verb@gmail.com)
 */
 
+include_once('routes.php');
+
 /***********************
 * REDBEANPHP
 ***********************/

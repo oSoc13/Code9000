@@ -16,6 +16,4 @@ define('BASE_URL_9K', "Code9000");
 /* Because of slim.before appendData -> __DIR__ becomes localhost/Code9000 */
 define('PATH_WEBROOT', __DIR__);
 
-echo PATH_WEBROOT;
-
 ?>
