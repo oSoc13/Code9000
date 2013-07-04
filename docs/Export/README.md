@@ -5,7 +5,7 @@
 Copyright 2013 OKFN.
 
 
-## How to export database: 
+* **How to export database:** 
 - Go to localhost, phpmyadmin
 - Create new database "9kbuilder"
 - Import one sql from the folders below
