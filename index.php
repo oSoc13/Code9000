@@ -17,12 +17,6 @@ Nico Verbruggen (nico.verb@gmail.com)
 require 'framework/rb.php';
 
 /***********************
- * CONSTANTS
- **********************/
-echo dirname(__DIR__ );
-define('PATH_WEBROOT', dirname(__DIR__ . $_SERVER['SCRIPT_NAME']));
-
-/***********************
 * SLIM FRAMEWORK
 * INITIALIZATION
 ***********************/
@@ -38,7 +32,7 @@ $app->config('debug', true);
 session_start();
 /* Set base url */
 $app->hook('slim.before', function () use ($app) {
-    $app->view()->appendData(array('baseURL' => '/Code9000'));
+    $app->view()->appendData(array('baseURL' => BASE_URL_9K));
 });
 
 /***********************
