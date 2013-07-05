@@ -16,6 +16,7 @@ include_once('../routes.php');
 require PATH_WEBROOT . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 // import the Intervention Image Class
+// http://intervention.olivervogel.net/ for documentation
 use \Intervention\Image\Image;
 
  
