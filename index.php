@@ -13,12 +13,6 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
 include_once('routes.php');
 
-/***********************
-* REDBEANPHP
-***********************/
-
-require 'framework/rb.php';
-
 use \Intervention\Image\Image;
 
 /***********************
@@ -39,10 +33,14 @@ $app->hook('slim.before', function () use ($app) {
     $app->view()->appendData(array('baseURL' => BASE_URL_9K));
 });
 
+
+
 /***********************
 * SLIM FRAMEWORK
 * ROUTING
 ***********************/
+
+include 'api.php';
 
 $app->get('/', function () use ($app) {
     $app->render('index.phtml');
