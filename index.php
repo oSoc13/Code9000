@@ -4,7 +4,7 @@
 9K ROUTER
 ---------
 # COPYRIGHT
-(c) 2013, OKFN. All rights reserved.
+(c) 2013, OKFN Belgium. Some rights reserved.
 
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)

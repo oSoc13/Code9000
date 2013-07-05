@@ -1,7 +1,7 @@
 # 9K Project
 
 ## Code9000 project for **#oSoc13**
-Copyright 2013 OKFN.
+(c) 2013, OKFN Belgium. Some rights reserved.
 
 ## **About** 
 MWB model is empty, is the structure of the database (OUTDATED). The SQL exports on the other hand now contains dummy-data.
