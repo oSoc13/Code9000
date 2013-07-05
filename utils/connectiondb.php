@@ -18,7 +18,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
  * Sample: $db = DatabaseConnect($sql);
  * @return Array results
  */
-include_once("/config/connectiondetails.php");
+include_once("config/connectiondetails.php");
 
 
 function GetDatabaseObj($sql,$execute = ""){
