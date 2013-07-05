@@ -86,7 +86,7 @@ $app->post('/upload', function () use ($app){
         || ($_FILES["image"]["type"] == "image/png")
     )
 		// Set max filesize
-        && ($_FILES["image"]["size"] < 2000000)
+        && ($_FILES["image"]["size"] < 20000000)
         && in_array($extension, $allowedExts))
 {
     if ($_FILES["image"]["error"] > 0)
