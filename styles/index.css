@@ -10,5 +10,9 @@
 
 /* IMPORT MAIN STYLESHEET */
 
-@import url('main.css');
+@import url('default.css');
+
+/* IMPORT TEMPORARY FIXES STYLESHEET */
+
+@import url('temp.css');
 
