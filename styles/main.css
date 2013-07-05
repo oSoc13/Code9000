@@ -24,9 +24,13 @@
 }
 
 .upload{
-	width: 40px;
+	width: 100px;
 }
 
 #UploadedFiles{
 	margin-top: 20px;
+	clear: both;
+}
+
+input[type="textarea"]{
 }

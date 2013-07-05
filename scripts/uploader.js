@@ -12,9 +12,17 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
 $(function(){
 
+$("#confirm").click(function(){
+	returnJSON();
 });
 
+});
+
+// IMAGE PATH FOR UPLOADS FOLDER
 var _uploadImagePath = "http://" + window.location.host.toString() + "/Code9000/upload";
+// PATH TO API FOR UPLOADS
+var _confirmUploadPath = "http://" + window.location.host.toString() + "/Code9000/api/photo";
+// POINTER TO COUNT AMOUNT OF IMAGES
 var pointer = 0;
 
 $("#file").on('change', createUploads);
@@ -22,7 +30,6 @@ $("#file").on('change', createUploads);
 function createUploads(e){
 	uploadFiles(e.target.files);
 }
-
 
 function uploadFiles(files){
 	console.log("File upload process begin.");
@@ -35,7 +42,7 @@ function uploadFiles(files){
 }
 
 function uploadFile(file, p){
-			console.log("File upload process begin. For nr." + pointer);
+			console.log("File upload process begin. For image number " + pointer);
 			//CREATE FORMDATA OBJECT
             var formData = new FormData();
             //ADD FILE
@@ -47,15 +54,17 @@ function uploadFile(file, p){
 				// Get response back
 				console.log(evt.target.response);
 				switch(evt.target.response){
+					// If error, let user know an error has happened!
 					case "ERROR":
-						$("body").append("<p>An error occurred. Please try again.</p>");
+						$("body").append("<p>An error occurred. Please try again later.</p>");
 					break;
+					// If invalid file, let user know about this
 					case "InvalidFile":
 						$("body").append("<p>The file you provided is invalid. Please select a valid image. GIFs are not allowed.</p>");
 						break;
+						// If the upload works, make the image appear on the page with a description
 					default:
-						$("#UploadedFiles").append("<div class='uploadframe'><image class='upload' src='http://" + evt.target.responseText + "'/><p>"+ evt.target.responseText + "</p></div>");
-						$("#LastFile").html("<image src='http://" + evt.target.responseText + "'/>");
+						$("#UploadedFiles").append("<div class='complete'><div class='uploadframe'><image class='upload' src='http://" + evt.target.responseText + "'/></div><textarea rows='4' cols='50' data-id='" + evt.target.responseText + "' placeholder='Enter your image description here.'></textarea></div>");
 						break;
 				}
             }, false);
@@ -67,4 +76,33 @@ function uploadFile(file, p){
             }, false);
             xhr.open("POST", _uploadImagePath);
             xhr.send(formData);	
+}
+
+function returnJSON(){
+	
+	var JSONdata = [];
+	
+	$("body").find(".complete").each(function (i, val){
+		var obj = {};
+		obj.src = $(val).find("textarea").data('id').split("/")[$(val).find("textarea").data('id').split("/").length-1];
+		obj.alt = $(val).find("textarea").val();
+		JSONdata.push(obj);
+	});
+	
+	var data = JSON.stringify(JSONdata);
+	
+	$.ajax({
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        cache: false,
+		data: data,
+        url: _confirmUploadPath,
+        beforeSend: function(xhr) {
+			//
+        },
+        success: function(data_returned){
+			console.log(data_returned);
+		}
+		});
 }

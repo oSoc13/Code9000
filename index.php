@@ -69,7 +69,6 @@ $app->get('/about', function () use ($app) {
 ***********************/
 
 $app->post('/upload', function () use ($app){
-	
 	// Include required for ensuring uploads end up in the correct folder!
 	require PATH_WEBROOT . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
  
@@ -114,6 +113,18 @@ else
 {
     echo "InvalidFile";
 }
+});
+
+/***********************
+* TEMP API TEST
+***********************/
+
+$app->post('/api/photo', function () use ($app){
+	$requestBody = $app->request()->getBody();
+	// For now, since the API is still under development,
+	// the JSON will just be returned and is logged on
+	// upload.phtml.
+	echo $requestBody;
 });
 
 /***********************
