@@ -4,7 +4,7 @@
 Copyright 2013 OKFN.
 
 ## **About** 
-MWB model is empty, is the structure of the database. The SQL exports on the other hand now contains dummy-data.
+MWB model is empty, is the structure of the database (OUTDATED). The SQL exports on the other hand now contains dummy-data.
 
 **Tadah**
 
