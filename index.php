@@ -92,7 +92,7 @@ $app->post('/upload', function () use ($app){
 {
     if ($_FILES["image"]["error"] > 0)
     {
-        echo "Return Code: " . $_FILES["image"]["error"] . "<br>";
+        echo "ERROR";
     }
     else
     {    

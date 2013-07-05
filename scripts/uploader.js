@@ -7,6 +7,7 @@ For uploading those images in the background.
 
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
+Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 $(function(){
@@ -46,11 +47,15 @@ function uploadFile(file, p){
 				// Get response back
 				console.log(evt.target.response);
 				switch(evt.target.response){
+					case "ERROR":
+						$("body").append("<p>An error occurred. Please try again.</p>");
+					break;
 					case "InvalidFile":
 						$("body").append("<p>The file you provided is invalid. Please select a valid image. GIFs are not allowed.</p>");
 						break;
 					default:
-						$("body").append("<image src='http://" + evt.target.responseText + "'/>");
+						$("#UploadedFiles").append("<div class='uploadframe'><image class='upload' src='http://" + evt.target.responseText + "'/><p>"+ evt.target.responseText + "</p></div>");
+						$("#LastFile").html("<image src='http://" + evt.target.responseText + "'/>");
 						break;
 				}
             }, false);

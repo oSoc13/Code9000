@@ -3,3 +3,30 @@
  * Author: @nicoverbruggen
  * Main stylesheet for #code9000.
  */
+
+.uploadframe{
+	width: 100%;
+	clear: both;
+}
+
+.uploadframe img{
+	float: left;
+}
+
+.uploadframe p{
+	float: left;
+	margin-left: 15px;
+	font-size: 0.7em;
+}
+
+.upload{
+	border: 1px solid #333;
+}
+
+.upload{
+	width: 40px;
+}
+
+#UploadedFiles{
+	margin-top: 20px;
+}
