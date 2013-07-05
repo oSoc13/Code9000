@@ -8,6 +8,7 @@
 
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
+Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 include_once('routes.php');
@@ -26,8 +27,7 @@ use \Intervention\Image\Image;
 ***********************/
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
-// Register autoloader
-//\Slim\Slim::registerAutoloader();
+
 // Create new Slim() instance
 $app = new \Slim\Slim();
 // Debugging status (true during development, false when deployed)
