@@ -60,8 +60,8 @@ $app->get('/api/photos', function () use ($app) {
 
 $app->post('/api/photos', function () use ($app) {
     $requestBody = $app->request()->getBody();
-    
-    
+    $data = json_decode($requestBody);
+    var_dump($data);
 });
 
 
