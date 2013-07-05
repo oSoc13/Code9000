@@ -1,0 +1,16 @@
+/**
+ * Author: Robbe
+ * Copyright: 2013 OKFN
+ */
+body{
+    height: 100%;
+    width: 100%;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+#maincanvas{
+    margin: 0;
+    padding: 0;
+}
