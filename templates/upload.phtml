@@ -56,17 +56,15 @@ Nico Verbruggen (nico.verb@gmail.com)
 	<section>
 		<h1>Upload a file</h1>
 		<p>Below you can add an image to the server (up to 2 MB). The image will be cropped.</p>
-		<form action="upload" method="post" enctype="multipart/form-data">
 		<label for="file">Filename:</label>
 		<input type="file" name="file" id="file"><br>
-		<input type="submit" name="submit" value="Submit">
-		</form>
 	</section>
 </div>
 <!-- BOTTOM SCRIPTS -->
 <!-- 1. GRAB GOOGLE'S JQUERY CDN -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="scripts/vendor/jquery-2.0.2.min.js"><\/script>')</script>
+<script src="/Code9000/scripts/uploader.js"></script>
 </body>
 </html>
