@@ -1,11 +1,24 @@
 <?php
+/**
+9K CONNECTION CLASS
+---------
+# COPYRIGHT
+(c) 2013, OKFN Belgium. Some rights reserved.
 
-/** DatabaseConnect($sql) establishes a connection with the 'publicity' database.
+# AUTHOR
+Nico Verbruggen (nico.verb@gmail.com)
+Stefaan Christiaens (stefaan.ch@gmail.com)
+*/
+
+
+
+
+/** DatabaseConnect($sql) establishes a connection with the database.
  * Note that it returns an array
  * Sample: $db = DatabaseConnect($sql);
  * @return Array results
  */
-include_once("/Code9000/config/connectiondetails.php");
+include_once("/config/connectiondetails.php");
 
 
 function GetDatabaseObj($sql,$execute = ""){
@@ -50,15 +63,14 @@ function GetDatabaseObj($sql,$execute = ""){
 class Connection
 {
     /**
-     * Instantie van de databaseconnectie.
+     * Instatiation of database
      *
      * @staticvar \PDO
      */
     protected static $instance;
 
     /**
-     * Magische methode voor de constructor. Hier is deze methode protected, omdat
-     * instatiëren via getInstance() moeten gebeuren
+     * Protected instantiation function for connection
      *
      * @throws \ErrorException
      */
@@ -68,7 +80,7 @@ class Connection
     }
 
     /**
-     * Magische methode aangeroepen tijdens klonen. Moet klonen voorkomen.
+     * Prevent cloning
      *
      * @throws \ErrorException
      */
@@ -78,7 +90,7 @@ class Connection
     }
 
     /**
-     * Geeft de instantie terug, en maakt zo nodig een instantie aan.
+     * Get connection instance
      *
      * @return \PDO
      */
@@ -92,7 +104,7 @@ class Connection
     }
 
     /**
-     * Haalt de configuratie op en maakt een connectie met de databaseserver.
+     * Fetch connection properties and create connection
      *
      * @return bool
      * @throws \ErrorException
@@ -115,7 +127,3 @@ class Connection
     }
 
 }
-
-
-
-?>

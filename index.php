@@ -134,5 +134,3 @@ $app->notFound(function () use ($app) {
 ***********************/
 
 $app->run();
-
-?>
