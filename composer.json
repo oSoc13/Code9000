@@ -1,7 +1,6 @@
 {
     "require": {
         "slim/slim": "2.*",
-        "intervention/image": "dev-master",
-        "entomb/slim-json-api": "dev-master"
+        "intervention/image": "dev-master"
     }
 }

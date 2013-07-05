@@ -8,16 +8,10 @@
 
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
+Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 include_once('routes.php');
-
-/***********************
-* REDBEANPHP
-***********************/
-
-require 'framework/rb.php';
-
 
 /***********************
 * SLIM FRAMEWORK
@@ -25,8 +19,7 @@ require 'framework/rb.php';
 ***********************/
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
-// Register autoloader
-//\Slim\Slim::registerAutoloader();
+
 // Create new Slim() instance
 $app = new \Slim\Slim();
 // Debugging status (true during development, false when deployed)
