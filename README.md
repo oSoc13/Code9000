@@ -1,8 +1,8 @@
 9K Project
 =========
 
-#code9000 project for #oSoc13
-Copyright 2013 OKFN.
+#Code9000 project for #oSoc13
+(c) 2013, OKFN Belgium. Some rights reserved.
 
 # Deployment instructions
 
