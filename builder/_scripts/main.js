@@ -5,6 +5,9 @@
 
     $(init);
 
+
+var testJSON = {"objects":[{"category":"ground","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0,"alphaD":0,"betaD":0,"gammaD":31},"position":{"x":28,"y":0,"z":0}},{"category":"ground","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0.4363323129985824,"alphaD":0,"betaD":0,"gammaD":25},"position":{"x":-40,"y":50,"z":0}},{"category":"building","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0.26529004630313807,"alphaD":0,"betaD":0,"gammaD":15.2},"position":{"x":48,"y":190,"z":0}},{"category":"building","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0,"alphaD":0,"betaD":0,"gammaD":0},"position":{"x":0,"y":-150,"z":0}}]};
+
 var canvasElement,
     character,
     keys,
@@ -74,12 +77,15 @@ function initCanvas(){
     }
 
 // add objects to stage. and objects array
+    /*
     hoverObjects.push(objectBuilder.buildGround(1,{x:28,y:0,z:0},0));
     hoverObjects.push(objectBuilder.buildGround(1,{x:-40,y:50,z:0},25));
 
     hoverObjects.push(objectBuilder.buildBuilding(1,{x:48,y:190,z:0},23));
     hoverObjects.push(objectBuilder.buildBuilding(1,{x:0,y:-150,z:0},0));
+    */
 
+    getBuildingsJson();
 // generate a density map from the sheets
     densityMap = new sheetengine.DensityMap(5);
     densityMap.addSheets(sheetengine.sheets);
@@ -161,7 +167,6 @@ function initCanvas(){
             sheetengine.drawing.drawScene();
         }
 
-
         target = null;
 
     }
@@ -209,7 +214,25 @@ function initCanvas(){
     setInterval(mainloop, 30);
 }
 
-// function for creating a character with a body and 2 legs
+//  load buildings from saved file.
+function getBuildingsJson(){
+    //$.getJSON('ajax/test.json', function(data) {
+
+
+    for(var i=0;i<testJSON.objects.length;i++){
+        console.log(testJSON.objects[i]);
+        var category = testJSON.objects[i].category;
+        if(category == "building"){
+            hoverObjects.push(objectBuilder.buildBuilding(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation.gammaD));
+        }
+        else if(category == "ground"){
+            hoverObjects.push(objectBuilder.buildGround(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation.gammaD));
+        }
+    }
+
+}
+
+//  function for creating a character with a body and 2 legs
 function defineCharacter(centerp) {
     // character definition for animation with sheet motion
     var body = new sheetengine.Sheet({x:0,y:0,z:15}, {alphaD:0,betaD:0,gammaD:0}, {w:11,h:14});

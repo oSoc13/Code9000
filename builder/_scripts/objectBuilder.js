@@ -7,29 +7,16 @@
 
 objectBuilder = (function(){
     //  private variables
-    //var privateVar = "private";
     var buildings = null;
     var obj = null;
 
     //  private functions
-    /*
-    function privateFunction(){
-
-        return privateVar;
-    }
-    */
 
     return {
 
     // public variables
-    //publicVar: "public",
 
-        // public functions
-    /*
-    publicFunction:function(){
-        return privateVar;
-    }
-    */
+    // public functions
 
         buildBuilding:function(type,position,rotation){
 
@@ -52,7 +39,7 @@ objectBuilder = (function(){
                     backRight.context.fillStyle = '#00FFFF';
                     backRight.context.fillRect(0,0,40,40);
                     obj = new sheetengine.SheetObject(position, {alphaD:0,betaD:0,gammaD:rotation}, [leftfront,rightFront,top,backLeft,backRight], {w:75,h:80,relu:30,relv:60});
-
+                    obj.data = {"category" : "building", "type" : type, "rotation": obj.rot, "position": obj.centerp};
                     break;
             }
 
@@ -67,16 +54,25 @@ objectBuilder = (function(){
                     sheet.context.fillStyle = '#FFF';
                     sheet.context.fillRect(0,0,60,60);
                     obj = new sheetengine.SheetObject(position,{alphaD:0,betaD:0,gammaD:rotation}, [sheet], {w:85,h:80,relu:42,relv:40});
+                    obj.data = {"category" : "ground", "type" : type, "rotation": obj.rot, "position": obj.centerp};
 
                     break;
-
             }
 
             return obj;
-        }
+        },
 
-
-
+        // loop through all objects on the stage and push them in the json.
+        getObjectsJson:function(objectsArr){
+            var json = {"objects":[]};
+            for(var i = 0; i<objectsArr.length;i++){
+                // set the rotation and position to the current values
+                objectsArr[i].data.rotation = objectsArr[i].rot;
+                objectsArr[i].data.rotation = objectsArr[i].rot;
+                json.objects.push(objectsArr[i].data)
+            }
+            return JSON.stringify(json);
+        },
 
     }
 })();
