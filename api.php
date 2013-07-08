@@ -58,7 +58,7 @@ $app->get('/api/photos', function () use ($app) {
     echo(json_encode(GetDatabaseObj($sql)));
 });
 
-$app->post('/api/photos', function () use ($app) {
+$app->put('/api/photo/:name', function ($name) use ($app) {
     $requestBody = $app->request()->getBody();
     $data = json_decode($requestBody);
     var_dump($data);
@@ -66,9 +66,35 @@ $app->post('/api/photos', function () use ($app) {
 
 
 $app->get('/api/users', function () use ($app) {
-    $app->response()->header('Content-Type', 'application/json');
+    
+    //ONLY IF ADMIN!!!
+    
+    //$app->response()->header('Content-Type', 'application/json');
     
     $sql = "select * from users";
-    echo(json_encode(GetDatabaseObj($sql)));
+    echo('Are you admin boy');
+    //echo(json_encode(GetDatabaseObj($sql)));
 });
 
+/***
+ * LOGIN USER ???? IN API OR NOT?
+ ***/
+$app->post('/api/user/login/:email/:password', function ($email, $password) use ($app) {
+    //ESCAPE EMAIL AND PASSWORD
+    //$app->response()->header('Content-Type', 'application/json');
+    
+    $sql = "select password, role from users where email = :email";
+    $vars = array(":email" => $email);
+    $user = GetDatabaseObj($sql);
+    $pass = $user['password'];
+    //hash and salt password from post
+    $hashed = "";
+    if ($hashed == $pass) {
+        //AUTHENTICATED
+        return "200";
+    }
+    else 
+    {
+        return "404";
+    }
+});
