@@ -12,7 +12,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 include_once('routes.php');
-include_once(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'auth.php');
+include_once(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Authentication.php');
 
 
 // import the Intervention Image Class
@@ -47,6 +47,7 @@ include 'api.php';
 
 $app->get('/', function () use ($app) {
     $app->render('index.phtml');
+    $auth = new Authentication();
 });
 
 $app->get('/home', function () use ($app) {
@@ -157,7 +158,64 @@ $app->get('/register', function () use ($app) {
 });
 
 $app->post('/register', function () use ($app) {
-    //shit's about to happen
+    $req = $app->request();
+    
+    $fname = $req->post('fname');
+    $sname = $req->post('sname');
+    $email = $req->post('email');
+    $dob = $req->post('dob');
+    $pwd = $req->post('password');
+    $admin = $req->post('admin');
+    $photo = $req->post('avatarpic');
+    
+    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'admin' => $admin, 'avatar' => $photo );
+
+    $auth = new Authentication();
+    $auth->register($test);
+    $app->redirect('/code9000');
+});
+
+
+$app->get('/activateaccount/:code/:email', function ($code, $email) use ($app) {
+    $auth = new Authentication();
+    $count = $auth->activateAccount($email, $code);
+    if ($count < 0) {
+        $app->redirect('/code9000/login');
+    }
+    else
+    {
+        throw new Exception("Activation details did not match any profile.");
+    }
+});
+
+$app->get('/login', function () use ($app) {
+    $app->render('login.phtml');
+});
+
+$app->post('/login', function () use ($app) {
+    $req = $app->request();
+    $email = $req->post('email');
+    $pwd = $req->post('password');
+    $auth = new Authentication();
+    $result = $auth->login($email, $pwd);
+    
+    switch ($result) {
+        case 'ACT':
+            echo('Account not activated yet.');
+            break;
+        
+        case 'PWD':
+            echo('Password incorrect.');
+            break;
+        
+        case 'NO_USER':
+            echo('No user found with provided email.');
+            break;
+        
+        case 'OK':
+            echo('User was logged in.');
+            break;
+    }
 });
 
 
