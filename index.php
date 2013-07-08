@@ -13,6 +13,8 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
 include_once('routes.php');
 
+// import the Intervention Image Class
+// http://intervention.olivervogel.net/ for documentation
 use \Intervention\Image\Image;
 
 /***********************
@@ -32,7 +34,6 @@ session_start();
 $app->hook('slim.before', function () use ($app) {
     $app->view()->appendData(array('baseURL' => BASE_URL_9K));
 });
-
 
 
 /***********************
@@ -73,43 +74,60 @@ $app->get('/about', function () use ($app) {
 $app->post('/upload', function () use ($app){
 	// Include required for ensuring uploads end up in the correct folder!
 	require PATH_WEBROOT . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
-
-	// import the Intervention Image Class
-	// http://intervention.olivervogel.net/ for documentation
  
-	$allowedExts = array("gif", "jpeg", "jpg", "png");
-	$temp = explode(".", $_FILES["file"]["name"]);
+	// Allowed extensions
+	$allowedExts = array("gif", "jpeg", "jpg", "png", "GIF", "PNG", "JPG", "JPEG");
+	$temp = explode(".", $_FILES["image"]["name"]);
 	$extension = end($temp);
 	if ((
-        ($_FILES["file"]["type"] == "image/gif")
-        || ($_FILES["file"]["type"] == "image/jpeg")
-        || ($_FILES["file"]["type"] == "image/jpg")
-        || ($_FILES["file"]["type"] == "image/pjpeg")
-        || ($_FILES["file"]["type"] == "image/x-png")
-        || ($_FILES["file"]["type"] == "image/png")
+		// Allowed filetypes (mimetypes)
+        ($_FILES["image"]["type"] == "image/gif")
+        || ($_FILES["image"]["type"] == "image/jpeg")
+        || ($_FILES["image"]["type"] == "image/jpg")
+        || ($_FILES["image"]["type"] == "image/pjpeg")
+        || ($_FILES["image"]["type"] == "image/x-png")
+        || ($_FILES["image"]["type"] == "image/png")
     )
-        && ($_FILES["file"]["size"] < 2000000)
+		// Set max filesize
+        && ($_FILES["image"]["size"] < 20000000)
         && in_array($extension, $allowedExts))
 {
-    if ($_FILES["file"]["error"] > 0)
+    if ($_FILES["image"]["error"] > 0)
     {
-        echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+        echo "ERROR";
     }
     else
     {    
+		// Rename file based on microtime
         $milliseconds = round(microtime(true) * 1000);
-        $name = $_FILES["file"]["name"] . $milliseconds;
+        $name = $_FILES["image"]["name"] . $milliseconds;
+		// Encodes filename
         $finalName = base64_encode($name) . "." . $extension;
-        $img = Image::make($_FILES["file"]["tmp_name"]);
+		// Use Intervention to crop image
+        $img = Image::make($_FILES["image"]["tmp_name"]);
         $img->resize(300, null, true)->encode('png', 20);
+		// Save the image into the final directory with the final encoded name
         $img->save(PATH_WEBROOT . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
-        header("Location: " . $_SERVER['HTTP_HOST'] . DIRECTORY_SEPARATOR . BASE_URL_9K . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
+        // Return path to image
+		echo($_SERVER['HTTP_HOST'] . DIRECTORY_SEPARATOR . BASE_URL_9K . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
     }
 }
 else
 {
-    echo "Invalid file";
+    echo "InvalidFile";
 }
+});
+
+/***********************
+* TEMP API TEST
+***********************/
+
+$app->post('/api/photo', function () use ($app){
+	$requestBody = $app->request()->getBody();
+	// For now, since the API is still under development,
+	// the JSON will just be returned and is logged on
+	// upload.phtml.
+	echo $requestBody;
 });
 
 /***********************

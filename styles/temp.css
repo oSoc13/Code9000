@@ -1,0 +1,37 @@
+/* 
+ * (c) 2013, OKFN Belgium. Some rights reserved.
+ * Author: @nicoverbruggen
+ * Temporary stylesheet for #code9000. Some things need to be aligned etc
+ * but needs to be fixed later on!
+ */
+
+.uploadframe{
+	width: 100%;
+	clear: both;
+}
+
+.uploadframe img{
+	float: left;
+}
+
+.uploadframe p{
+	float: left;
+	margin-left: 15px;
+	font-size: 0.7em;
+}
+
+.upload{
+	border: 1px solid #333;
+}
+
+.upload{
+	width: 100px;
+}
+
+#UploadedFiles{
+	margin-top: 20px;
+	clear: both;
+}
+
+input[type="textarea"]{
+}
