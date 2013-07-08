@@ -6,6 +6,7 @@
 (c) 2013, OKFN Belgium. Some rights reserved.
 
 # AUTHOR
+Nico Verbruggen (nico.verb@gmail.com)
 Stefaan Christiaens (stefaan.ch@gmail.com)
 **/
 
@@ -31,10 +32,10 @@ $app->get('/api/', function () use ($app) {
 
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    
     $sql = "select * from spots";
     echo(json_encode(GetDatabaseObj($sql)));
 });
+
 
 /******************************************************************************/
 /* CITY PROJECTS
@@ -42,7 +43,6 @@ $app->get('/api/spots', function () use ($app) {
 
 $app->get('/api/cityprojects', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    
     $sql = "select * from cityprojects";
     echo(json_encode(GetDatabaseObj($sql)));
 });
@@ -85,15 +85,58 @@ $app->get('/api/locations', function () use ($app) {
 
 $app->get('/api/photos', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    
-    $sql = "select * from photos";
+    $sql = "SELECT * FROM photos";
     echo(json_encode(GetDatabaseObj($sql)));
 });
 
-$app->put('/api/photo/:name', function ($name) use ($app) {
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    var_dump($data);
+$app->get('/api/photos/:id', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM photos WHERE photo_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
+});
+
+$app->post('/api/photos', function () use ($app){
+try{
+	$requestBody = $app->request()->getBody();
+	$data = json_decode($requestBody);
+	// The array contains a series of pictures
+	foreach ($data as $picture) {
+		// Each image has a description and url
+		$description = "";
+		$url = "";
+		// $picture contains both a src and alt
+		foreach ($picture as $key => $val){
+			if ($key == "src"){
+				$url = $val;
+			}
+			if ($key == "alt"){
+				// Ensure that description is not empty or just spaces
+				if (strlen(trim($val)) == 0){
+					$description = null;
+				}else{
+					$description = $val;
+				}
+			}
+		}
+		// For each image, query an addition
+		$execute = array(":description"=>$description, ":url"=>$url);
+		$sql = "INSERT INTO photos (description, url) VALUES (:description, :url)";
+		// Execute query	
+		GetDatabaseObj($sql, $execute);
+		}
+	echo json_encode($var = array("status"=>"Your upload succeeded!"));
+}
+catch(Exception $e){
+	echo json_encode($var = array("status"=>"failure uploading one or more images, more information: $e"));
+	exit;
+}
 });
 
 /******************************************************************************/

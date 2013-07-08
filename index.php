@@ -119,18 +119,6 @@ else
 });
 
 /***********************
-* TEMP API TEST
-***********************/
-
-$app->post('/api/photo', function () use ($app){
-	$requestBody = $app->request()->getBody();
-	// For now, since the API is still under development,
-	// the JSON will just be returned and is logged on
-	// upload.phtml.
-	echo $requestBody;
-});
-
-/***********************
 * SLIM FRAMEWORK
 * ERRORS + 404
 ***********************/

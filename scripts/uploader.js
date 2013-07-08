@@ -12,16 +12,16 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
 $(function(){
 
-$("#confirm").click(function(){
-	returnJSON();
-});
+	$("#confirm").click(function(){
+		returnJSON();
+	});
 
 });
 
 // IMAGE PATH FOR UPLOADS FOLDER
 var _uploadImagePath = "http://" + window.location.host.toString() + "/Code9000/upload";
 // PATH TO API FOR UPLOADS
-var _confirmUploadPath = "http://" + window.location.host.toString() + "/Code9000/api/photo";
+var _confirmUploadPath = "http://" + window.location.host.toString() + "/Code9000/api/photos";
 // POINTER TO COUNT AMOUNT OF IMAGES
 var pointer = 0;
 
@@ -99,11 +99,10 @@ function returnJSON(){
         cache: false,
 		data: data,
         url: _confirmUploadPath,
-        beforeSend: function(xhr) {
-			//
+        beforeSend: function(xhr){
         },
-        success: function(data_returned){
-			console.log(data_returned);
+        success: function(data){
+			$("#Uploader").html("<p>" + data.status + "</p>");
 		}
 		});
 }
