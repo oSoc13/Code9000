@@ -12,6 +12,8 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 include_once('routes.php');
+include_once(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'auth.php');
+
 
 // import the Intervention Image Class
 // http://intervention.olivervogel.net/ for documentation
@@ -145,6 +147,20 @@ $app->notFound(function () use ($app) {
      header("Status: 404 Not Found");
      $app->render('404.phtml');
 });
+
+
+/**********************
+ * AUTHENTICATION
+ *********************/
+$app->get('/register', function () use ($app) {
+    $app->render('register.phtml');
+});
+
+$app->post('/register', function () use ($app) {
+    //shit's about to happen
+});
+
+
 
 /***********************
 * SLIM FRAMEWORK
