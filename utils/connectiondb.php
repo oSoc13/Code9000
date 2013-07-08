@@ -20,13 +20,19 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
  */
 include_once("config/connectiondetails.php");
 
+/**
+ * Connects with database and returns data array
+ * @param database connection $sql (inherited from connectiondetails.php)
+ * @param array $execute (contains all data for sql query)
+ * @return array
+ */
 
 function GetDatabaseObj($sql,$execute = ""){
     // CONNECTION WITH DB
     $db = Connection::getInstance();
 
     try{
-            // EXECUTE SUERY
+            // EXECUTE QUERY
             $stmt = $db->prepare($sql);
 
             // CHECK FOR EXECUTE

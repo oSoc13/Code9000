@@ -1,7 +1,7 @@
 <?php
 
 /**
-9K UPLOAD IMAGE
+9K ROUTING
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -9,6 +9,10 @@
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
 */
+
+/******************************************************************************/
+// URLS AND ROUTING
+/******************************************************************************/
 
 /* Base URL field (edit this in .htaccess as well if necessary) */
 define('BASE_URL_9K', "Code9000");
