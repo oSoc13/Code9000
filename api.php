@@ -27,8 +27,71 @@ $app->get('/api/', function () use ($app) {
 });
 
 /******************************************************************************/
+/* LOCATIONS
+/******************************************************************************/
+
+/**
+ * Gets all locations added to the database, returns JSON
+ */
+
+$app->get('/api/locations', function () use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+    $sql = "SELECT * FROM locations";
+    echo(json_encode(GetDatabaseObj($sql)));
+});
+
+/**
+ *  Gets all last 15 locations added to the database, returns JSON
+ */
+
+$app->get('/api/locations/last15', function () use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+    $sql = "SELECT * FROM locations LIMIT 15";
+    echo(json_encode(GetDatabaseObj($sql)));
+});
+
+/**
+ * Gets one single location added to the database, returns JSON
+ */
+
+$app->get('/api/locations/:id', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM locations WHERE location_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
+});
+
+/**
+ * Gets spots associated with a location with a specific id
+ */
+
+$app->get('/api/locations/:id/spots', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM spots WHERE location_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
+});
+
+
+/******************************************************************************/
 /* SPOTS
 /******************************************************************************/
+
+/**
+ * Gets all spots added to the database, returns JSON
+ */
 
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -36,10 +99,30 @@ $app->get('/api/spots', function () use ($app) {
     echo(json_encode(GetDatabaseObj($sql)));
 });
 
+/**
+ * Gets one single spot added to the database, returns JSON
+ */
+
+$app->get('/api/spots/:id', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM spots WHERE spot_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
+});
 
 /******************************************************************************/
 /* CITY PROJECTS
 /******************************************************************************/
+
+/**
+ * Gets all city projects added to the database, returns JSON
+ */
 
 $app->get('/api/cityprojects', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -47,9 +130,30 @@ $app->get('/api/cityprojects', function () use ($app) {
     echo(json_encode(GetDatabaseObj($sql)));
 });
 
+/**
+ * Gets one single cityproject added to the database, returns JSON
+ */
+
+$app->get('/api/cityprojects/:id', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM cityprojects WHERE cityproject_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
+});
+
 /******************************************************************************/
 /* CITY PROPOSALS
 /******************************************************************************/
+
+/**
+ * Gets all city proposals added to the database, returns JSON
+ */
 
 $app->get('/api/cityproposals', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -58,9 +162,31 @@ $app->get('/api/cityproposals', function () use ($app) {
     echo(json_encode(GetDatabaseObj($sql)));
 });
 
+/**
+ * Gets one specific city proposal added to the database, returns JSON
+ */
+
+$app->get('/api/cityproposals/:id', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM cityproposals WHERE cityproposal_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
+});
+
+
 /******************************************************************************/
 /* COMMENTS
 /******************************************************************************/
+
+/**
+ * Gets all comments added to the database
+ */
 
 $app->get('/api/comments', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -68,26 +194,50 @@ $app->get('/api/comments', function () use ($app) {
     echo(json_encode(GetDatabaseObj($sql)));
 });
 
-/******************************************************************************/
-/* LOCATIONS
-/******************************************************************************/
+/**
+ * Get one specific comment added to the database, returns JSON
+ */
 
-$app->get('/api/locations', function () use ($app) {
-    $app->response()->header('Content-Type', 'application/json');
-    
-    $sql = "select * from locations";
-    echo(json_encode(GetDatabaseObj($sql)));
+$app->get('/api/comments/:id', function ($id) use ($app) {
+	$app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM comments WHERE comment_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
+	}
 });
 
 /******************************************************************************/
 /* PHOTOS
 /******************************************************************************/
 
+/**
+ * Gets all photo information. Returns JSON.
+ */
+
 $app->get('/api/photos', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM photos";
     echo(json_encode(GetDatabaseObj($sql)));
 });
+
+/**
+ * Gets all last 15 photos uploaded to the database.
+ */
+
+$app->get('/api/photos/last15', function () use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+    $sql = "SELECT * FROM photos LIMIT 15";
+    echo(json_encode(GetDatabaseObj($sql)));
+});
+
+/**
+ * Gets all photo information for one specific image. Returns JSON.
+ */
 
 $app->get('/api/photos/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
@@ -101,6 +251,10 @@ $app->get('/api/photos/:id', function ($id) use ($app) {
 		echo(json_encode($data));
 	}
 });
+
+/**
+ * Adds an image to the database. Returns JSON with success or failure status.
+ */
 
 $app->post('/api/photos', function () use ($app){
 try{
@@ -195,5 +349,22 @@ $app->get('/api/users/:id', function ($id) {
 			// If data is not empty, show it (encoded as JSON)
 			echo(json_encode($data));
 		}
+	}
+});
+
+/**
+ * Gets all comments added to the database by a specific user
+ */
+
+$app->get('/api/users/:id/comments', function ($id) use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+	$execute = array(":id"=>$id);
+	$sql = "SELECT * FROM comments WHERE user_id = :id";
+	$data = GetDatabaseObj($sql, $execute);
+	if ($data == null){
+		$ERR_NO_DATA = array("error"=>"No data available");
+		echo(json_encode($ERR_NO_DATA));
+	}else{
+		echo(json_encode($data));
 	}
 });
