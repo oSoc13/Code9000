@@ -2,3 +2,4 @@
 /config
 /uploads
 composer.lock
+composer.phar
