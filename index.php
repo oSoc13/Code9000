@@ -69,6 +69,11 @@ $app->get('/about', function () use ($app) {
     $app->render('about.phtml');
 });
 
+$app->get('/leaflettest', function () use ($app) {
+    $app->render('leaflet.phtml');
+});
+
+
 /***********************
 * FILE UPLOAD
 ***********************/
