@@ -41,6 +41,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 			<li><a href='/Code9000/about'>About</a></li>
 		</ul>
 	</nav>
+    
 	<h1>login</h1>
         <form method="post" action="/code9000/login">
             <input type="email" id="email" name="email" placeholder="email" /><br/>
@@ -49,10 +50,15 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
             <input type="submit" name="submit" />
         </form>
 </div>
+
+<?= $this->render('footer.phtml'); ?>
 <!-- BOTTOM SCRIPTS -->
 <!-- 1. GRAB GOOGLE'S JQUERY CDN -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
 <script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
+<?php if (isset($this->data['message'])): ?>
+<script>alert('<?php echo $this->data['message'] ?>');</script>
+<?php endif;?>
 </body>
 </html>

@@ -110,8 +110,8 @@ $app->post('/upload', function () use ($app){
         $img->resize(300, null, true)->encode('png', 20);
 		// Save the image into the final directory with the final encoded name
         $img->save(PATH_WEBROOT . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
-        // Return path to image
-		echo($_SERVER['HTTP_HOST'] . DIRECTORY_SEPARATOR . BASE_URL_9K . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
+                // Return path to image
+        echo($_SERVER['HTTP_HOST'] . DIRECTORY_SEPARATOR . BASE_URL_9K . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $finalName);
     }
 }
 else
@@ -138,7 +138,7 @@ $app->post('/api/photo', function () use ($app){
 ***********************/
 
 $app->error(function (\Exception $e) use ($app) {
-	$errorData = array('error' => $e);
+    $errorData = array('error' => $e);
     $app->render('error.phtml', $errorData);
 });
 
@@ -187,9 +187,18 @@ $app->get('/activateaccount/:code/:email', function ($code, $email) use ($app) {
     }
 });
 
+$app->get('/login/:message', function ($message) use ($app) {
+    if(!empty($message))
+    {
+        $data = array('message' => $message);
+    }
+    $app->render('login.phtml', $data);
+});
+
 $app->get('/login', function () use ($app) {
     $app->render('login.phtml');
 });
+
 
 $app->post('/login', function () use ($app) {
     $req = $app->request();
@@ -198,23 +207,25 @@ $app->post('/login', function () use ($app) {
     $auth = new Authentication();
     $result = $auth->login($email, $pwd);
     
+    $msg = "";
     switch ($result) {
         case 'ACT':
-            echo('Account not activated yet.');
+            $msg ='Account not activated yet.';
             break;
         
         case 'PWD':
-            echo('Password incorrect.');
+            $msg = 'Password incorrect.';
             break;
         
         case 'NO_USER':
-            echo('No user found with provided email.');
+            $msg = 'No user found with provided email.';
             break;
         
         case 'OK':
-            echo('User was logged in.');
+            $app->redirect('/code9000/spotter');
             break;
     }
+    $app->redirect('/code9000/login/'.$msg);
 });
 
 

@@ -158,8 +158,8 @@ function GetFirstDatabaseObject($sql,$execute = ""){
                     $stmt->execute($execute);
             }
             $result;
-            while($obj = $stmt->fetch(PDO::FETCH_ORI_FIRST)){
-                            $result = $obj;            
+            while($obj = $stmt->fetch()){
+                $result = $obj;            
             }
 
             $db = null;
@@ -172,7 +172,6 @@ function GetFirstDatabaseObject($sql,$execute = ""){
     catch(Exception $ex) {
         echo "An error has occured: " . $ex->getMessage();
     }
-
     // RETURN DATA	
     return $result;
 }
