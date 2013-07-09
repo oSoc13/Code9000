@@ -10,9 +10,6 @@ Nico Verbruggen (nico.verb@gmail.com)
 Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
-
-
-
 /** DatabaseConnect($sql) establishes a connection with the database.
  * Note that it returns an array
  * Sample: $db = DatabaseConnect($sql);
@@ -27,7 +24,7 @@ include_once("config/connectiondetails.php");
  * @return array
  */
 
-function GetDatabaseObj($sql,$execute = ""){
+function GetDatabaseObj($sql, $execute = ""){
     // CONNECTION WITH DB
     $db = Connection::getInstance();
 
