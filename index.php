@@ -47,7 +47,6 @@ include 'api.php';
 
 $app->get('/', function () use ($app) {
     $app->render('index.phtml');
-    $auth = new Authentication();
 });
 
 $app->get('/home', function () use ($app) {
@@ -179,7 +178,7 @@ $app->post('/register', function () use ($app) {
 $app->get('/activateaccount/:code/:email', function ($code, $email) use ($app) {
     $auth = new Authentication();
     $count = $auth->activateAccount($email, $code);
-    if ($count < 0) {
+    if ($count > 0) {
         $app->redirect('/code9000/login');
     }
     else

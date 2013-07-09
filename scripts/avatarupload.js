@@ -65,7 +65,12 @@ function uploadFile(file, p){
                 // If the upload works, make the image appear on the page with a description
             default:
                 var hid = evt.target.responseText.replace('\\','\\\\');
-                $("#avatar").html("<image src='http://" + evt.target.responseText + "'/><input type='hidden' name='avatarpic' value='"+hid.split('\\')[hid.split('\\').length-1]+"' />");
+                var hid = hid.replace('/','\\\\');
+                console.log('source: ' + evt.target.responseText);
+                var url = evt.target.responseText.split('\\').join('/');
+                console.log('url: ' + url);
+                
+                $("#avatar").html("<image src='http://" + url + "'/><input type='hidden' name='avatarpic' value='"+hid.split('\\')[hid.split('\\').length-1]+"' />");
                 break;
         }
     }, false);
