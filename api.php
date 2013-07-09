@@ -33,6 +33,7 @@ $app->get('/api/', function () use ($app) {
 /**
  * Checks if the data provided is empty. If it is, response code 404 is sent
  * and "no data available" is shown.
+ * 
  * @param array $data
  * @param Slim instance $app
  * @param error messsage $errormsg, default = "No data available"
@@ -52,6 +53,7 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
 /**
  * Shows an error message. If only $app is provided, the default message is:
  * "You do not have permission to view this page" with status code 401.
+ *
  * @param Slim instance $app
  * @param error message $errormsg
  * @param status code $status
@@ -74,8 +76,8 @@ function ShowError($app, $errormsg = "You do not have permission to view this pa
 $app->get('/api/locations', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM locations";
-    $data = json_encode(GetDatabaseObj($sql));
-	CheckIfEmpty($data);
+    $data = GetDatabaseObj($sql);
+	CheckIfEmpty($data, $app);
 });
 
 /**
@@ -85,7 +87,7 @@ $app->get('/api/locations', function () use ($app) {
 $app->get('/api/locations/last15', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM locations LIMIT 15";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 
@@ -125,7 +127,7 @@ $app->get('/api/locations/:id/spots', function ($id) use ($app) {
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from spots";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 
@@ -152,7 +154,7 @@ $app->get('/api/spots/:id', function ($id) use ($app) {
 $app->get('/api/cityprojects', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from cityprojects";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 
@@ -179,7 +181,7 @@ $app->get('/api/cityprojects/:id', function ($id) use ($app) {
 $app->get('/api/cityproposals', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from cityproposals";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 
@@ -207,7 +209,7 @@ $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 $app->get('/api/comments', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from comments";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 
@@ -234,7 +236,7 @@ $app->get('/api/comments/:id', function ($id) use ($app) {
 $app->get('/api/photos', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM photos";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 
@@ -245,7 +247,7 @@ $app->get('/api/photos', function () use ($app) {
 $app->get('/api/photos/last15', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM photos LIMIT 15";
-    $data = json_encode(GetDatabaseObj($sql));
+    $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
 

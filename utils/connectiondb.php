@@ -15,6 +15,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
  * Sample: $db = DatabaseConnect($sql);
  * @return Array results
  */
+
 include_once("config/connectiondetails.php");
 
 /**
@@ -62,6 +63,9 @@ function GetDatabaseObj($sql, $execute = ""){
     return $results;
 }
 
+/**
+ * Class to establish connection with database using PDO.
+ */
 
 class Connection
 {
