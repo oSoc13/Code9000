@@ -22,6 +22,7 @@ var canvasElement,
     mouseDown,
     mouseStart,
     startOrientation
+    selectedObject = ["building","1"];
     ;
 
 // enumerate mouseStates
@@ -34,29 +35,36 @@ function init(){
 }
 
 function initButtons(){
-    $("#createButton").click(function(){
+    $("#createBtn").click(function(){
         $(this).addClass("selected");
         mouseState = mouseStates.create;
         return false;
     });
-    $("#deleteButton").click(function(){
+    $("#deleteBtn").click(function(){
         $(this).addClass("selected");
         mouseState = mouseStates.delete;
         return false;
     });
-    $("#moveButton").click(function(){
+    $("#moveBtn").click(function(){
         $(this).addClass("selected");
         mouseState = mouseStates.move;
         return false;
     });
-    $("#rotateButton").click(function(){
+    $("#rotateBtn").click(function(){
         $(this).addClass("selected");
         mouseState = mouseStates.rotate;
         return false;
     });
-    $("#panButton").click(function(){
+    $("#panBtn").click(function(){
         $(this).addClass("selected");
         mouseState = mouseStates.pan;
+        return false;
+    })
+
+    $(".selectBtn").click(function(){
+        var catType=$(this).attr("id").split("_");
+        selectedObject = catType;
+
         return false;
     })
 
@@ -66,6 +74,8 @@ function initCanvas(){
     mouseState = mouseStates.pan;
 
     canvasElement = document.getElementById('maincanvas');
+    canvasElement.width  = window.innerWidth - 100;
+    canvasElement.height = window.innerHeight;
     sheetengine.scene.init(canvasElement, {w:2000,h:2000});
 
 // define some basesheets
@@ -126,8 +136,6 @@ function initCanvas(){
         if(target != null){
             startOrientation = target.rot.gammaD;
         }
-
-
     }
     canvasElement.onmouseup = function(event){
         mouseDown = false;
@@ -160,15 +168,28 @@ function initCanvas(){
         }
 
         else if(mouseState == mouseStates.create){
-            var obj = objectBuilder.buildBuilding(1,{x:pxy.x,y:pxy.y,z:0},0)
+            var obj;
+            console.log(selectedObject[0]);
+            switch (selectedObject[0]){
+                case "building":
+                    obj = objectBuilder.buildBuilding(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0)
+                    break;
+
+                case "ground":
+                    obj = objectBuilder.buildGround(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0)
+                    break;
+                default :
+                    obj = objectBuilder.buildBuilding(1,{x:pxy.x,y:pxy.y,z:0},0)
+                    break;
+            }
+            console.log(obj);
+
             hoverObjects.push(obj);
             densityMap.addSheets(obj.sheets);
             sheetengine.calc.calculateChangedSheets();
             sheetengine.drawing.drawScene();
         }
-
         target = null;
-
     }
 
     canvasElement.onmousemove = function(event) {
@@ -207,6 +228,7 @@ function initCanvas(){
             var objhovered = isObjectHovered(puv);
             if (objhovered != hover)
                 hover = objhovered;
+
         }
     }
 
@@ -229,7 +251,6 @@ function getBuildingsJson(){
             hoverObjects.push(objectBuilder.buildGround(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation.gammaD));
         }
     }
-
 }
 
 //  function for creating a character with a body and 2 legs
@@ -398,6 +419,7 @@ function mainloop() {
     if (hover && mouseState == mouseStates.delete && target != null) {
         var ctx = sheetengine.context;
 
+        sheetengine.drawing.drawScene();
         ctx.save();
         ctx.lineWidth = 1;
         ctx.globalAlpha = 0.8;
