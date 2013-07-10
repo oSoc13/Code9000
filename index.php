@@ -233,6 +233,10 @@ $app->post('/login', function () use ($app) {
     $app->redirect('/code9000/login/'.$msg);
 });
 
+$app->get('/account' function () use ($app) {
+    $app->render('account.phtml');
+});
+
 
 
 /***********************
