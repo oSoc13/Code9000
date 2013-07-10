@@ -104,27 +104,24 @@ function UpdateDatabaseObject($sql,$execute = ""){
     $db = Connection::getInstance();
 
     try{
-            // EXECUTE SUERY
-            $stmt = $db->prepare($sql);
+        // EXECUTE SUERY
+        $stmt = $db->prepare($sql);
 
-            // CHECK FOR EXECUTE
-            if ($execute == "")
-            {
-                    $stmt->execute();
-            }
-            else
-            {
-                    $stmt->execute($execute);
-            }
-            $results = array();
-            while($obj = $stmt->fetch(PDO::FETCH_ASSOC)){
-                            $results[] = $obj;            
-            }
-
-            // CLOSE DATABASE CONNECTION
-            $count = $stmt->rowCount();
-            
-            $db = null;
+        // CHECK FOR EXECUTE
+        if ($execute == "")
+        {
+            $stmt->execute();
+        }
+        else
+        {
+            $stmt->execute($execute);
+        }
+        $results = array();
+        while($obj = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $results[] = $obj;            
+        }
+        $count = $stmt->rowCount();
+        $db = null;
     }
 
     // EXCEPTION HANDLING

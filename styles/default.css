@@ -11,6 +11,8 @@
 
 body{
 	font-family: 'Roboto';
+	text-align: center;
+	margin: auto;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -24,6 +26,14 @@ h1, h2, h3, h4, h5, h6{
 body{
 	padding: 2%;
 	font-weight: 300;
+}
+
+.big{
+	font-size: 1.3em;
+}
+
+.sloth404{
+	max-width: 300px;
 }
 
 /* =============================

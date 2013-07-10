@@ -1,0 +1,71 @@
+<?php
+/**
+9K SPOTTER ACCOUNT PAGE edit
+---------
+# COPYRIGHT
+(c) 2013, OKFN Belgium. Some rights reserved.
+
+# AUTHOR
+Stefaan Christiaens (stefaan.ch@gmail.com)
+*/
+?>
+<!doctype html>
+<html dir="ltr" lang="nl-be">
+    <head>
+        <!-- CHARACTER ENCODING -->
+        <meta charset="UTF-8">
+        <!-- LATEST VERSION OF RENDERING ENGINE -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <!-- MOST IMPORTANT SEO FRIENDLY TAG -->
+        <title>account edit 9K</title>
+        <!-- OTHER IMPORTANT SEO TAGS -->
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="">
+        <meta name="copyright" content="">
+        <!-- HUMANS.TXT FILE -->
+        <link rel="author" type="text/plain" href="humans.txt">
+        <!-- MOBILE VIEWPORT -->
+        <meta name="viewport" content="width=device-width">
+        <!-- LINK MY OWN STYLESHEET -->
+        <link rel="stylesheet" href="/Code9000/styles/index.css">
+    </head>
+<body>
+<!-- LAYOUT / TYPO / CONTENT -->
+<div id="page-wrapper" class="page">
+    <h1>edit Profile</h1>
+<?php if (isset($this->data['user'])): ?>
+    <form method="POST">
+        <p>email<?php echo $this->data['user']['email']?></p>
+        <p>firstname</p><input type="text" value="<?php echo $this->data['user']['firstname']?>" name="firstname" />
+        <p>surname</p><input type="text" value="<?php echo $this->data['user']['surname']?>" name="surname" />
+        <p>dateofbirth</p><input type="date" value="<?php echo explode(" ", $this->data['user']['dateofbirth'])[0]?>" name="dateofbirth" />
+        <br/>
+        <p>joined: <?php echo $this->data['user']['createddate']?></p>
+        <p>last time you logged in: <?php echo $this->data['user']['lastloggedindate']?></p>
+        <p>avatar: <img src="<?php echo  "http://" . $_SERVER['HTTP_HOST'] . "/" . BASE_URL_9K."/uploads/". $this->data['user']['avatar']?>"</p>
+        <br/>
+        <label>Change avatar<input type="file" name="file" id="file" /></label>
+        <div id="avatar"></div>
+        <p>change password</p><input type="password" name="newpassword" />
+        <p>repeat new password</p><input type="password" name="newpassword_r" />
+        <br/>
+        <p>password for security</p><input type="password" name="oldpassword" />
+        
+        <input type="submit" value="edit" />
+        <input type="button" onclick="location='/code9000/account'" value="cancel" />
+    </form>
+    
+    <a href="/code9000/account/delete">Delete profile</a>
+<?php endif;?>
+</div>
+
+
+<!-- BOTTOM SCRIPTS -->
+<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
+<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
+<script src="/Code9000/scripts/avatarupload.js"></script>
+</body>
+</html>

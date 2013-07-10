@@ -28,7 +28,7 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<!-- LATEST VERSION OF RENDERING ENGINE -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<!-- MOST IMPORTANT SEO FRIENDLY TAG -->
-		<title>Upload A File</title>
+		<title>Spot Something</title>
 		<!-- OTHER IMPORTANT SEO TAGS -->
 		<meta name="description" content="">
 		<meta name="keywords" content="">
@@ -40,6 +40,7 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<meta name="viewport" content="width=device-width">
 		<!-- LINK MY OWN STYLESHEET -->
 		<link rel="stylesheet" href="/Code9000/styles/index.css">
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
 	</head>
 <body>
 <!-- LAYOUT / TYPO / CONTENT -->
@@ -52,22 +53,52 @@ Nico Verbruggen (nico.verb@gmail.com)
 			<li><a href='/Code9000/about'>About</a></li>
 		</ul>
 	</nav>
-	<h1>Uploader</h1>
-	<section id="Uploader">
-		<h2>Upload a file</h2>
-		<section id="LastUploaded"></section>
-		<p>Below you can add images to the server (up to 18 MB per file). The images will be cropped.</p>
-		<label for="file">Filename:</label>
-		<input type="file" name="file" id="file"><br>
-		<section id="UploadedFiles"></section>
-		<input id="confirm" type="button" value="Confirm uploads">
+	<div id="Spotter">
+	<h1>Spot Something</h1>
+	<section id="Spot1">
+		<h2>What did you spot?</h2>
+		<input id="what" name="what" type="text" required="" placeholder="What did you spot?">
+		<br/>
+		<input id="solution" name="solution" type="text" required="" placeholder="Possible solution?">
+	</section>
+	<section id="Spot2">
+		<h2>Where are you?</h2>
+		<input id="location_street" name="location_street" type="text" required placeholder="Type your address here"><button id="streetlocation" name="streetlocation" type="button">Use this address</button>
+		<br/>
+		<button id="autolocation" name="autolocation" type="button">Use geolocation</button>
+		<div id="map"></div>
+		<h2>Upload an image for this spot</h2>
+		<input type="file" name="img_spot" id="img_spot"><br>
+		<div id="spotimg">
+			
+		</div>
 	</section>	
+	<section id="Spot3">
+		<h2>Upload an image for this location</h2>
+		<input type="file" name="img_location" id="img_location"><br>
+		<div id="locationimg">
+			
+		</div>
+	</section>
+	<br/>
+	<br/>
+	<button id="confirm" name="confirm" type="submit">Confirm spotting</button>
+	<button id="cancel" name="cancel" type="button">Cancel spotting</button>
+	</div>
 </div>
+<style>
+	#map{
+		height:200px;
+		width: 100%;
+	}
+</style>
+<script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
 <!-- BOTTOM SCRIPTS -->
 <!-- 1. GRAB GOOGLE'S JQUERY CDN -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
 <script>window.jQuery || document.write('<script src="scripts/vendor/jquery-2.0.2.min.js"><\/script>')</script>
-<script src="/Code9000/scripts/uploader.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="/Code9000/scripts/spot_create.js"></script>
 </body>
 </html>
