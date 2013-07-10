@@ -132,6 +132,18 @@ $app->get('/api/spots', function () use ($app) {
 });
 
 /**
+ * Adds a new spot to the database, returns JSON of this spot
+ */
+
+$app->get('/api/spots/create', function () use ($app) {
+	
+    /*$app->response()->header('Content-Type', 'application/json');
+    $sql = "select * from spots";
+    $data = GetDatabaseObj($sql);
+	CheckIfEmpty($data, $app);*/
+});
+
+/**
  * Gets one single spot added to the database, returns JSON
  */
 

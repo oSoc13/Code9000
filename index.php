@@ -67,6 +67,10 @@ $app->get('/about', function () use ($app) {
     $app->render('about.phtml');
 });
 
+$app->get('/spots/create', function () use ($app) {
+    $app->render('spot_create.phtml');
+});
+
 /***********************
 * FILE UPLOAD
 ***********************/
