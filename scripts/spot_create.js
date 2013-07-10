@@ -215,8 +215,19 @@ function returnJSON(){
 	JSONdata.solution = $("#solution").val();
 	JSONdata.lat = current_lat;
 	JSONdata.long = current_long;
-	JSONdata.location_img = $("#locationimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
-	JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+	
+	if ($('#locationimg img').length !== 0){
+		JSONdata.location_img = $("#locationimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+	}else{
+		JSONdata.location_img = null;
+	}
+	
+	if ($('#spotimg img').length !== 0){
+		JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+	}else{
+		JSONdata.spot_img = null;
+	}
+	
 	data = JSON.stringify(JSONdata);
 	$.ajax({
         type: "POST",

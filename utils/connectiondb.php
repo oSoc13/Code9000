@@ -10,27 +10,23 @@ Nico Verbruggen (nico.verb@gmail.com)
 Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
+
+
+
 /** DatabaseConnect($sql) establishes a connection with the database.
  * Note that it returns an array
  * Sample: $db = DatabaseConnect($sql);
  * @return Array results
  */
-
 include_once("config/connectiondetails.php");
 
-/**
- * Connects with database and returns data array
- * @param database connection $sql (inherited from connectiondetails.php)
- * @param array $execute (contains all data for sql query)
- * @return array
- */
 
-function GetDatabaseObj($sql, $execute = ""){
+function GetDatabaseObj($sql,$execute = ""){
     // CONNECTION WITH DB
     $db = Connection::getInstance();
 
     try{
-            // EXECUTE QUERY
+            // EXECUTE SUERY
             $stmt = $db->prepare($sql);
 
             // CHECK FOR EXECUTE
@@ -53,19 +49,129 @@ function GetDatabaseObj($sql, $execute = ""){
 
     // EXCEPTION HANDLING
     catch(PDOException $ex) {
-        echo "Statement is niet correct: " . $ex->getMessage();
+        echo "Statement is not correct: " . $ex->getMessage();
     }
     catch(Exception $ex) {
-            echo "Er is een fout opgetreden: " . $ex->getMessage();
+            echo "An error has occured: " . $ex->getMessage();
     }
 
     // RETURN DATA	
     return $results;
 }
 
-/**
- * Class to establish connection with database using PDO.
- */
+function InsertDatabaseObject($sql,$execute = ""){
+    // CONNECTION WITH DB
+    $db = Connection::getInstance();
+
+    try{
+            // EXECUTE SUERY
+            $stmt = $db->prepare($sql);
+
+            // CHECK FOR EXECUTE
+            if ($execute == "")
+            {
+                    $stmt->execute();
+            }
+            else
+            {
+                    $stmt->execute($execute);
+            }
+            $results = array();
+            while($obj = $stmt->fetch(PDO::FETCH_ASSOC)){
+                            $results[] = $obj;            
+            }
+
+            // CLOSE DATABASE CONNECTION
+            $id = $db->lastInsertId();
+            
+            $db = null;
+    }
+
+    // EXCEPTION HANDLING
+    catch(PDOException $ex) {
+        echo "Statement is not correct: " . $ex->getMessage();
+    }
+    catch(Exception $ex) {
+        echo "An error has occured: " . $ex->getMessage();
+    }
+
+    // RETURN DATA	
+    return $id;
+}
+
+function UpdateDatabaseObject($sql,$execute = ""){
+    // CONNECTION WITH DB
+    $db = Connection::getInstance();
+
+    try{
+        // EXECUTE SUERY
+        $stmt = $db->prepare($sql);
+
+        // CHECK FOR EXECUTE
+        if ($execute == "")
+        {
+            $stmt->execute();
+        }
+        else
+        {
+            $stmt->execute($execute);
+        }
+        $results = array();
+        while($obj = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $results[] = $obj;            
+        }
+        $count = $stmt->rowCount();
+        $db = null;
+    }
+
+    // EXCEPTION HANDLING
+    catch(PDOException $ex) {
+        echo "Statement is not correct: " . $ex->getMessage();
+    }
+    catch(Exception $ex) {
+        echo "An error has occured: " . $ex->getMessage();
+    }
+
+    // RETURN DATA	
+    return $count;
+}
+
+
+function GetFirstDatabaseObject($sql,$execute = ""){
+    // CONNECTION WITH DB
+    $db = Connection::getInstance();
+    $result = 0;
+    try{
+            // EXECUTE SUERY
+            $stmt = $db->prepare($sql);
+
+            // CHECK FOR EXECUTE
+            if ($execute == "")
+            {
+                    $stmt->execute();
+            }
+            else
+            {
+                    $stmt->execute($execute);
+            }
+            $result;
+            while($obj = $stmt->fetch()){
+                $result = $obj;            
+            }
+
+            $db = null;
+    }
+
+    // EXCEPTION HANDLING
+    catch(PDOException $ex) {
+        echo "Statement is not correct: " . $ex->getMessage();
+    }
+    catch(Exception $ex) {
+        echo "An error has occured: " . $ex->getMessage();
+    }
+    // RETURN DATA	
+    return $result;
+}
 
 class Connection
 {

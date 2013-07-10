@@ -60,8 +60,8 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
  */
 
 function ShowError($app, $errormsg = "You do not have permission to view this page", $status = 401){
-	$ERR_NO_DATA = array("error"=>$errormsg);
-	echo(json_encode($ERR_NO_DATA));
+	$ERR = array("error"=>$errormsg);
+	echo(json_encode($ERR));
 	$app->response()->status($status);
 }
 
@@ -136,39 +136,55 @@ $app->get('/api/spots', function () use ($app) {
  */
 
 $app->post('/api/spots/create', function () use ($app) {
-	
-try{	
+	try{
+			$requestBody = $app->request()->getBody();
+			$data = json_decode($requestBody);
 
-	$requestBody = $app->request()->getBody();
-	$data = json_decode($requestBody);
-	
-	// TODO: GET USER ID FROM SESSION
-	// NEEDS AUTH FIRST (will fix after merge)
-	$execute = array(
-		":latitude"=>$data->lat,
-		":longitude"=>$data->long, 
-		":title"=>$data->title, 
-		":solution"=>$data->solution, 
-		":spot_img"=>$data->spot_img, 
-		":location_img"=>$data->location_img,
-		":latlong"=>"[$data->lat $data->long]",
-		":user_id"=>1
-		);
-	
-	$locationquery = "INSERT INTO locations (coords, user_id) VALUES (:latlong, :user_id)";
-	
-	$spotquery = "INSERT INTO spots (description, proposed, user_id) VALUES (:description, :url)";
-	GetDatabaseObj($sql, $execute);
-	
-	echo json_encode($var = array("status"=>"Your upload succeeded!"));
-}
-catch(Exception $e){
-	
-}
-	
-	
-	
-	echo json_encode($execute);
+			// TODO: GET USER ID FROM SESSION
+			// NEEDS AUTH FIRST (will fix after merge)
+
+			// Four different parameter sets
+			$photospot_params = array(":spot_img"=>$data->spot_img);
+			$photolocation_params = array(":location_img"=>$data->location_img);
+			$location_params = array(":latlong"=>"[$data->lat $data->long]",":user_id"=>1);
+			$spot_params = array(":title"=>$data->title,":solution"=>$data->solution,":user_id"=>1);
+
+			// If the spot_img provided is null (no image)
+			if ($data->spot_img == null){
+				// Set spot image id to null
+				$spot_params[":photospot_id"] = null;
+			}else{
+				// First, insert spot photo in photos table
+				$photospotquery = "INSERT INTO photos (url) VALUES (:spot_img)";
+				// Do the query and add photo ID of spot image to spot parameters
+				$spot_params[":photospot_id"] = InsertDatabaseObject($photospotquery, $photospot_params);
+			}
+			
+			// If the location_img provided is null (no image)
+			if ($data->location_img == null){
+				$location_params[":photolocation_id"] = null;
+			}else{
+				// Then insert location photo in photos table
+				$photolocationquery = "INSERT INTO photos (url) VALUES (:location_img)";
+				// Do the query and add photo ID of location image to locations parameters
+				$location_params[":photolocation_id"] = InsertDatabaseObject($photolocationquery, $photolocation_params);
+			}
+
+			// Next, insert location using photo location id
+			$locationquery = "INSERT INTO locations (coords, user_id, photo_id) VALUES (:latlong, :user_id, :photolocation_id)";
+			// Do the query and add location ID of location to spot parameters
+			$spot_params[":location_id"] = InsertDatabaseObject($locationquery, $location_params);
+
+			// Now that our location exists, add the spot to the database
+			$spotquery = "INSERT INTO spots (description, proposed, user_id, location_id, photo_id) VALUES (:solution, :title, :user_id, :location_id, :photospot_id)";
+			GetDatabaseObj($spotquery, $spot_params);
+
+			// Let the user know their input was successful
+			echo json_encode($var = array("status"=>"Your upload succeeded!"));
+	}
+	catch(Exception $e){
+		echo json_encode($var = array("error"=>"Your upload failed. Please try again later!"));
+	}
 });
 
 /**
