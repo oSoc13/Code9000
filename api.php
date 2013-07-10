@@ -135,12 +135,21 @@ $app->get('/api/spots', function () use ($app) {
  * Adds a new spot to the database, returns JSON of this spot
  */
 
-$app->get('/api/spots/create', function () use ($app) {
+$app->post('/api/spots/create', function () use ($app) {
+	$requestBody = $app->request()->getBody();
+	$data = json_decode($requestBody);
 	
-    /*$app->response()->header('Content-Type', 'application/json');
-    $sql = "select * from spots";
-    $data = GetDatabaseObj($sql);
-	CheckIfEmpty($data, $app);*/
+	$execute = array(
+		":latitude"=>$data->lat,
+		":longitude"=>$data->long, 
+		":title"=>$data->title, 
+		":solution"=>$data->solution, 
+		":spot_img"=>$data->spot_img, 
+		":location_img"=>$data->location_img
+		);
+		
+	echo json_encode($execute);
+
 });
 
 /**

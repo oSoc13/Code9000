@@ -9,10 +9,28 @@ Because we want to spot things.
 Nico Verbruggen (nico.verb@gmail.com)
 */
 
+// IMAGE PATH FOR UPLOADS FOLDER
+var _uploadImagePath = "http://" + window.location.host.toString() + "/Code9000/upload";
+// PATH TO API FOR SPOTS
+var _createSpotPath = "http://" + window.location.host.toString() + "/Code9000/api/spots/create";
+// Map variable
 var map;
+// Marker
 var marker = null;
+// Pointer
 var pointer = 0;
+// Kind (spot or location)
 var kind = "";
+// Latitude to be saved
+var current_lat;
+// Longitude to be saved
+var current_long;
+// Data (json)
+var data;
+
+$("#confirm").click(function(){
+	returnJSON();
+});
 
 $(function(){
 	// Initialize map on page load
@@ -60,6 +78,8 @@ $("#autolocation").click(function(){
 });
 
 function GetLocation(location) {
+	current_lat = location.coords.latitude;
+	current_long = location.coords.longitude;
 	initMarker(location.coords.latitude, location.coords.longitude);
 };
 
@@ -112,6 +132,8 @@ function checkLocation(){
  
 // output lat and long
 function printLatLong(lat, long) {
+	current_lat = lat;
+	current_long = long;
 	initMarker(lat, long);
 }
 
@@ -120,11 +142,6 @@ function error(msg) {
 }
 
 /******************************************************************************/
-
-// IMAGE PATH FOR UPLOADS FOLDER
-var _uploadImagePath = "http://" + window.location.host.toString() + "/Code9000/upload";
-// PATH TO API FOR SPOTS
-var _createSpotPath = "http://" + window.location.host.toString() + "/Code9000/api/spots/create";
 
 $("#img_spot").on('change', createUploads);
 $("#img_location").on('change', createUploads);
@@ -189,3 +206,30 @@ function uploadFile(file, p){
             xhr.open("POST", _uploadImagePath);
             xhr.send(formData);	
 }
+
+/******************************************************************************/
+
+function returnJSON(){
+	var JSONdata = {};
+	JSONdata.title = $("#what").val();
+	JSONdata.solution = $("#solution").val();
+	JSONdata.lat = current_lat;
+	JSONdata.long = current_long;
+	JSONdata.location_img = $("#locationimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+	JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+	data = JSON.stringify(JSONdata);
+	$.ajax({
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        cache: false,
+		data: data,
+        url: _createSpotPath,
+        beforeSend: function(xhr){
+        },
+        success: function(data){
+			console.log(data);
+		}
+	});
+}
+
