@@ -65,27 +65,6 @@ function ShowError($app, $errormsg = "You do not have permission to view this pa
 	$app->response()->status($status);
 }
 
-function distance($lat1, $lon1, $lat2, $lon2, $unit) 
-{
-    $theta = $lon1 - $lon2;
-    $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-    $dist = acos($dist);
-    $dist = rad2deg($dist);
-    $miles = $dist * 60 * 1.1515;
-    $unit = strtoupper($unit);
-
-    if ($unit == "K") {
-      return ($miles * 1.609344);
-    } else if ($unit == "N") {
-        return ($miles * 0.8684);
-      } else {
-          return $miles;
-        }
-}
- 
-
-
-
 /******************************************************************************/
 /* LOCATIONS
 /******************************************************************************/
@@ -99,11 +78,6 @@ $app->get('/api/locations', function () use ($app) {
     $sql = "SELECT * FROM locations";
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
-});
-
-$app->get('/api/locations/vicinity/:lat/:long', function ($lat,$long) use ($app) {
-    
-    //CheckIfEmpty($data, $app);
 });
 
 /**
@@ -195,25 +169,6 @@ $app->post('/api/spots/create', function () use ($app) {
 				// Do the query and add photo ID of location image to locations parameters
 				$location_params[":photolocation_id"] = InsertDatabaseObject($photolocationquery, $photolocation_params);
 			}
-
-    
-    $sql = "SELECT location_id, coords FROM locations";
-    $data = GetDatabaseObj($sql);
-
-    $lat2 = $lat;
-    $lon2 = $long;
-    $unit = "K";
-    $json = array();
-    foreach ($data as $point) {
-        $p1 = $point['coords'];
-        $lat1 = substr(split(" ", $p1)[0],1);
-        $lon1 = substr(split(" ", $p1)[1],0, strlen(split(" ", $p1)[1]-2));
-        $test = array('lat'=>$lat1, 'lon' => $lon1);
-        
-        array_push($json, $test);
-        //distance($point['coords'] $lat1, $lon1, $lat2, $lon2, $unit)
-    }
-    
 
 			// Next, insert location using photo location id
 			$locationquery = "INSERT INTO locations (coords, user_id, photo_id) VALUES (:latlong, :user_id, :photolocation_id)";

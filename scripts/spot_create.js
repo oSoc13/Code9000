@@ -257,7 +257,7 @@ function returnJSON(){
 
 		// If no image is uploaded, set JSON property to null
 		if ($('#spotimg img').length !== 0){
-			JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+			JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#spotimg img").attr("src").split("/").length-1];
 		}else{
 			JSONdata.spot_img = null;
 		}
