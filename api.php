@@ -176,14 +176,14 @@ $app->post('/api/spots/create', function () use ($app) {
 			$spot_params[":location_id"] = InsertDatabaseObject($locationquery, $location_params);
 
 			// Now that our location exists, add the spot to the database
-			$spotquery = "INSERT INTO spots (description, proposed, user_id, location_id, photo_id) VALUES (:solution, :title, :user_id, :location_id, :photospot_id)";
+			$spotquery = "INSERT INTO spots (description, proposed, user_id, location_id, photo_id) VALUES (:title, :solution, :user_id, :location_id, :photospot_id)";
 			GetDatabaseObj($spotquery, $spot_params);
 
 			// Let the user know their input was successful
-			echo json_encode($var = array("status"=>"Your upload succeeded!"));
+			echo json_encode($var = array("status"=>"Your spotting succeeded!"));
 	}
 	catch(Exception $e){
-		echo json_encode($var = array("error"=>"Your upload failed. Please try again later!"));
+		echo json_encode($var = array("status"=>"Your spotting failed. Please try again later!"));
 	}
 });
 

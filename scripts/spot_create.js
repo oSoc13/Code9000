@@ -32,6 +32,10 @@ $("#confirm").click(function(){
 	returnJSON();
 });
 
+$("#cancel").click(function(){
+	$("#Spotter").html("<p>Your spotting was cancelled. Please refresh the page if you want to try again.</p>");
+});
+
 $(function(){
 	// Initialize map on page load
 	// Resize #map width to fix tile load
@@ -211,36 +215,54 @@ function uploadFile(file, p){
 
 function returnJSON(){
 	var JSONdata = {};
-	JSONdata.title = $("#what").val();
-	JSONdata.solution = $("#solution").val();
-	JSONdata.lat = current_lat;
-	JSONdata.long = current_long;
 	
-	if ($('#locationimg img').length !== 0){
-		JSONdata.location_img = $("#locationimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
-	}else{
-		JSONdata.location_img = null;
-	}
-	
-	if ($('#spotimg img').length !== 0){
-		JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
-	}else{
-		JSONdata.spot_img = null;
-	}
-	
-	data = JSON.stringify(JSONdata);
-	$.ajax({
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        cache: false,
-		data: data,
-        url: _createSpotPath,
-        beforeSend: function(xhr){
-        },
-        success: function(data){
-			console.log(data);
+	// Ensure that no fields remain empty.
+	if (current_lat !== null 
+		&& current_long !== null 
+		&& $("#what").val() !== "" 
+		&& $("#solution").val() !== ""
+	   )
+		{
+		JSONdata.title = $("#what").val();
+		JSONdata.solution = $("#solution").val();
+
+		JSONdata.lat = current_lat;
+		JSONdata.long = current_long;
+
+		// If no image is uploaded, set JSON property to null
+		if ($('#locationimg img').length !== 0){
+			JSONdata.location_img = $("#locationimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+		}else{
+			JSONdata.location_img = null;
 		}
-	});
+
+		// If no image is uploaded, set JSON property to null
+		if ($('#spotimg img').length !== 0){
+			JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
+		}else{
+			JSONdata.spot_img = null;
+		}
+
+		// Make JSON of data, submit to API via AJAX request
+		data = JSON.stringify(JSONdata);
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			contentType: "application/json",
+			cache: false,
+			data: data,
+			url: _createSpotPath,
+			beforeSend: function(xhr){
+			},
+			success: function(data){
+				$("#Spotter").html("<p>" + data.status + "</p>");
+			},
+			error: function(){
+				$("#Spotter").html("<p>Something went wrong with your request. Please try again later, our API might be down.</p>");
+			}
+		});
+	}else{
+		alert("Some fields were not filled in or your location was not found. Ensure a location has been selected and the fields were filled in. Image uploads are not required.");
+	}
 }
 
