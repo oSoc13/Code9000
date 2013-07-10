@@ -1,16 +1,7 @@
 <?php
 
 /**
-9K AUTH system SAMPLE CLASS
- * 
- * 
- * CHANGES TO MAKE TO IMPLEMENT:
- * 
- * - INSERT CORRECT HASH ALGO (twice)
- * - INSERT CORRECT EMAIL AND PASSWORD IN MAILER  
- * - PLACE FILE UNDER /config
- * 
- * 
+9K AUTH SAMPLE 
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -34,7 +25,7 @@ class Authentication {
         $email = mysql_real_escape_string($data['email']);
         $dob = mysql_real_escape_string($data['dob']);
         $admin = ( $data['admin']? "admin" : "user" );
-        $passwordData = $this->hashPassword($data['pwd'], 'HASH ALGO');
+        $passwordData = $this->hashPassword($data['pwd'], 'ALGO');
         $activationcode = $this->generateRandomString(15);
         $avatar = $data['avatar'];
         
@@ -89,8 +80,8 @@ class Authentication {
         $mail->Host = 'ssl://smtp.gmail.com';  // Specify main and backup server
         $mail->Port = "465";
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'EMAIL';                            // SMTP username
-        $mail->Password = 'PASSWORD';  
+        $mail->Username = '9KBuilder@gmail.com';                            // SMTP username
+        $mail->Password = 'PASSWORD!';  
         $mail->SMTPDebug = 1;
         $mail->From = '9KBuilder@gmail.com';
         $mail->FromName = "9KBuilder";
@@ -132,17 +123,17 @@ class Authentication {
     
     function login($email, $password)
     {
-        $sql = "Select user_id, password, passwordsalt, activationdate, role from users where email = :email";
+        $sql = "Select user_id, password, passwordsalt, activationdate, deleteddate, role from users where email = :email";
         $vars = array('email' =>$email);
         
         $passwordArray = GetFirstDatabaseObject($sql,$vars);
-        if (empty($passwordArray)) 
+        if (empty($passwordArray) || !empty($passwordArray['deleteddate'])) 
         {
             return 'NO_USER';
         }
         else
         {
-            $pwdH = hash('HASH ALGO', $password . $passwordArray['passwordsalt']);
+            $pwdH = hash('ALGO', $password . $passwordArray['passwordsalt']);
 
             if ($pwdH == $passwordArray['password']) 
             {
@@ -167,5 +158,12 @@ class Authentication {
                 return "PWD";
             }
         }
+    }
+    
+    function checkPassword($pwd, $salt, $test)
+    {
+        $pwdH = hash('ALGO', $test . $salt);
+
+        return ($pwdH == $pwd? true:false); 
     }
 }

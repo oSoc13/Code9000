@@ -312,7 +312,32 @@ $app->post('/account/edit', function () use ($app) {
         }
      }
     else {
-       $app->redirect('/code9000/login/please login first');    
+       $app->redirect('/code9000/login/Please login first.');    
+    }
+});
+
+$app->get('/account/delete', function () use ($app) {
+    if (isset($_SESSION['9K_USERID'])) {
+        $id = $_SESSION['9K_USERID'];
+        $app->render('account-delete.phtml');
+    }
+ else {
+    $app->redirect('/code9000/login/Please login first before deleting any profile.');    
+    }
+});
+
+
+$app->post('/account/delete', function () use ($app) {
+    if (isset($_SESSION['9K_USERID'])) {
+        $id = $_SESSION['9K_USERID'];
+        $sql = "UPDATE users SET deleteddate = NOW() where user_id = :id";
+        $var = array('id' => $id);
+        $count = UpdateDatabaseObject($sql, $var);
+        echo json_encode($count);
+        
+    }
+ else {
+    $app->redirect('/code9000/login/Please login first before deleting any profile.');    
     }
 });
 
