@@ -175,31 +175,33 @@ function uploadFile(file, p){
             var xhr = new XMLHttpRequest();
             //REGISTER LISTENERS
             xhr.addEventListener("load", function (evt) {
-				// Get response back
-				console.log(evt.target.response);
-				switch(evt.target.response){
-					// If error, let user know an error has happened!
-					case "ERROR":
-						$("body").append("<p>An error occurred. Please try again later.</p>");
-					break;
-					// If invalid file, let user know about this
-					case "InvalidFile":
-						$("body").append("<p>The file you provided is invalid. Please select a valid image. GIFs are not allowed.</p>");
-						break;
-						// If the upload works, make the image appear on the page with a description
-					default:
-						switch (kind){
-							case "img_location":
-								$("#locationimg").html("<img class='upload' src='http://" + evt.target.responseText + "'/>");
-								break;
-							case "img_spot":
-								$("#spotimg").html("<img class='upload' src='http://" + evt.target.responseText + "'/>");
-								break;
-							default:
-							break;
-						}
-						break;
-				}
+            // Get response back
+            console.log(evt.target.response);
+            switch(evt.target.response){
+                // If error, let user know an error has happened!
+                case "ERROR":
+                        $("body").append("<p>An error occurred. Please try again later.</p>");
+                break;
+                // If invalid file, let user know about this
+                case "InvalidFile":
+                        $("body").append("<p>The file you provided is invalid. Please select a valid image. GIFs are not allowed.</p>");
+                        break;
+                        // If the upload works, make the image appear on the page with a description
+                default:
+                    switch (kind){
+                            case "img_location":
+                                var url = evt.target.responseText.split("\\").join("/");
+                                $("#locationimg").html("<img class='upload' src='http://" + url + "'/>");
+                                break;
+                            case "img_spot":
+                                var url = evt.target.responseText.split("\\").join("/");
+                                $("#spotimg").html("<img class='upload' src='http://" + url + "'/>");
+                                break;
+                            default:
+                            break;
+                    }
+                    break;
+            }
             }, false);
             xhr.addEventListener("error", function (evt) {
                 console.log("There was an error attempting to upload the file.");
