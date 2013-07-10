@@ -49,6 +49,10 @@ $app->get('/', function () use ($app) {
     $app->render('index.phtml');
 });
 
+$app->get('/breakthissite', function () use ($app) {
+    boom;
+});
+
 $app->get('/home', function () use ($app) {
     $app->render('index.phtml');
 });
