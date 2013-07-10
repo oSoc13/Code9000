@@ -43,7 +43,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
         <br/>
         <p>joined: <?php echo $this->data['user']['createddate']?></p>
         <p>last time you logged in: <?php echo $this->data['user']['lastloggedindate']?></p>
-        <p>avatar: <img src="http://localhost:8888/Code9000/uploads/<?php echo $this->data['user']['avatar']?>"</p>
+        <p>avatar: <img src="<?php echo  "http://" . $_SERVER['HTTP_HOST'] . "/" . BASE_URL_9K."/uploads/". $this->data['user']['avatar']?>"</p>
         <br/>
         <label>Change avatar<input type="file" name="file" id="file" /></label>
         <div id="avatar"></div>
@@ -55,6 +55,8 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
         <input type="submit" value="edit" />
         <input type="button" onclick="location='/code9000/account'" value="cancel" />
     </form>
+    
+    <a href="/code9000/account/delete">Delete profile</a>
 <?php endif;?>
 </div>
 
