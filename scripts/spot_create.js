@@ -11,6 +11,8 @@ Nico Verbruggen (nico.verb@gmail.com)
 
 var map;
 var marker = null;
+var pointer = 0;
+var kind = "";
 
 $(function(){
 	// Initialize map on page load
@@ -40,6 +42,7 @@ function initMarker(lat, long){
     marker.bindPopup("<b>This is the location for your spotting.</b>").openPopup();
 	// Zoom to marker
 	map.setView([lat, long], 16);
+	$("#map").width = $(window).width();
 }
 
 /******************************************************************************/
@@ -118,5 +121,71 @@ function error(msg) {
 
 /******************************************************************************/
 
+// IMAGE PATH FOR UPLOADS FOLDER
+var _uploadImagePath = "http://" + window.location.host.toString() + "/Code9000/upload";
 // PATH TO API FOR SPOTS
 var _createSpotPath = "http://" + window.location.host.toString() + "/Code9000/api/spots/create";
+
+$("#img_spot").on('change', createUploads);
+$("#img_location").on('change', createUploads);
+
+function createUploads(e){
+	kind = e.currentTarget.id;
+	uploadFiles(e.target.files);
+}
+
+function uploadFiles(files){
+	console.log("File upload process begin.");
+	 //ADD FILES
+     for (var i = 0, file; file = files[i]; ++i) {
+		pointer++;
+		//UPLOAD THE FILE
+		uploadFile(file, pointer);    
+     }
+}
+
+function uploadFile(file, p){
+			console.log("File upload process begin. For image number " + pointer);
+			//CREATE FORMDATA OBJECT
+            var formData = new FormData();
+            //ADD FILE
+            formData.append("image", file);
+            //CREATE THE NEW REQUEST
+            var xhr = new XMLHttpRequest();
+            //REGISTER LISTENERS
+            xhr.addEventListener("load", function (evt) {
+				// Get response back
+				console.log(evt.target.response);
+				switch(evt.target.response){
+					// If error, let user know an error has happened!
+					case "ERROR":
+						$("body").append("<p>An error occurred. Please try again later.</p>");
+					break;
+					// If invalid file, let user know about this
+					case "InvalidFile":
+						$("body").append("<p>The file you provided is invalid. Please select a valid image. GIFs are not allowed.</p>");
+						break;
+						// If the upload works, make the image appear on the page with a description
+					default:
+						switch (kind){
+							case "img_location":
+								$("#locationimg").html("<img class='upload' src='http://" + evt.target.responseText + "'/>");
+								break;
+							case "img_spot":
+								$("#spotimg").html("<img class='upload' src='http://" + evt.target.responseText + "'/>");
+								break;
+							default:
+							break;
+						}
+						break;
+				}
+            }, false);
+            xhr.addEventListener("error", function (evt) {
+                console.log("There was an error attempting to upload the file.");
+            }, false);
+            xhr.addEventListener("abort", function (evt) {
+                console.log("The upload has been canceled by the user or the browser dropped the connection.");
+            }, false);
+            xhr.open("POST", _uploadImagePath);
+            xhr.send(formData);	
+}

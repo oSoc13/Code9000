@@ -28,7 +28,7 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<!-- LATEST VERSION OF RENDERING ENGINE -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<!-- MOST IMPORTANT SEO FRIENDLY TAG -->
-		<title>Upload A File</title>
+		<title>Spot Something</title>
 		<!-- OTHER IMPORTANT SEO TAGS -->
 		<meta name="description" content="">
 		<meta name="keywords" content="">
@@ -67,12 +67,22 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<button id="autolocation" name="autolocation" type="button">Use geolocation</button>
 		<div id="map"></div>
 		<h2>Upload an image for this spot</h2>
-		<input type="file" name="file" id="img_spot"><br>
+		<input type="file" name="img_spot" id="img_spot"><br>
+		<div id="spotimg">
+			
+		</div>
 	</section>	
 	<section id="Spot3">
 		<h2>Upload an image for this location</h2>
-		<input type="file" name="file" id="img_location"><br>
+		<input type="file" name="img_location" id="img_location"><br>
+		<div id="locationimg">
+			
+		</div>
 	</section>
+	<br/>
+	<br/>
+	<button id="confirm" name="confirm" type="button">Confirm spotting</button>
+	<button id="cancel" name="cancel" type="button">Cancel spotting</button>
 </div>
 <style>
 	#map{
@@ -88,6 +98,5 @@ Nico Verbruggen (nico.verb@gmail.com)
 <script>window.jQuery || document.write('<script src="scripts/vendor/jquery-2.0.2.min.js"><\/script>')</script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script src="/Code9000/scripts/spot_create.js"></script>
-<script src="/Code9000/scripts/uploader.js"></script>
 </body>
 </html>

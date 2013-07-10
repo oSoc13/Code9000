@@ -64,7 +64,7 @@ function uploadFile(file, p){
 						break;
 						// If the upload works, make the image appear on the page with a description
 					default:
-						$("#UploadedFiles").append("<div class='complete'><div class='uploadframe'><image class='upload' src='http://" + evt.target.responseText + "'/></div><textarea rows='4' cols='50' data-id='" + evt.target.responseText + "' placeholder='Enter your image description here.'></textarea></div>");
+						$("#UploadedFiles").append("<div class='complete'><div class='uploadframe'><img class='upload' src='http://" + evt.target.responseText + "'/></div><textarea rows='4' cols='50' data-id='" + evt.target.responseText + "' placeholder='Enter your image description here.'></textarea></div>");
 						$("#LastUploaded").html("<image src='http://" + evt.target.responseText + "'/>");
 						break;
 				}
