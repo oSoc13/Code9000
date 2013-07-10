@@ -61,7 +61,7 @@ function initMarker(lat, long){
 	$("#map").css("display","block");
 	// Add marker to map
     marker = L.marker([lat,long]).addTo(map);
-    marker.bindPopup("<b>This is the location for your spotting.</b>").openPopup();
+    marker.bindPopup("<b>This is the location for your spotting.</b>");
 	// Zoom to marker
 	map.setView([lat, long], 16);
 	$("#map").width = $(window).width();

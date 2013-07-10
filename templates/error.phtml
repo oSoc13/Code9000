@@ -12,13 +12,14 @@ Nico Verbruggen (nico.verb@gmail.com)
 <html>
 	<head>
 		<title>Error Page</title>
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" href="/Code9000/styles/index.css">
 	</head>
 	<body>
-		<h1>Error</h1>
-		<pre>
-		<?php
-		print_r($this->data['error']);
-		?>
-		</pre>
+		<h1>Oh no!</h1>
+		<img class='sloth404' src="/Code9000/img/404sloth.png" alt="404 sloth"/>
+		<p class='big'><strong>Something has gone wrong!</strong></p>
+		<p class='big'>Our friendly server sloth seems to have broken something.</p>
+		<p><a href='/Code9000'>Maybe go back home?</a></p>
 	</body>
 </html>
