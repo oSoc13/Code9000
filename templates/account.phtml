@@ -41,17 +41,20 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
             <li><a href='/Code9000/about'>About</a></li>
         </ul>
     </nav>
-    <h1>About Spotter</h1>
-    <section>
-        <p>9K Spotter was made available by:</p>
-        <ul>
-            <li>Stefaan Christiaens</li>
-            <li>Nico Verbruggen</li>
-            <li>Robbe Anckaert</li>
-            <li>Tom Van humbeek</li>
-        </ul>
-    </section>
+    <h1>Profile</h1>
+<?php if (isset($this->data['user'])): ?>
+    <p>firstname: <?php echo $this->data['user']['firstname']?></p>
+    <p>surname: <?php echo $this->data['user']['surname']?></p>
+    <p>email: <?php echo $this->data['user']['email']?></p>
+    <p>born: <?php echo $this->data['user']['dateofbirth']?></p>
+    <p>joined: <?php echo $this->data['user']['createddate']?></p>
+    <p>last time you logged in: <?php echo $this->data['user']['lastloggedindate']?></p>
+    <p>avatar: <img src="http://localhost:8888/Code9000/uploads/<?php echo $this->data['user']['avatar']?>"</p>
+
+<?php endif;?>
 </div>
+
+<a href="/code9000/account/edit" >edit</a>
 <!-- BOTTOM SCRIPTS -->
 <!-- 1. GRAB GOOGLE'S JQUERY CDN -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>

@@ -164,13 +164,13 @@ $app->get('/register', function () use ($app) {
 $app->post('/register', function () use ($app) {
     $req = $app->request();
     
-    $fname = $req->post('fname');
-    $sname = $req->post('sname');
-    $email = $req->post('email');
-    $dob = $req->post('dob');
-    $pwd = $req->post('password');
-    $admin = $req->post('admin');
-    $photo = $req->post('avatarpic');
+    $fname =    trim($req->post('fname'     ));
+    $sname =    trim($req->post('sname'     ));
+    $email =    trim($req->post('email'     ));
+    $dob =      trim($req->post('dob'       ));
+    $pwd =      trim($req->post('password'  ));
+    $admin =    trim($req->post('admin'     ));
+    $photo =    trim($req->post('avatarpic' ));
     
     $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'admin' => $admin, 'avatar' => $photo );
 
@@ -204,11 +204,18 @@ $app->get('/login', function () use ($app) {
     $app->render('login.phtml');
 });
 
+$app->get('/logout', function () use ($app) {
+    session_unset();
+    session_destroy();
+    session_start();
+    $app->redirect('/code9000/login/successfully logged out');
+});
+
 
 $app->post('/login', function () use ($app) {
     $req = $app->request();
-    $email = $req->post('email');
-    $pwd = $req->post('password');
+    $email = trim($req->post('email'));
+    $pwd = trim($req->post('password'));
     $auth = new Authentication();
     $result = $auth->login($email, $pwd);
     
@@ -233,10 +240,90 @@ $app->post('/login', function () use ($app) {
     $app->redirect('/code9000/login/'.$msg);
 });
 
-$app->get('/account' function () use ($app) {
-    $app->render('account.phtml');
+$app->get('/account', function () use ($app) {
+    $data = array();
+    if (isset($_SESSION['9K_USERID'])) {
+        $id = $_SESSION['9K_USERID'];
+        $sql = "SELECT * from users where user_id = :id";
+        $var = array('id' => $id);
+        $user = GetFirstDatabaseObject($sql, $var);
+        $data['user'] = $user;
+        $app->render('account.phtml', $data);
+    }
+ else {
+    $app->redirect('/code9000/login/please login first');    
+    }
 });
 
+$app->get('/account/edit', function () use ($app) {
+    $data = array();
+    if (isset($_SESSION['9K_USERID'])) {
+        $id = $_SESSION['9K_USERID'];
+        $sql = "SELECT * from users where user_id = :id";
+        $var = array('id' => $id);
+        $user = GetFirstDatabaseObject($sql, $var);
+        $data['user'] = $user;
+        $app->render('account-edit.phtml', $data);
+    }
+ else {
+    $app->redirect('/code9000/login/please login first');    
+    }
+});
+
+$app->post('/account/edit', function () use ($app) {
+    $req = $app->request();
+    if (isset($_SESSION['9K_USERID'])) {
+        $id = $_SESSION['9K_USERID'];
+        $sql = "SELECT * from users where user_id = :id";
+        $var = array('id' => $id);
+        $user_pre = GetFirstDatabaseObject($sql, $var);
+        $auth = new Authentication();
+        $opw = trim($req->post('oldpassword'));
+        $avatar = trim($req->post('avatarpic'));
+        if($auth->checkPassword($user_pre['password'], $user_pre['passwordsalt'], $opw ))
+        {
+            $npwt = trim($req->post('newpassword'));
+            if (empty($npwt)) {
+                $user = array(
+                       'firstname' =>      trim($req->post('firstname')),
+                       'surname' =>        trim($req->post('surname')),
+                       'dateofbirth' =>    trim($req->post('dateofbirth')),
+                       'id' =>             $id
+                    );
+                if(!empty($avatar))
+                    $user['avatar'] = $avatar;
+                $sqlAvatar = !empty($avatar)? ", avatar =:avatar":"";
+                $sql = "UPDATE users SET firstname = :firstname, surname =:surname, dateofbirth =:dateofbirth". $sqlAvatar ." WHERE user_id = :id";
+            }
+            else
+            {
+                $pwdData = $auth->hashPassword(trim($req->post('newpassword')), 'sha256');
+                $pwdnew = $pwdData['pwdH'];
+                $salt = $pwdData['salt'];
+                $user = array(
+                       'firstname' =>      trim($req->post('firstname')),
+                       'surname' =>        trim($req->post('surname')),
+                       'dateofbirth' =>    trim($req->post('dateofbirth')),
+                       'password' =>       $pwdnew,
+                       'salt' =>           $salt,
+                       'id' =>             $id
+                );
+                if(!empty($avatar))
+                    $user['avatar'] = $avatar;
+                $sqlAvatar = !empty($avatar)? ", avatar =:avatar":"";
+                $sql = "UPDATE users SET firstname = :firstname, surname =:surname, dateofbirth =:dateofbirth". $sqlAvatar ." , password=:password, passwordsalt=:salt WHERE user_id = :id";
+            }
+            UpdateDatabaseObject($sql,$user);
+        }
+        else
+        {
+            $app->redirect('/code9000/edit/Your password was incorrect.');  
+        }
+     }
+    else {
+       $app->redirect('/code9000/login/please login first');    
+    }
+});
 
 
 /***********************
