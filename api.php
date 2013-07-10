@@ -136,20 +136,39 @@ $app->get('/api/spots', function () use ($app) {
  */
 
 $app->post('/api/spots/create', function () use ($app) {
+	
+try{	
+
 	$requestBody = $app->request()->getBody();
 	$data = json_decode($requestBody);
 	
+	// TODO: GET USER ID FROM SESSION
+	// NEEDS AUTH FIRST (will fix after merge)
 	$execute = array(
 		":latitude"=>$data->lat,
 		":longitude"=>$data->long, 
 		":title"=>$data->title, 
 		":solution"=>$data->solution, 
 		":spot_img"=>$data->spot_img, 
-		":location_img"=>$data->location_img
+		":location_img"=>$data->location_img,
+		":latlong"=>"[$data->lat $data->long]",
+		":user_id"=>1
 		);
-		
+	
+	$locationquery = "INSERT INTO locations (coords, user_id) VALUES (:latlong, :user_id)";
+	
+	$spotquery = "INSERT INTO spots (description, proposed, user_id) VALUES (:description, :url)";
+	GetDatabaseObj($sql, $execute);
+	
+	echo json_encode($var = array("status"=>"Your upload succeeded!"));
+}
+catch(Exception $e){
+	
+}
+	
+	
+	
 	echo json_encode($execute);
-
 });
 
 /**
