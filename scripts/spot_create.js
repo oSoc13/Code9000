@@ -230,23 +230,6 @@ function returnJSON(){
 
 		JSONdata.lat = current_lat;
 		JSONdata.long = current_long;
-                
-                $.ajax({
-			type: "GET",
-			dataType: "json",
-			contentType: "application/json",
-			cache: false,
-			data: data,
-			url: _createSpotPath,
-			beforeSend: function(xhr){
-			},
-			success: function(data){
-				$("#Spotter").html("<p>" + data.status + "</p>");
-			},
-			error: function(){
-				$("#Spotter").html("<p>Something went wrong with your request. Please try again later, our API might be down.</p>");
-			}
-		});
 
 		// If no image is uploaded, set JSON property to null
 		if ($('#locationimg img').length !== 0){
