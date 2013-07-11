@@ -1,0 +1,70 @@
+// Your custom SCSS should be written here...
+
+
+// custiom input fields and appended/prepended fields
+.field{
+
+    #fileButton{
+        width: 86%;
+        color: $white;
+    }
+    .checkbox{
+        margin-left: 14%
+    }
+
+    .input{
+
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        border-bottom-width: 2px;
+        border-bottom-color: $primary-color;
+        border-bottom-style: solid;
+
+        &.file{
+
+            display: none;color: $white;
+        }
+
+
+    }
+    .adjoined{
+        width: 14%;
+        border:none;
+        border-radius: 0;
+    }
+    &.prepend{
+        .input{
+            width: 86%;
+            border-radius: 0;
+        }
+        .adjoined{
+            border: none;
+            border-radius: none;
+        }
+    }
+    &.append{
+        .input{
+            width: 86%;
+            border-radius: 0;
+        }
+        .adjoined{
+            border: none;
+            border-radius: none;
+        }
+        &.prepend{
+            .input{
+                width: 82%;
+                border-radius: 0;
+            }
+            .adjoined{
+                border: none;
+                border-radius: none;
+            }
+        }
+    }
+}
+
+input{
+    color: $primary-color;
+}

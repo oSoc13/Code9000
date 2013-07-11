@@ -15,7 +15,7 @@ class Authentication {
     
     function __construct()
     {
-        include_once('/utils/connectiondb.php');
+        include_once('utils/connectiondb.php');
     }
     
     function register($data)
@@ -89,7 +89,7 @@ class Authentication {
         $mail->IsHTML(true);                                  // Set email format to HTML
 
         $mail->Subject = 'Activation code';
-        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
+        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
                 
         if(!$mail->Send()) {
            echo 'Message could not be sent.';
