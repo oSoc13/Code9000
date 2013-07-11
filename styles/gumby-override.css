@@ -66,6 +66,12 @@ body{
 	max-width: 300px;
 }
 
+.center_btn{
+	display:  inline-block !important;
+	text-align: center !important;
+	width: 80%;
+}
+
 /* =============================
 * MEDIA QUERIES
 * ============================== */

@@ -246,7 +246,8 @@ $app->get('/account', function () use ($app) {
         $app->render('account.phtml', $data);
     }
  else {
-    $app->redirect('/code9000/login/please login first');    
+	$_SESSION["loginmsg"] = "Please login first.";
+    $app->redirect('/code9000/login');
     }
 });
 

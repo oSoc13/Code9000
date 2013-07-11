@@ -1,64 +1,70 @@
-<?php
-/**
-9K SPOTTER Login
----------
-# COPYRIGHT
-(c) 2013, OKFN Belgium. Some rights reserved.
+	<?php
+		echo $this->render('header.phtml');
+	?>
 
-# AUTHOR
-Stefaan Christiaens (stefaan.ch@gmail.com)
-*/
-?>
-<!doctype html>
-<html dir="ltr" lang="nl-be">
-	<head>
-		<!-- CHARACTER ENCODING -->
-		<meta charset="UTF-8">
-		<!-- LATEST VERSION OF RENDERING ENGINE -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<!-- MOST IMPORTANT SEO FRIENDLY TAG -->
-		<title>9K Login</title>
-		<!-- OTHER IMPORTANT SEO TAGS -->
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="author" content="">
-		<meta name="copyright" content="">
-		<!-- HUMANS.TXT FILE -->
-		<link rel="author" type="text/plain" href="humans.txt">
-		<!-- MOBILE VIEWPORT -->
-		<meta name="viewport" content="width=device-width">
-		<!-- LINK MY OWN STYLESHEET -->
-		<link rel="stylesheet" href="/Code9000/styles/index.css">
-	</head>
-<body>
-<!-- LAYOUT / TYPO / CONTENT -->
-<div id="page-wrapper" class="page">
-	<nav>
-		<ul>
-			<li><a href='/Code9000/home'>Home</a></li>
-			<li><a href='/Code9000/alerts'>Alerts</a></li>
-			<li><a href='/Code9000/tips'>Tips</a></li>
-			<li><a href='/Code9000/about'>About</a></li>
-		</ul>
-	</nav>
-    
-	<h1>login</h1>
-        <form method="post" action="/code9000/login">
-            <input type="email" id="email" name="email" placeholder="email" /><br/>
-            <input type="password" id="password" name="password" placeholder="password" /><br/>
-            
-            <input type="submit" name="submit" />
+	<div class="row">		
+		<h1>Log In</h1>
+		<p class='large'>Please log in with your existing details to start using the service. If you haven't already, <a href='/Code9000/register'>click here to create a new account.</a></p>
+		<?php
+		if (isset($_SESSION["msg"])){
+			echo "<ul><li class='danger alert'>" . $_SESSION["loginmsg"] . "</li></ul>";
+			$_SESSION["msg"] = null;
+		}
+		?>
+		<br/>
+		<form method="post" action="/code9000/login">
+            <div class="row xwide valign">
+                <ul class="six columns centered">
+                    <li class="field prepend">
+                        <span class="adjoined"><i class="icon-mail"></i></span>
+                        <input class="email input" type="email" placeholder="Email" name="email" id="email" />
+                    </li>
+                    <li class="field prepend">
+                        <span class="adjoined"><i class="icon-lock"></i></span>
+                        <input class="password input" type="password" placeholder="Password" id="password" name="password" />
+                    </li>
+                    <li class="field">
+						<br/>
+                        <div class="medium primary btn"><input type="submit" value="Login"></div>
+                    </li>
+                </ul>
+            </div>
+
         </form>
-</div>
+		<footer class='row'>
+			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
+		</footer>
+	</div>
 
-<?= $this->render('footer.phtml'); ?>
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
-<?php if (isset($this->data['message'])): ?>
-<script>alert('<?php echo $this->data['message'] ?>');</script>
-<?php endif;?>
-</body>
+	<!-- Grab Google CDN's jQuery, fall back to local if offline -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="scripts/libs/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <!--
+  Include gumby.js followed by UI modules.
+  Or concatenate and minify into a single file
+  <script src="scripts/libs/gumby.js"></script>
+  <script src="scripts/libs/ui/gumby.retina.js"></script>
+  <script src="scripts/libs/ui/gumby.fixed.js"></script>
+  <script src="scripts/libs/ui/gumby.skiplink.js"></script>
+  <script src="scripts/libs/ui/gumby.toggleswitch.js"></script>
+  <script src="scripts/libs/ui/gumby.checkbox.js"></script>
+  <script src="scripts/libs/ui/gumby.radiobtn.js"></script>
+  <script src="scripts/libs/ui/gumby.tabs.js"></script>
+  <script src="scripts/libs/ui/gumby.navbar.js"></script>
+  <script src="scripts/libs/ui/jquery.validation.js"></script>
+  <script src="scripts/libs/gumby.init.js"></script>-->
+
+  <script src="scripts/libs/gumby.min.js"></script>
+  <script src="scripts/plugins.js"></script>
+  <script src="scripts/main.js"></script>
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+  </body>
 </html>
