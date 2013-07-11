@@ -1,6 +1,6 @@
 <?php
 /**
-9K SPOTTER HELP PAGE
+9K SPOTTER SPOTTINGS PAGE
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -9,30 +9,31 @@
 Nico Verbruggen (nico.verb@gmail.com)
 */
 ?>
-
 	<?php
 		echo($this->render('header.phtml'));
 	?>
-
-	<div class="row">
-		<div>
-			<h1>Help</h1>
-			<p class='large'>If you have trouble figuring things out, our server sloth is here to help!</p>
-			<h2>Table of Contents</h2>
-			<ul>
-				<li>Frequently asked questions</li>
-				<li>Spotting</li>
-				<li>City Projects &amp; Feedback</li>
-				<li>9K Builder</li>
-			</ul>
-			<h2>Frequently asked questions</h2>
-			<h2>Spotting</h2>
-			<h2>City Projects &amp; Feedback</h2>
-			<h2>9K Builder</h2>
-		</div>
+		<div class='row'>
+				<h1>Spottings</h1>
+				<p class='large'>Welcome to the spottings page. This is a great starting point for all things about spotting. What is it that you would like to do?</p>
+				<div class="row">
+					<div class='four columns'>
+						<h3>See all spottings</h3>
+						<p>Check out a list of spottings all throughout Ghent!</p>
+						<div class="medium primary btn icon-left icon-list"><a href="/Code9000/spots">Check out spottings</a></div>
+					</div>
+					<div class='four columns'>
+						<h3>Submit your own feedback</h3>
+						<p>Leave your own suggestion behind. How do you want to improve Ghent?</p>
+						<div class="medium primary btn icon-left icon-list-add"><a href="/Code9000/spots/create">Spot something</a></div>
+					</div>
+					<div class='four columns'>
+						<h3>Check out your posts</h3>
+						<p>Check out how many points your proposals have earned, and how many points your proposals have earned.</p>
+						<div class="medium primary btn icon-left icon-comment"><a href="/Code9000/myspots">See my spottings</a></div>
+					</div>
+				</div>
 		</div>
 		<footer class='row'>
-			<img class='sloth_help' src="/Code9000/img/404sloth.png" alt="404 sloth"/>
 			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
 		</footer>
 	</div>

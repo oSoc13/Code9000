@@ -6,59 +6,67 @@
 (c) 2013, OKFN Belgium. Some rights reserved.
 
 # AUTHOR
-Stefaan Christiaens (stefaan.ch@gmail.com)
+Nico Verbruggen (nico.verb@gmail.com)
 */
 ?>
-<!doctype html>
-<html dir="ltr" lang="nl-be">
-    <head>
-        <!-- CHARACTER ENCODING -->
-        <meta charset="UTF-8">
-        <!-- LATEST VERSION OF RENDERING ENGINE -->
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <!-- MOST IMPORTANT SEO FRIENDLY TAG -->
-        <title>About 9K</title>
-        <!-- OTHER IMPORTANT SEO TAGS -->
-        <meta name="description" content="">
-        <meta name="keywords" content="">
-        <meta name="author" content="">
-        <meta name="copyright" content="">
-        <!-- HUMANS.TXT FILE -->
-        <link rel="author" type="text/plain" href="humans.txt">
-        <!-- MOBILE VIEWPORT -->
-        <meta name="viewport" content="width=device-width">
-        <!-- LINK MY OWN STYLESHEET -->
-        <link rel="stylesheet" href="/Code9000/styles/index.css">
-    </head>
-<body>
-<!-- LAYOUT / TYPO / CONTENT -->
-<div id="page-wrapper" class="page">
-    <nav>
-        <ul>
-            <li><a href='/Code9000/home'>Home</a></li>
-            <li><a href='/Code9000/alerts'>Alerts</a></li>
-            <li><a href='/Code9000/tips'>Tips</a></li>
-            <li><a href='/Code9000/about'>About</a></li>
-        </ul>
-    </nav>
-    <h1>Profile</h1>
-<?php if (isset($this->data['user'])): ?>
-    <p>firstname: <?php echo $this->data['user']['firstname']?></p>
-    <p>surname: <?php echo $this->data['user']['surname']?></p>
-    <p>email: <?php echo $this->data['user']['email']?></p>
-    <p>born: <?php echo $this->data['user']['dateofbirth']?></p>
-    <p>joined: <?php echo $this->data['user']['createddate']?></p>
-    <p>last time you logged in: <?php echo $this->data['user']['lastloggedindate']?></p>
-    <p>avatar: <img src="<?php echo  "http://" . $_SERVER['HTTP_HOST'] . "/" . BASE_URL_9K."/uploads/". $this->data['user']['avatar']?>"</p>
+	<?php
+		echo($this->render('header.phtml'));
+	?>
+	<div class="row">
+		<div>
+			<h1>Your account</h1>
+			<?php if (isset($this->data['user'])): ?>
+			<h2><?php echo $this->data['user']['firstname'] . " " . $this->data['user']['surname'] ?></h2>
+			<div class='row'>
+			<div class="two columns image circle center">
+				<img src="<?php echo  "http://" . $_SERVER['HTTP_HOST'] . "/" . $this->data['user']['avatar']?>" />
+			</div>
+			<div class='eight columns'>
+				
+				<p>Email: <?php echo $this->data['user']['email']?></p>
+				<p>Born: <?php echo $this->data['user']['dateofbirth']?></p>
+				<p>Joined: <?php echo $this->data['user']['createddate']?></p>
+				<p>Last time you logged in: <?php echo $this->data['user']['lastloggedindate']?></p>
+				<a href="/code9000/account/edit" >Edit your details</a>
+			</div>
+			</div>
+			<?php endif;?>
+		</div>
+		</div>
+		<footer class='row'>
+			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
+		</footer>
+	</div>
 
-<?php endif;?>
-</div>
+	<!-- Grab Google CDN's jQuery, fall back to local if offline -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="scripts/libs/jquery-1.9.1.min.js"><\/script>')</script>
 
-<a href="/code9000/account/edit" >edit</a>
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
-</body>
+  <!--
+  Include gumby.js followed by UI modules.
+  Or concatenate and minify into a single file
+  <script src="scripts/libs/gumby.js"></script>
+  <script src="scripts/libs/ui/gumby.retina.js"></script>
+  <script src="scripts/libs/ui/gumby.fixed.js"></script>
+  <script src="scripts/libs/ui/gumby.skiplink.js"></script>
+  <script src="scripts/libs/ui/gumby.toggleswitch.js"></script>
+  <script src="scripts/libs/ui/gumby.checkbox.js"></script>
+  <script src="scripts/libs/ui/gumby.radiobtn.js"></script>
+  <script src="scripts/libs/ui/gumby.tabs.js"></script>
+  <script src="scripts/libs/ui/gumby.navbar.js"></script>
+  <script src="scripts/libs/ui/jquery.validation.js"></script>
+  <script src="scripts/libs/gumby.init.js"></script>-->
+
+  <script src="scripts/libs/gumby.min.js"></script>
+  <script src="scripts/plugins.js"></script>
+  <script src="scripts/main.js"></script>
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+  </body>
 </html>

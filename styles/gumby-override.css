@@ -66,6 +66,13 @@ body{
 	max-width: 300px;
 }
 
+.sloth_help{
+	position: fixed;
+	max-width: 250px;
+	bottom: 0;
+	right: 0;
+}
+
 .center_btn{
 	display:  inline-block !important;
 	text-align: center !important;

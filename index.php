@@ -29,7 +29,7 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 // Create new Slim() instance
 $app = new \Slim\Slim();
 // Debugging status (true during development, false when deployed)
-$app->config('debug', false);
+$app->config('debug', true);
 // Start a new session
 session_start();
 /* Set base url */
@@ -73,8 +73,16 @@ $app->get('/about', function () use ($app) {
     $app->render('about.phtml');
 });
 
+$app->get('/spottings', function () use ($app) {
+    $app->render('spottings.phtml');
+});
+
 $app->get('/spots/create', function () use ($app) {
     $app->render('spot_create.phtml');
+});
+
+$app->get('/help', function () use ($app) {
+    $app->render('help.phtml');
 });
 
 $app->get('/leaflettest', function () use ($app) {
