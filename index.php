@@ -29,7 +29,7 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 // Create new Slim() instance
 $app = new \Slim\Slim();
 // Debugging status (true during development, false when deployed)
-$app->config('debug', true);
+$app->config('debug', false);
 // Start a new session
 session_start();
 /* Set base url */

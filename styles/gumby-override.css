@@ -1,0 +1,101 @@
+/* =============================
+* OVERRIDES FOR GUMBY
+* BECAUSE IT NEEDED FIXING
+* ============================== */
+
+h1, h2, h3, h4, h5, h6{
+	font-weight: 300;
+	margin: 15px 0px;
+}
+
+p{
+	color: #666;
+}
+
+a{
+	color: #199387;
+}
+
+p.large{
+	font-size: 1.2em;
+}
+
+.h_und{
+	border-bottom: 1px solid #199387;
+}
+
+footer{
+	margin-top: 30px !important;
+	padding-top: 10px;
+	border-top: 1px solid #666;
+}
+
+.center{
+	text-align: center;
+}
+
+/* Navigation override */
+
+.navbar ul li:hover > a{
+	background-color: rgba(0, 0, 0, 0.105) !important;
+}
+
+div.breathe{
+	margin: 0.7em 0;
+}
+
+p.breathe{
+	width: 87%;
+	margin-bottom: 20px;
+}
+
+body{
+	font-family: 'Roboto';
+	margin: auto;
+}
+
+.developer{
+	padding: 15px auto;
+}
+
+/* =============================
+* HACKS (ugly, fix later)
+* ============================== */
+
+.sloth404{
+	max-width: 300px;
+}
+
+/* =============================
+* MEDIA QUERIES
+* ============================== */
+
+/** MOBILE APP */
+@media screen and (max-width: 480px){
+	p.breathe{
+		width: 100%;
+		margin-bottom: 20px;
+	}
+	.logo a img{
+		position:relative !important;
+		top: 7px !important;
+	}
+}
+
+/** TABLET APP */
+@media screen and (min-width: 481px) and (max-width: 768px){
+	.logo a img{
+		position:relative !important;
+		top: 7px !important;
+	}
+}
+
+/** DESKTOP (960px max) */
+@media screen and (min-width: 769px) and (max-width: 960px){
+
+}
+
+/** DESKTOP (960px min) */
+@media screen and (min-width: 961px){
+
+}

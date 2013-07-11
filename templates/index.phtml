@@ -1,63 +1,98 @@
-<?php
-/**
-9K SPOTTER HOMEPAGE
----------
-# COPYRIGHT
-(c) 2013, OKFN Belgium. Some rights reserved.
+	<?php
+		echo $this->render('header.phtml');
+	?>
 
-# AUTHOR
-Nico Verbruggen (nico.verb@gmail.com)
-*/
-?>
-<!doctype html>
-<html dir="ltr" lang="nl-be">
-	<head>
-		<!-- CHARACTER ENCODING -->
-		<meta charset="UTF-8">
-		<!-- LATEST VERSION OF RENDERING ENGINE -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<!-- MOST IMPORTANT SEO FRIENDLY TAG -->
-		<title>9K Spotter</title>
-		<!-- OTHER IMPORTANT SEO TAGS -->
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="author" content="">
-		<meta name="copyright" content="">
-		<!-- APPLE iOS ICON -->
-		<link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png"/>
-		<!-- HUMANS.TXT FILE -->
-		<link rel="author" type="text/plain" href="humans.txt">
-		<!-- MOBILE VIEWPORT -->
-		<meta name="viewport" content="width=device-width">
-		<!-- LINK MY OWN STYLESHEET -->
-		<link rel="stylesheet" href="/Code9000/styles/index.css">
-	</head>
-<body>
-<!-- LAYOUT / TYPO / CONTENT -->
-<div id="page-wrapper" class="page">
-	<nav>
-		<ul>
-			<li><a href='/Code9000/home'>Home</a></li>
-			<li><a href='/Code9000/alerts'>Alerts</a></li>
-			<li><a href='/Code9000/tips'>Tips</a></li>
-			<li><a href='/Code9000/about'>About</a></li>
-		</ul>
-	</nav>
-	<h1>Spotter</h1>
-	<section>
-		<p>
-			9K spotter allows you to point out the good and the bad things about your neighbourhood in Ghent.
-		</p>
-		<ul>
-		<li><a href='/Code9000/spots/create'>Go here to make a spotting</a></li>
-		<li><a href='/Code9000/upload'>Go here to upload an image</a></li>
-		</ul>
-	</section>
-</div>
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
-</body>
+	<div class="modal" id="modal1">
+		<div class="content">
+			<a class="close switch" gumby-trigger="|#modal1"><i class="icon-cancel" /></i></a>
+			<div class="row">
+				<div class="ten columns centered text-center">
+					<h2>For developers</h2>
+					<p>If you are a developer, we could use your help! Our code is open source, so you may want to contribute on Github. If you want to write a native application for the 9K Spotter, feel free to check out our API.</p>
+						<div class="medium primary btn icon-left icon-github"><a href="#">Contribute on Github</a></div>
+						<div class="medium primary btn icon-left icon-database"><a href="#">Check out our API</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">		
+		<h1 class='h_und'>9K Spotter allows you to improve Ghent</h1>
+		<div class="row">
+			<div class='twelve columns breathe'>
+				<h3>Location based feedback for your city</h3>
+				<p class='large'>Ghent is a great city. But like any city, it is not the perfect city. Everyone has some annoyances when traveling throughout the city. With 9K Spotter, you can let the people of Ghent know what annoys you. Choose the location that annoys you, snap an optional picture, and tell us of your suggestion!</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class='twelve columns breathe'>
+				<h3>Let people know what you like and dislike</h3>
+				<p class='large'>See a great spotting? You can leave feedback behind! The idea behind the spotter is that the best suggestions get to the administrative service of Ghent. If you upvote and downvote suggestions (and, additionally, leave comments) you can get more feedback and more people of Ghent can see your ideas. This means more visibility, which means that your suggestions might be considered by city officials!</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class='twelve columns breathe'>
+				<h3>A direct line to Ghent</h3>
+				<p class='large'>City officials have direct access to the platform, which allows them to reply to the best suggestions. If they choose to start a project you suggested, they have the option to keep you up to date through the spotter, making it easier to track progress of your suggestion!</p>
+			</div>
+		</div>
+		<div class="row breathe">
+			<div class='four columns'>
+				<h3>Try out the spotter</h4>
+				<p class="breathe">Have a complaint? Want to provide a great suggestion? You've come to the right place. You'll want to make a new spotting, you can even upload an image of your problem!</p>
+			</div>
+			<div class='four columns'>
+				<h3>Check out some locations on the map</h4>
+				<p class="breathe">Explore the different locations throughout Ghent and check out other proposals made all over Ghent. Spottings are grouped per location.</p>
+			</div>
+			<div class='four columns'>
+				<h3>Get started now</h3>
+				<p class="breathe">Want to get started? All you need to do is create an account and you can get started spotting locations right away!</p>
+				<div class="medium primary btn icon-left icon-location"><a href="#">Sign up now</a></div>
+			</div>
+		</div>
+		<div class='row'>	
+					<section id="developer">
+					<h4>Like what we do?</h4>
+					<div class="three columns"><p><a href="https://twitter.com/9Kspotter"><i class="icon-twitter"></i>Follow us on Twitter</a></p></div>
+					<div class="three columns"><p><a href="mailto:9KBuilder@gmail.com"><i class="icon-mail"></i>Send us a message</a></p></div>
+					<div class="three columns"><p><a href="#" class="switch" gumby-trigger="#modal1"><i class="icon-monitor"></i>Are you a developer?</a></p></div>
+					</section>
+		</div>
+		<footer class='row'>
+			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
+		</footer>
+	</div>
+
+	<!-- Grab Google CDN's jQuery, fall back to local if offline -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="scripts/libs/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <!--
+  Include gumby.js followed by UI modules.
+  Or concatenate and minify into a single file
+  <script src="scripts/libs/gumby.js"></script>
+  <script src="scripts/libs/ui/gumby.retina.js"></script>
+  <script src="scripts/libs/ui/gumby.fixed.js"></script>
+  <script src="scripts/libs/ui/gumby.skiplink.js"></script>
+  <script src="scripts/libs/ui/gumby.toggleswitch.js"></script>
+  <script src="scripts/libs/ui/gumby.checkbox.js"></script>
+  <script src="scripts/libs/ui/gumby.radiobtn.js"></script>
+  <script src="scripts/libs/ui/gumby.tabs.js"></script>
+  <script src="scripts/libs/ui/gumby.navbar.js"></script>
+  <script src="scripts/libs/ui/jquery.validation.js"></script>
+  <script src="scripts/libs/gumby.init.js"></script>-->
+
+  <script src="scripts/libs/gumby.min.js"></script>
+  <script src="scripts/plugins.js"></script>
+  <script src="scripts/main.js"></script>
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+  </body>
 </html>

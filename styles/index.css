@@ -8,9 +8,10 @@
 
 @import url('normalize.css');
 
-/* IMPORT MAIN STYLESHEET */
+/* GUMBY */
 
-@import url('default.css');
+@import url('gumby.css');
+@import url('gumby-override.css');
 
 /* IMPORT TEMPORARY FIXES STYLESHEET */
 

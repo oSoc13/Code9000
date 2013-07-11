@@ -9,17 +9,59 @@
 Nico Verbruggen (nico.verb@gmail.com)
 */
 ?>
-<html>
-	<head>
-		<title>Error Page</title>
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="/Code9000/styles/index.css">
-	</head>
-	<body>
-		<h1>Oh no!</h1>
-		<img class='sloth404' src="/Code9000/img/404sloth.png" alt="404 sloth"/>
-		<p class='big'><strong>Something has gone wrong!</strong></p>
-		<p class='big'>Our friendly server sloth seems to have broken something.</p>
-		<p><a href='/Code9000'>Maybe go back home?</a></p>
-	</body>
+
+	<?php
+		echo($this->render('header.phtml'));
+	?>
+
+	<div class="row">
+		<div class='center'>
+		<h2>Oh no.</h2>
+		<div class="row">
+			<div class='twelve columns breathe'>
+				<img class='sloth404' src="/Code9000/img/404sloth.png" alt="404 sloth"/>
+				<h3>I think you just broke the site doing that</h3>
+				<p class='large'>Our friendly server sloth just noticed that something broke the site. We're sorry. <a href="/Code9000/">Return to the homepage.</a></p>
+				<ul>
+					<li class='danger label'>An error has occurred.</li>
+				</ul>
+			</div>
+		</div>	
+		</div>
+		<footer class='row'>
+			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
+		</footer>
+	</div>
+
+	<!-- Grab Google CDN's jQuery, fall back to local if offline -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="scripts/libs/jquery-1.9.1.min.js"><\/script>')</script>
+
+  <!--
+  Include gumby.js followed by UI modules.
+  Or concatenate and minify into a single file
+  <script src="scripts/libs/gumby.js"></script>
+  <script src="scripts/libs/ui/gumby.retina.js"></script>
+  <script src="scripts/libs/ui/gumby.fixed.js"></script>
+  <script src="scripts/libs/ui/gumby.skiplink.js"></script>
+  <script src="scripts/libs/ui/gumby.toggleswitch.js"></script>
+  <script src="scripts/libs/ui/gumby.checkbox.js"></script>
+  <script src="scripts/libs/ui/gumby.radiobtn.js"></script>
+  <script src="scripts/libs/ui/gumby.tabs.js"></script>
+  <script src="scripts/libs/ui/gumby.navbar.js"></script>
+  <script src="scripts/libs/ui/jquery.validation.js"></script>
+  <script src="scripts/libs/gumby.init.js"></script>-->
+
+  <script src="scripts/libs/gumby.min.js"></script>
+  <script src="scripts/plugins.js"></script>
+  <script src="scripts/main.js"></script>
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+  </body>
 </html>
