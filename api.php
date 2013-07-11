@@ -51,6 +51,34 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
 }
 
 /**
+ * Calculate the distance between two coodinates in the given unit system
+ * 
+ * @param decimal $lat1
+ * @param decimal $lon1
+ * @param decimal $lat2
+ * @param decimal $lon2
+ * @param string $unit
+ * @return decimal
+ */
+function distance($lat1, $lon1, $lat2, $lon2, $unit) 
+{
+    $theta = $lon1 - $lon2;
+    $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+    $dist = acos($dist);
+    $dist = rad2deg($dist);
+    $miles = $dist * 60 * 1.1515;
+    $unit = strtoupper($unit);
+
+    if ($unit == "K") {
+      return ($miles * 1.609344);
+    } else if ($unit == "N") {
+        return ($miles * 0.8684);
+      } else {
+          return $miles;
+        }
+}
+
+/**
  * Shows an error message. If only $app is provided, the default message is:
  * "You do not have permission to view this page" with status code 401.
  *
@@ -137,53 +165,71 @@ $app->get('/api/spots', function () use ($app) {
 
 $app->post('/api/spots/create', function () use ($app) {
 	try{
-			$requestBody = $app->request()->getBody();
-			$data = json_decode($requestBody);
+            $requestBody = $app->request()->getBody();
+            $data = json_decode($requestBody);
+            if (!isset($_SESSION['9K_USERID'])) {
+                echo json_encode($var = array("status"=>"Not logged in."));exit();
+            }
+            $id = $_SESSION['9K_USERID'];
 
-			// TODO: GET USER ID FROM SESSION
-			// NEEDS AUTH FIRST (will fix after merge)
+            // Four different parameter sets
+            $photospot_params = array(":spot_img"=>$data->spot_img);
+            $location_params = array(":latlong"=>"[$data->lat $data->long]",":user_id"=>$id);
+            $spot_params = array(":title"=>$data->title,":solution"=>$data->solution,":user_id"=>$id);
 
-			// Four different parameter sets
-			$photospot_params = array(":spot_img"=>$data->spot_img);
-			$photolocation_params = array(":location_img"=>$data->location_img);
-			$location_params = array(":latlong"=>"[$data->lat $data->long]",":user_id"=>1);
-			$spot_params = array(":title"=>$data->title,":solution"=>$data->solution,":user_id"=>1);
+            // If the spot_img provided is null (no image)
+            if ($data->spot_img == null){
+                    // Set spot image id to null
+                    $spot_params[":photospot_id"] = null;
+            }else{
+                    // First, insert spot photo in photos table
+                    $photospotquery = "INSERT INTO photos (url) VALUES (:spot_img)";
+                    // Do the query and add photo ID of spot image to spot parameters
+                    $spot_params[":photospot_id"] = InsertDatabaseObject($photospotquery, $photospot_params);
+            }
 
-			// If the spot_img provided is null (no image)
-			if ($data->spot_img == null){
-				// Set spot image id to null
-				$spot_params[":photospot_id"] = null;
-			}else{
-				// First, insert spot photo in photos table
-				$photospotquery = "INSERT INTO photos (url) VALUES (:spot_img)";
-				// Do the query and add photo ID of spot image to spot parameters
-				$spot_params[":photospot_id"] = InsertDatabaseObject($photospotquery, $photospot_params);
-			}
-			
-			// If the location_img provided is null (no image)
-			if ($data->location_img == null){
-				$location_params[":photolocation_id"] = null;
-			}else{
-				// Then insert location photo in photos table
-				$photolocationquery = "INSERT INTO photos (url) VALUES (:location_img)";
-				// Do the query and add photo ID of location image to locations parameters
-				$location_params[":photolocation_id"] = InsertDatabaseObject($photolocationquery, $photolocation_params);
-			}
+            //CHECK IF LOCATION IS IN RADIUS ( 50 meters) OF EXISTING LOCATION
+            $nearbyLocations = array();
 
-			// Next, insert location using photo location id
-			$locationquery = "INSERT INTO locations (coords, user_id, photo_id) VALUES (:latlong, :user_id, :photolocation_id)";
-			// Do the query and add location ID of location to spot parameters
-			$spot_params[":location_id"] = InsertDatabaseObject($locationquery, $location_params);
+            $sql = "SELECT location_id, coords FROM locations";
+            $locs = GetDatabaseObj($sql);
 
-			// Now that our location exists, add the spot to the database
-			$spotquery = "INSERT INTO spots (description, proposed, user_id, location_id, photo_id) VALUES (:title, :solution, :user_id, :location_id, :photospot_id)";
-			GetDatabaseObj($spotquery, $spot_params);
+            $lat2 = $data->lat;
+            $lon2 = $data->long;
+            $unit = "K";
+            $json = array();
+            foreach ($locs as $point) {
+                $p1 = $point['coords'];
+                $lat1 = substr(explode(" ", $p1)[0],1);
+                $lon1 = substr(explode(" ", $p1)[1],0, strlen(explode(" ", $p1)[1]-2));
+                $dist = distance($lat1, $lon1, $lat2, $lon2, $unit)*1000;
+                if($dist <= 50)
+                {
+                    $nearbyLocations[$point['location_id']] = $dist;
+                }
+            }  
+            
+            if (empty($nearbyLocations)) {
+                $locationquery = "INSERT INTO locations (coords, user_id) VALUES (:latlong, :user_id)";
+                // Do the query and add location ID of location to spot parameters
+                $spot_params[":location_id"] = InsertDatabaseObject($locationquery, $location_params);
+            }
+            else {
+                $results = array_keys($nearbyLocations, min($nearbyLocations));
+                $spot_params[":location_id"] = $results[0];
+            }
 
-			// Let the user know their input was successful
-			echo json_encode($var = array("status"=>"Your spotting succeeded!"));
+
+            // Now that our location exists, add the spot to the database
+            $spotquery = "INSERT INTO spots (description, proposed, user_id, location_id, photo_id) VALUES (:title, :solution, :user_id, :location_id, :photospot_id)";
+            $spotID = InsertDatabaseObject($spotquery, $spot_params);
+
+            // Let the user know their input was successful
+            echo json_encode($var = array("status"=>"Your spotting succeeded!", "spot_created" => $spotID));
 	}
 	catch(Exception $e){
-		echo json_encode($var = array("status"=>"Your spotting failed. Please try again later!"));
+            
+            echo json_encode($var = array("status"=>"Your spotting failed. Please try again later!", "error" => $e->getMessage()));
 	}
 });
 
@@ -192,11 +238,74 @@ $app->post('/api/spots/create', function () use ($app) {
  */
 
 $app->get('/api/spots/:id', function ($id) use ($app) {
-	$app->response()->header('Content-Type', 'application/json');
-	$execute = array(":id"=>$id);
-	$sql = "SELECT * FROM spots WHERE spot_id = :id";
-	$data = GetDatabaseObj($sql, $execute);
+    $app->response()->header('Content-Type', 'application/json');
+    $execute = array(":id"=>$id);
+    $sql = "SELECT s.*, l.location_id, l.coords FROM spots s Inner Join locations l on s.location_id=l.location_id WHERE s.spot_id = :id";
+    $data = GetDatabaseObj($sql, $execute);
+    $uid = $_SESSION['9K_USERID'];
+    $sqlcheck = "select * from 
+        (
+            select * from users_like_spots uls 
+            where uls.user_id=:user_id and uls.spot_id = :spot_id 
+        UNION 
+            select * from users_dislike_spots uds 
+            where uds.user_id=:user_id and uds.spot_id = :spot_id 
+        ) result";
+    
+    $vars = array('user_id' => $uid, 'spot_id' => $id);
+    $check = GetDatabaseObj($sqlcheck, $vars);
+    if (!empty($check)) {
+        $data['voted'] = true;
+    }
+    CheckIfEmpty($data, $app);
+});
+
+$app->post('/api/spots/voteup/:id', function ($id) use ($app) {
+    $uid = $_SESSION['9K_USERID'];
+   $sqlcheck = "select * from 
+        (
+            select * from users_like_spots uls 
+            where uls.user_id=:user_id and uls.spot_id = :spot_id 
+        UNION 
+            select * from users_dislike_spots uds 
+            where uds.user_id=:user_id and uds.spot_id = :spot_id 
+        ) result";
+   
+    $vars = array('user_id' => $uid, 'spot_id' => $id);
+    $check = GetDatabaseObj($sqlcheck, $vars);
+    if (empty($check)) {
+        $execute = array("id"=>$id, "user_id" => $uid);
+	$sql = "UPDATE spots SET upvotes=(upvotes+1) WHERE spot_id = :id;Insert INTO users_like_spots (user_id, spot_id) values(:user_id,:id);";
+	$data = UpdateDatabaseObject($sql, $execute);
 	CheckIfEmpty($data, $app);
+    }
+    else
+        echo 'voted';
+    
+	
+});
+
+$app->post('/api/spots/votedown/:id', function ($id) use ($app) {
+    $uid = $_SESSION['9K_USERID'];
+    $sqlcheck = "select * from 
+        (
+            select * from users_like_spots uls 
+            where uls.user_id=:user_id and uls.spot_id = :spot_id 
+        UNION 
+            select * from users_dislike_spots uds 
+            where uds.user_id=:user_id and uds.spot_id = :spot_id 
+        ) result";
+    
+    $vars = array('user_id' => $uid, 'spot_id' => $id);
+    $check = GetDatabaseObj($sqlcheck, $vars);
+    if (empty($check)) {
+       $execute = array("id"=>$id, "user_id" => $uid);
+	$sql = "UPDATE spots SET downvotes=(downvotes+1) WHERE spot_id = :id;Insert INTO users_dislike_spots (user_id, spot_id) values(:user_id,:id);";
+	$data = UpdateDatabaseObject($sql, $execute);
+	CheckIfEmpty($data, $app);
+    }
+    else
+        echo 'voted';
 });
 
 /******************************************************************************/
@@ -266,7 +375,7 @@ $app->get('/api/comments', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from comments";
     $data = GetDatabaseObj($sql);
-	CheckIfEmpty($data, $app);
+    CheckIfEmpty($data, $app);
 });
 
 /**
@@ -279,6 +388,19 @@ $app->get('/api/comments/:id', function ($id) use ($app) {
 	$sql = "SELECT * FROM comments WHERE comment_id = :id";
 	$data = GetDatabaseObj($sql, $execute);
 	CheckIfEmpty($data, $app);
+});
+
+
+$app->get('/api/comments/spots/:id', function($id) use ($app){
+    $app->response()->header('Content-Type', 'application/json');
+    $execute = array(":id"=>$id);
+    $sql = "SELECT c.text, c.createddate, u.avatar, u.firstname, u.surname FROM `comments` c
+        RIGHT JOIN spots_has_comments sc
+        ON sc.spot_id=:id AND sc.comment_id=c.comment_id
+        Inner join users u on c.user_id=u.user_id";
+    
+    $data = GetDatabaseObj($sql, $execute);
+    CheckIfEmpty($data, $app);
 });
 
 /******************************************************************************/
