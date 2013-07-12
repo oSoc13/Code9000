@@ -89,6 +89,11 @@ $app->get('/leaflettest', function () use ($app) {
     $app->render('leaflet.phtml');
 });
 
+$app->get('/spots/:id', function ($id) use ($app) {
+    $data = array('id'=>$id);
+    $app->render('spot.phtml', $data);
+});
+
 /***********************
 * FILE UPLOAD
 ***********************/

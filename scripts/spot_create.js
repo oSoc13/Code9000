@@ -7,12 +7,17 @@ Because we want to spot things.
 
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
+Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 // IMAGE PATH FOR UPLOADS FOLDER
 var _uploadImagePath = "http://" + window.location.host.toString() + "/Code9000/upload";
 // PATH TO API FOR SPOTS
 var _createSpotPath = "http://" + window.location.host.toString() + "/Code9000/api/spots/create";
+// PATH TO LOGIN
+var _loginPath = "http://" + window.location.host.toString() + "/Code9000/login";
+// PATH TO root
+var _root = "http://" + window.location.host.toString() + "/Code9000/spots/";
 // Map variable
 var map;
 // Marker
@@ -53,6 +58,8 @@ $(function(){
 
 // Add a marker (only one allowed!)
 function initMarker(lat, long){
+    
+	$("#map").width = $(window).width();
 	if (marker !== null){
 		// If a marker is present, remove it
 		map.removeLayer(marker);
@@ -64,7 +71,6 @@ function initMarker(lat, long){
     marker.bindPopup("<b>This is the location for your spotting.</b>");
 	// Zoom to marker
 	map.setView([lat, long], 16);
-	$("#map").width = $(window).width();
 }
 
 /******************************************************************************/
@@ -232,13 +238,6 @@ function returnJSON(){
 		JSONdata.long = current_long;
 
 		// If no image is uploaded, set JSON property to null
-		if ($('#locationimg img').length !== 0){
-			JSONdata.location_img = $("#locationimg img").attr("src").split("/")[$("#locationimg img").attr("src").split("/").length-1];
-		}else{
-			JSONdata.location_img = null;
-		}
-
-		// If no image is uploaded, set JSON property to null
 		if ($('#spotimg img').length !== 0){
 			JSONdata.spot_img = $("#spotimg img").attr("src").split("/")[$("#spotimg img").attr("src").split("/").length-1];
 		}else{
@@ -257,10 +256,16 @@ function returnJSON(){
 			beforeSend: function(xhr){
 			},
 			success: function(data){
+                            if (data.status =="Not logged in.") {
+                                window.location=_loginPath + "/Please login first.";
+                            }
 				$("#Spotter").html("<p>" + data.status + "</p>");
+                            if (data.spot_created != null) {
+                                window.location=_root + data.spot_created;
+                            }
 			},
 			error: function(){
-				$("#Spotter").html("<p>Something went wrong with your request. Please try again later, our API might be down.</p>");
+                            $("#Spotter").html("<p>Something went wrong with your request. Please try again later, our API might be down.</p>");
 			}
 		});
 	}else{
