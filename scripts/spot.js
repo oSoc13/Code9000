@@ -44,11 +44,9 @@ function getData(){
         data: null,
         url: _root + "/api/spots/" + spot_id,
         success: function(data){
-            showSpotLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
-            
-            showData(data[0]);
             voted = data.voted;
-            
+            showSpotLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
+            showData(data[0]);
         },
         error: function(){
             //window.location= _root + "/404";
@@ -82,12 +80,12 @@ function showData(data){
     s+= "<p>Created: "+ data.createddate +"</p>";
     s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
-        s+= "<input type='button' class='vote' value='Fancy that!' onclick='voteup()' />";
+        s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
     }
     
     s+= "<p>Downvotes: <span id='down'>"+ data.downvotes +"</span></p>";
     if (!voted) {
-        s+= "<input type='button' class='vote' value='I do not get it..' onclick='votedown()' />";
+        s+= "<input type='button' id='downbtn' value='I do not get it..' onclick='votedown()' />";
     }
     
     s+= "<div id='user'>";
@@ -188,16 +186,9 @@ function voteup()
                 var nn = parseInt(n);
                 nn++;
                 $("#up").html(nn);
-                $("#up").attr("disabled","disabled");
-                voted = true;
-                $(".vote").hide(); 
             }
-            else
-            {
-                $("#up").attr("disabled","disabled");
-                voted = true;
-                $(".vote").hide();
-            }
+            $("#upbtn").remove();
+            $("#downbtn").remove();
             
         },
         error: function(){
@@ -222,16 +213,9 @@ function votedown()
                 var nn = parseInt(n);
                 nn++;
                 $("#down").html(nn);
-                $("#down").attr("disabled","disabled");
-                voted = true;
-                $(".vote").hide();
             }
-            else
-            {
-                $("#down").attr("disabled","disabled");
-                voted = true;
-                $(".vote").hide();
-            }
+            $("#downbtn").remove();
+            $("#upbtn").remove();
         },
         error: function(){
             //window.location= _root + "/404";
