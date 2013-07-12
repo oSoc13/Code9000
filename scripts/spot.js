@@ -18,6 +18,9 @@ var map;
 var marker = null;
 
 var voted = false;
+var _user = 0;
+
+var edit = false;
 
 $(function(){
     getData();
@@ -94,7 +97,9 @@ function showData(data){
     s+= "</div>";
     s+= "<div id='comments'>";
     s+= "<h2>Comments</h2>";
-    s+= "<div id='comm_inh'>Loading...</div>";
+    s+= "<div id='comm_inh'>Comments</div>";
+    s+= "<textarea id='comm_text' placeholder='Fill in your comment.'></textarea>";
+    s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
     s+= "</div>";
     s+= "</section>";
     $("#spot").html(s);
@@ -120,7 +125,7 @@ function getUser(id)
             parseUser(user);
         },
         error: function(){
-            window.location= _root + "/404";
+            console.log("user " + id + " not found.");
         }
     });
 }
@@ -144,9 +149,10 @@ function getComments(spot)
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/comments/spots/" + spot,
+        url: _root + "/api/spots/" + spot + "/comments",
         success: function(data){
-            var comments = data;
+            var comments = data.comments;
+            _user = data.user;
             parseComments(comments);
         },
         error: function(){
@@ -159,8 +165,12 @@ function parseComments(comments)
 {
     s= "";
     for (i = 0; i < comments.length; i++) {
-        s+="<p>" + comments[i].text + " ";
-        s+="<span>By " + comments[i].firstname + " " + comments[i].surname + "</span></p>";
+        s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + comments[i].text + " ";
+        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + comments[i].modifieddate +"</strong></span></p>";
+        if (_user = comments[i].user_id) {
+            s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
+            s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";
+        }
         s+="<img src='"+ _root +"/uploads/"+ comments[i].avatar + "' />";
         s+="<hr/>";
     }
@@ -178,7 +188,7 @@ function voteup()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/voteup/" + spot_id,
+        url: _root + "/api/spots/" + spot_id + "voteup/",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
@@ -205,7 +215,7 @@ function votedown()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/votedown/" + spot_id,
+        url: _root + "/api/spots/" + spot_id + "votedown/",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
@@ -222,3 +232,88 @@ function votedown()
         }
     });
 }
+
+function comment()
+{
+    
+    if ($("#comm_text").val() == "") {
+        alert("Can't comment with empty comment sherlock.");
+    }
+    else
+    {
+        var url = "";
+        var dataS = null;
+        if (edit)
+        {
+            url = _root + "/api/spots/"+spot_id+"/comments/" + $("#comm_text").data('id');
+            dataS = {"text":$("#comm_text").val()};
+        }
+        else
+        {
+           url = _root + "/api/spots/"+spot_id+"/comments";
+           dataS = {"text":$("#comm_text").val()};
+        }
+        dataS =JSON.stringify(dataS);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            data: dataS,
+            url: url,
+            success: function(data){
+                $("#comm_text").val('');
+                edit = false;
+                $("#comm_text").data('id', "");
+                $("#comment_enter").val('Comment');
+                getComments(spot_id);
+            },
+            error: function(xhr){
+                edit = false;
+                $("#comm_text").data('id', "");
+                $("#comment_enter").val('Comment');
+                console.log(xhr);
+            }
+        });
+    }
+}
+
+function editComment(id){
+    edit = true;
+    $("#comm_text").goTo();
+    $("#comm_text").val(($("body").find("#" + id + "-comment .text").html()));
+    $("#comm_text").data('id',id);
+    $("#comment_enter").val('Edit');
+    
+}
+
+function deleteComment(id){
+    if(window.confirm("Are you sure you want to delete your comment?"))
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            data: JSON.stringify({"lol":1}),
+            url: _root + "/api/spots/"+spot_id+"/comments/" + id,
+            success: function(data){
+                getComments(spot_id);
+            },
+            error: function(xhr){
+                console.log(xhr);
+            }
+        });
+    }
+}
+
+
+
+(function($) {
+    $.fn.goTo = function() {
+        $('html, body').animate({
+            scrollTop: $(this).offset().top + 'px'
+        }, 'fast');
+        return this;
+    }
+})(jQuery);

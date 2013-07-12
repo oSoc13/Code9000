@@ -162,7 +162,6 @@ $app->get('/api/spots', function () use ($app) {
 /**
  * Adds a new spot to the database, returns JSON of this spot
  */
-
 $app->post('/api/spots/create', function () use ($app) {
 	try{
             $requestBody = $app->request()->getBody();
@@ -236,7 +235,6 @@ $app->post('/api/spots/create', function () use ($app) {
 /**
  * Gets one single spot added to the database, returns JSON
  */
-
 $app->get('/api/spots/:id', function ($id) use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $execute = array(":id"=>$id);
@@ -260,7 +258,7 @@ $app->get('/api/spots/:id', function ($id) use ($app) {
     CheckIfEmpty($data, $app);
 });
 
-$app->post('/api/spots/voteup/:id', function ($id) use ($app) {
+$app->post('/api/spots/:id/voteup', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
    $sqlcheck = "select * from 
         (
@@ -285,7 +283,7 @@ $app->post('/api/spots/voteup/:id', function ($id) use ($app) {
 	
 });
 
-$app->post('/api/spots/votedown/:id', function ($id) use ($app) {
+$app->post('/api/spots/:id/votedown', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
     $sqlcheck = "select * from 
         (
@@ -308,6 +306,114 @@ $app->post('/api/spots/votedown/:id', function ($id) use ($app) {
         echo 'voted';
 });
 
+/**
+ * get all comments of a spotting
+ */
+$app->get('/api/spots/:id/comments', function($id) use ($app){
+    $app->response()->header('Content-Type', 'application/json');
+    $execute = array(":id"=>$id);
+    $sql = "SELECT c.comment_id, c.text, c.modifieddate, u.avatar, u.firstname, u.surname, u.user_id FROM `comments` c
+        RIGHT JOIN spots_has_comments sc
+        ON sc.spot_id=:id AND sc.comment_id=c.comment_id
+        Inner join users u on c.user_id=u.user_id
+        Order By c.createddate DESC";
+    
+    $datac = GetDatabaseObj($sql, $execute);
+    
+    $data['comments'] = $datac;
+    $data['user'] = $_SESSION['9K_USERID'];
+    CheckIfEmpty($data, $app);
+});
+
+/**
+ * insert a comment of a spotting
+ * 
+ * postvars:
+ *      text => comment text
+ */
+$app->post('/api/spots/:id/comments', function($id) use ($app){
+    $requestBody = $app->request()->getBody();
+    $data = json_decode($requestBody);
+    try{
+        $text = "";
+        foreach ($data as $key => $val){
+            if ($key == "text"){
+                $text = $val;
+            }
+        }
+        $user_id = $_SESSION['9K_USERID'];
+        $vars = array("text"=>$text, "user_id" =>$user_id);
+        $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
+        // Execute query
+        $comment = InsertDatabaseObject($sql, $vars);
+        
+        $sqlAddCommentToSpot = "Insert INTO spots_has_comments(spot_id, comment_id) values(:spot_id, :comment_id)";
+        $varsforadding = array('spot_id' => $id, 'comment_id' => $comment);
+        
+        GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
+	echo json_encode($var = array("status"=>"OK"));
+    }
+    catch(Exception $e){
+        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+        exit;
+    }
+});
+
+/**
+ * edit a comment of a spotting
+ * 
+ * postvars:
+ *    text => comment text
+ */
+$app->post('/api/spots/:id/comments/:cid', function($id, $cid) use ($app){
+    $requestBody = $app->request()->getBody();
+    $data = json_decode($requestBody);
+    try{
+        $text = "";
+        foreach ($data as $key => $val){
+            if ($key == "text"){
+                $text = $val;
+            }
+        }
+        $user_id = $_SESSION['9K_USERID'];
+        // For each image, query an addition
+        $vars = array("text"=>$text, "id" =>$cid);
+        $sql = "Update comments SET text= :text WHERE comment_id = :id;";
+        // Execute query
+        $count = UpdateDatabaseObject($sql, $vars);
+        
+	echo json_encode($var = array("status"=>"OK"));
+    }
+    catch(Exception $e){
+        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+        exit;
+    }
+});
+
+/**
+ * delete a comment of a spotting
+ */
+$app->delete('/api/spots/:id/comments/:cid', function($id,$cid) use ($app){
+    try{
+        //DELETE RELATION
+        $varsR = array("id" =>$cid);
+        $sqlR = "Delete FROM spots_has_comments WHERE comment_id = :id;";
+        $countR = GetDatabaseObj($sqlR, $varsR);
+        
+        //DELETE ENTITYs
+        $varsE = array("id" =>$cid);
+        $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
+        // Execute query
+        $countE = GetDatabaseObj($sqlE, $varsE);
+        
+	echo json_encode($var = array("status"=>"OK"));
+    }
+    catch(Exception $e){
+        echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
+        exit;
+    }
+});
+
 /******************************************************************************/
 /* CITY PROJECTS
 /******************************************************************************/
@@ -315,7 +421,6 @@ $app->post('/api/spots/votedown/:id', function ($id) use ($app) {
 /**
  * Gets all city projects added to the database, returns JSON
  */
-
 $app->get('/api/cityprojects', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from cityprojects";
@@ -326,7 +431,6 @@ $app->get('/api/cityprojects', function () use ($app) {
 /**
  * Gets one single cityproject added to the database, returns JSON
  */
-
 $app->get('/api/cityprojects/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
@@ -342,7 +446,6 @@ $app->get('/api/cityprojects/:id', function ($id) use ($app) {
 /**
  * Gets all city proposals added to the database, returns JSON
  */
-
 $app->get('/api/cityproposals', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from cityproposals";
@@ -353,7 +456,6 @@ $app->get('/api/cityproposals', function () use ($app) {
 /**
  * Gets one specific city proposal added to the database, returns JSON
  */
-
 $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
@@ -370,7 +472,6 @@ $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 /**
  * Gets all comments added to the database
  */
-
 $app->get('/api/comments', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from comments";
@@ -379,9 +480,8 @@ $app->get('/api/comments', function () use ($app) {
 });
 
 /**
- * Get one specific comment added to the database, returns JSON
+ * Get a specific comment
  */
-
 $app->get('/api/comments/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
@@ -391,17 +491,6 @@ $app->get('/api/comments/:id', function ($id) use ($app) {
 });
 
 
-$app->get('/api/comments/spots/:id', function($id) use ($app){
-    $app->response()->header('Content-Type', 'application/json');
-    $execute = array(":id"=>$id);
-    $sql = "SELECT c.text, c.createddate, u.avatar, u.firstname, u.surname FROM `comments` c
-        RIGHT JOIN spots_has_comments sc
-        ON sc.spot_id=:id AND sc.comment_id=c.comment_id
-        Inner join users u on c.user_id=u.user_id";
-    
-    $data = GetDatabaseObj($sql, $execute);
-    CheckIfEmpty($data, $app);
-});
 
 /******************************************************************************/
 /* PHOTOS
@@ -410,7 +499,6 @@ $app->get('/api/comments/spots/:id', function($id) use ($app){
 /**
  * Gets all photo information. Returns JSON.
  */
-
 $app->get('/api/photos', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM photos";
@@ -421,7 +509,6 @@ $app->get('/api/photos', function () use ($app) {
 /**
  * Gets all last 15 photos uploaded to the database.
  */
-
 $app->get('/api/photos/last15', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM photos LIMIT 15";
@@ -432,7 +519,6 @@ $app->get('/api/photos/last15', function () use ($app) {
 /**
  * Gets all photo information for one specific image. Returns JSON.
  */
-
 $app->get('/api/photos/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
@@ -444,7 +530,6 @@ $app->get('/api/photos/:id', function ($id) use ($app) {
 /**
  * Adds an image to the database. Returns JSON with success or failure status.
  */
-
 $app->post('/api/photos', function () use ($app){
 try{
 	$requestBody = $app->request()->getBody();
