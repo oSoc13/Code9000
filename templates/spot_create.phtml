@@ -23,21 +23,42 @@ Nico Verbruggen (nico.verb@gmail.com)
 <?php
 		echo $this->render('header.phtml');
 ?>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
 	<div class="row">
 	<div id="Spotter">
 	<h1>Spot Something</h1>
 	<section id="Spot1">
 		<h2>What did you spot?</h2>
-		<input id="what" name="what" type="text" required="" placeholder="What did you spot?">
-		<br/>
-		<input id="solution" name="solution" type="text" required="" placeholder="Possible solution?">
+		<div class="row xwide valign">
+                <ul class="six columns centered">
+                    <li class="field prepend">
+                        <span class="adjoined"></span>
+                        <input class="input" type="text" placeholder="What did you spot?" name="what" id="what" />
+                    </li>
+                    <li class="field prepend">
+                        <span class="adjoined"></span>
+                        <input class="input" type="text" placeholder="What is your solution?" id="solution" name="solution" />
+                    </li>
+                </ul>
+         </div>
 	</section>
 	<section id="Spot2">
 		<h2>Where are you?</h2>
-		<input id="location_street" name="location_street" type="text" required placeholder="Type your address here"><button id="streetlocation" name="streetlocation" type="button">Use this address</button>
+		<div class="row xwide valign">
+                <ul class="six columns centered">
+                    <li class="field prepend">
+                        <span class="adjoined"></span>
+                        <input class='input' id="location_street" name="location_street" type="text" required placeholder="Type your address here">
+						<br/>
+                    </li>
+					<li><a id="streetlocation" name="streetlocation">Use this address</a></li>
+					<li><a id="autolocation" name="autolocation">Use geolocation</a></li>
+                </ul>
+         </div>
 		<br/>
-		<button id="autolocation" name="autolocation" type="button">Use geolocation</button>
-		<div id="map"></div>
+		<div id="map">
+			
+		</div>
 		<h2>Upload an image for this spot</h2>
 		<input type="file" name="img_spot" id="img_spot"><br>
 		<div id="spotimg">
@@ -59,8 +80,8 @@ Nico Verbruggen (nico.verb@gmail.com)
 </div>
 <style>
 	#map{
-		height:200px;
-		width: 100%;
+		height:200px !important;
+		width: 100% !import;
 	}
 </style>
 <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
