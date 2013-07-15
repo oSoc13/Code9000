@@ -151,13 +151,14 @@ $app->get('/api/locations/:id/spots', function ($id) use ($app) {
 /**
  * Gets all spots added to the database, returns JSON
  */
-
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "select * from spots";
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
+
+
 
 /**
  * Adds a new spot to the database, returns JSON of this spot
@@ -936,4 +937,17 @@ $app->get('/api/users/:id/comments', function ($id) use ($app) {
 	$sql = "SELECT * FROM comments WHERE user_id = :id";
 	$data = GetDatabaseObj($sql, $execute);
 	CheckIfEmpty($data, $app);
+});
+
+/**
+ * Gets all spots added to the database, returns JSON
+ */
+
+$app->get('/api/users/:id/spots', function ($id) use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+    $sql = "select * from spots s
+    Inner join ls.location_id = l.location_id  where user_id=:id";
+    $vars = array('id' => $id);
+    $data = GetDatabaseObj($sql, $vars);
+    CheckIfEmpty($data, $app);
 });
