@@ -27,6 +27,7 @@ Nico Verbruggen (nico.verb@gmail.com)
 	<div class="row">
 	<div id="Spotter">
 	<h1>Spot Something</h1>
+    <img src="../img/context/c-spots.png" class="cImg" alt="Spot something" />
 	<section id="Spot1">
 		<h2>What did you spot?</h2>
 		<div class="row xwide valign">
@@ -37,7 +38,7 @@ Nico Verbruggen (nico.verb@gmail.com)
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"></span>
-                        <input class="input" type="text" placeholder="What is your solution?" id="solution" name="solution" />
+                        <textarea class="input" placeholder="Do you have a possible solution?" id="solution" name="solution"></textarea>
                     </li>
                 </ul>
          </div>
@@ -48,14 +49,14 @@ Nico Verbruggen (nico.verb@gmail.com)
                 <ul class="six columns centered">
                     <li class="field prepend">
                         <span class="adjoined"></span>
-                        <input class='input' id="location_street" name="location_street" type="text" required placeholder="Type your address here">
-						<br/>
+                        <input class='input' id="location_street" name="location_street" type="text" required placeholder="Your address">
+						
                     </li>
 					<li><a id="streetlocation" name="streetlocation">Use this address</a></li>
-					<li><a id="autolocation" name="autolocation">Use geolocation</a></li>
+					<li><a id="autolocation" name="autolocation">Get location</a></li>
                 </ul>
          </div>
-		<br/>
+		
 		<div id="map">
 			
 		</div>
@@ -64,20 +65,14 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<div id="spotimg">
 			
 		</div>
-	</section>	
-	
-	<br/>
-	<br/>
-	<button id="confirm" name="confirm" type="submit">Confirm spotting</button>
-	<button id="cancel" name="cancel" type="button">Cancel spotting</button>
+	</section>
 	</div>
+    
+    <div id="pageActions">
+        <button id="cancel" name="cancel" type="button">Cancel</button>
+        <button id="confirm" name="confirm" type="submit">Spot</button>
+    </div>
 </div>
-<style>
-	#map{
-		height:200px !important;
-		width: 100% !import;
-	}
-</style>
 <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
 <!-- BOTTOM SCRIPTS -->
 <!-- 1. GRAB GOOGLE'S JQUERY CDN -->
