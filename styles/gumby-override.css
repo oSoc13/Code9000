@@ -308,3 +308,17 @@ button#confirm {text-align: right;}
 	text-align: center;
 	margin-left: 2px;
 }
+
+.negative {
+	background: #199387;
+	color: #fff;
+	padding: 0.3em;
+}
+
+ul.breathe {
+	padding-bottom: 30px;
+	margin-bottom: 30px;
+}
+
+.italic {font-style: italic;}
+.uppercase {text-transform: uppercase;}
