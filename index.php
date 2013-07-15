@@ -8,7 +8,7 @@
 
 # AUTHOR
 Nico Verbruggen (nico.verb@gmail.com)
-Stefaan Christiaens (stefaan.ch@gmail.com)
+Stefaan Christiaens (stefaan.ch@gmail.com) 
 */
 
 include_once('routes.php');
