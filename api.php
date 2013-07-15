@@ -154,7 +154,12 @@ $app->get('/api/locations/:id/spots', function ($id) use ($app) {
 
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    $sql = "select * from spots";
+	$sql = "SELECT s.spot_id, s.description, s.proposed, s.photo_id, s.upvotes, s.downvotes, s.location_id, l.coords, l.location_id, p.photo_id, p.url
+			FROM spots s 
+			INNER JOIN locations l 
+			ON s.location_id=l.location_id 
+			LEFT JOIN photos p 
+			ON s.photo_id=p.photo_id";
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });

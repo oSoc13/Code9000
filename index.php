@@ -88,6 +88,10 @@ $app->get('/help', function () use ($app) {
 $app->get('/leaflettest', function () use ($app) {
     $app->render('leaflet.phtml');
 });
+$app->get('/spots', function () use ($app) {
+    $app->render('spots.phtml');
+});
+
 
 $app->get('/spots/:id', function ($id) use ($app) {
     $data = array('id'=>$id);

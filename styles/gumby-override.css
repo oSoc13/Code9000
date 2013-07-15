@@ -58,9 +58,31 @@ body{
 	padding: 15px auto;
 }
 
+.vote{
+	font-size: 1.3em;
+}
+
+.upvote{
+	color: orangered;
+	font-size: 0.8em;
+}
+
+.downvote{
+	color: lightblue;
+	font-size: 0.8em;
+}
+
 /* =============================
 * HACKS (ugly, fix later)
 * ============================== */
+
+.spotcontent{
+}
+
+.spotimg{
+	float: left;
+	padding-right: 25px;
+}
 
 .sloth404{
 	max-width: 300px;

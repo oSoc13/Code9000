@@ -1,0 +1,73 @@
+<?php
+/**
+9K SPOTTER SPOTTINGS PAGE
+---------
+# COPYRIGHT
+(c) 2013, OKFN Belgium. Some rights reserved.
+
+# AUTHOR
+Nico Verbruggen (nico.verb@gmail.com)
+*/
+?>
+	<?php
+		echo($this->render('header.phtml'));
+	?>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
+		<div class='row'>
+				<h1>Spottings</h1>
+				<a href="#mapbutton" id="mapbutton">Show map</a>
+				<a href="#listbutton" id="listbutton">Show list</a>
+				<section id="spotlist">
+					
+				</section>
+				<section id="spotmap">
+					<div id="map"></div>
+				</section>
+				<p></p>
+		</div>
+		<footer class='row'>
+			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
+		</footer>
+	</div>
+
+	<!-- Grab Google CDN's jQuery, fall back to local if offline -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="scripts/libs/jquery-1.9.1.min.js"><\/script>')</script>
+	<script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
+
+  <!--
+  Include gumby.js followed by UI modules.
+  Or concatenate and minify into a single file
+  <script src="scripts/libs/gumby.js"></script>
+  <script src="scripts/libs/ui/gumby.retina.js"></script>
+  <script src="scripts/libs/ui/gumby.fixed.js"></script>
+  <script src="scripts/libs/ui/gumby.skiplink.js"></script>
+  <script src="scripts/libs/ui/gumby.toggleswitch.js"></script>
+  <script src="scripts/libs/ui/gumby.checkbox.js"></script>
+  <script src="scripts/libs/ui/gumby.radiobtn.js"></script>
+  <script src="scripts/libs/ui/gumby.tabs.js"></script>
+  <script src="scripts/libs/ui/gumby.navbar.js"></script>
+  <script src="scripts/libs/ui/jquery.validation.js"></script>
+  <script src="scripts/libs/gumby.init.js"></script>-->
+
+  <script src="scripts/libs/gumby.min.js"></script>
+  <script src="scripts/plugins.js"></script>
+  <script src="scripts/main.js"></script>
+  <script src="scripts/spots_all.js"></script>
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+
+	<style>
+		#map{
+			height:500px !important;
+			width: 100% !important;
+		}
+	</style>
+  
+	</body>
+</html>

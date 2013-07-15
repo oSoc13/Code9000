@@ -188,7 +188,7 @@ function voteup()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/" + spot_id + "voteup/",
+        url: _root + "/api/spots/" + spot_id + "/voteup/",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
@@ -215,7 +215,7 @@ function votedown()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/" + spot_id + "votedown/",
+        url: _root + "/api/spots/" + spot_id + "/votedown/",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
