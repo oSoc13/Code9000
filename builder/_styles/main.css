@@ -12,12 +12,18 @@ body{
     font-family: helvetica;
     font-size: 18px;
     overflow: hidden;
+    background-image: url("images/9k.png");
+    background-color: #106359;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 #maincanvas{
     margin: 0;
     padding: 0;
     margin-left:100px;
+
+
 }
 
 aside{
@@ -104,7 +110,10 @@ aside ul li ul li ul li{
     margin: 10px;
 }
 aside ul li ul li ul li:hover{
-    background-color: #E1E0DE;
+    background-color: #cdccca;
+}
+aside ul li ul li ul li img{
+    height: 100%;
 }
 
 

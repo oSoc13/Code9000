@@ -5,8 +5,44 @@
 
     $(init);
 
+var testJSON = {"objects":[{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-210,"z":0}},
+    {"category":"building","type":1,"rotation":90,"position":{"x":-200,"y":-75,"z":0}},
+    {"category":"building","type":1,"rotation":-270,"position":{"x":-200,"y":-225,"z":0}},
+    {"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-150,"z":0}},
+    {"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-90,"z":0}},
+    {"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-270,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-90,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-270,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-270,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-150,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-90,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-210,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-90,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-150,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-270,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-210,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-150,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-90,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-90,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-270,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-210,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-150,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-90,"z":0}},
+    {"category":"tree","type":1,"rotation":0,"position":{"x":255,"y":-80,"z":0}},
+    {"category":"tree","type":2,"rotation":0,"position":{"x":-50,"y":-345,"z":0}},
+    {"category":"tree","type":2,"rotation":0,"position":{"x":250,"y":-194,"z":0}},
+    {"category":"tree","type":2,"rotation":0,"position":{"x":229,"y":-286,"z":0}},
+    {"category":"tree","type":2,"rotation":0,"position":{"x":-47,"y":-231,"z":0}},
+    {"category":"tree","type":2,"rotation":0,"position":{"x":-45,"y":-108,"z":0}},
+    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-210,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-210,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-150,"z":0}},
+    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-270,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-150,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-210,"z":0}},
+    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-270,"z":0}},
+    {"category":"tree","type":2,"rotation":-90,"position":{"x":-45,"y":-420,"z":0}}]};
 
-var testJSON = {"objects":[{"category":"ground","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0,"alphaD":0,"betaD":0,"gammaD":31},"position":{"x":28,"y":0,"z":0}},{"category":"ground","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0.4363323129985824,"alphaD":0,"betaD":0,"gammaD":25},"position":{"x":-40,"y":50,"z":0}},{"category":"building","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0.26529004630313807,"alphaD":0,"betaD":0,"gammaD":15.2},"position":{"x":48,"y":190,"z":0}},{"category":"building","type":1,"rotation":{"alpha":0,"beta":0,"gamma":0,"alphaD":0,"betaD":0,"gammaD":0},"position":{"x":0,"y":-150,"z":0}}]};
 
 var canvasElement,
     character,
@@ -21,8 +57,9 @@ var canvasElement,
     mouseState,
     mouseDown,
     mouseStart,
-    startOrientation
-    selectedObject = ["building","1"];
+    startOrientation,
+    selectedObject = ["building","1"],
+    mouseObject = null
     ;
 
 // enumerate mouseStates
@@ -30,8 +67,36 @@ Object.freeze(mouseStates);
 
 
 function init(){
-    initButtons();
-    initCanvas();
+    //preload images
+    $("#maincanvas").hide
+
+
+    var queue = new createjs.LoadQueue();
+    queue.addEventListener("complete", handleComplete);
+    queue.loadManifest([
+        {id: "building", src:"_styles/images/objects/building_1_1.png"},
+        {id: "building", src:"_styles/images/objects/building_1_2.png"},
+        {id: "building", src:"_styles/images/objects/building_1_3.png"},
+        {id: "building", src:"_styles/images/objects/building_1_4.png"},
+        {id: "grass", src:"_styles/images/objects/grass_1.png"},
+        {id: "grass", src:"_styles/images/objects/grass_2.png"},
+        {id: "ground", src:"_styles/images/objects/ground_1.png"},
+        {id: "ground", src:"_styles/images/objects/ground_2.png"},
+        {id: "ground", src:"_styles/images/objects/ground_3.png"},
+        {id: "ground", src:"_styles/images/objects/ground_4.png"},
+        {id: "path", src:"_styles/images/objects/path_1.png"},
+        {id: "path", src:"_styles/images/objects/path_2.png"},
+        {id: "sand", src:"_styles/images/objects/sand.png"},
+        {id: "tree", src:"_styles/images/objects/tree_1.png"},
+        {id: "tree", src:"_styles/images/objects/tree_2.png"},
+        {id: "water", src:"_styles/images/objects/water.png"}
+    ]);
+    function handleComplete() {
+        $("#maincanvas").css("background-color","#FFF").show();
+        initButtons();
+        initCanvas();
+    }
+
 }
 
 function initButtons(){
@@ -71,29 +136,32 @@ function initButtons(){
 }
 
 function initCanvas(){
-    mouseState = mouseStates.pan;
+    mouseState = mouseStates.rotate;
 
     canvasElement = document.getElementById('maincanvas');
     canvasElement.width  = window.innerWidth - 100;
     canvasElement.height = window.innerHeight;
-    sheetengine.scene.init(canvasElement, {w:2000,h:2000});
+    sheetengine.scene.init(canvasElement, {w:2800,h:1500});
 
 // define some basesheets
-    for (var x=-2; x<=2; x++) {
-        for (var y=-2; y<=2; y++) {
+    for (var x=-4; x<=4; x++) {
+        for (var y=-4; y<=4; y++) {
             var basesheet = new sheetengine.BaseSheet({x:x*200,y:y*200,z:0}, {alphaD:90,betaD:0,gammaD:0}, {w:200,h:200});
             basesheet.color = '#5D7E36';
         }
     }
 
-// add objects to stage. and objects array
-    /*
-    hoverObjects.push(objectBuilder.buildGround(1,{x:28,y:0,z:0},0));
-    hoverObjects.push(objectBuilder.buildGround(1,{x:-40,y:50,z:0},25));
+// add mouseObject to the stage
+    var mouseSheet = new sheetengine.Sheet({x:0,y:0,z:0}, {alphaD:90,betaD:00,gammaD:0}, {w:60,h:60});
+    mouseSheet.context.fillStyle = "rgba(255, 255, 255, 0)";
+    mouseSheet.context.fillRect(0,0,60,60);
+    mouseSheet.setDimming(true,true);
 
-    hoverObjects.push(objectBuilder.buildBuilding(1,{x:48,y:190,z:0},23));
-    hoverObjects.push(objectBuilder.buildBuilding(1,{x:0,y:-150,z:0},0));
-    */
+    mouseObject = new sheetengine.SheetObject({x:0,y:0,z:0},{alphaD:0,betaD:0,gammaD:0}, [mouseSheet], {w:90,h:80,relu:42,relv:40});
+
+
+
+// add objects to stage. and objects array
 
     getBuildingsJson();
 // generate a density map from the sheets
@@ -149,47 +217,51 @@ function initCanvas(){
             v:puv.v + sheetengine.scene.center.v
         });
 
-        sheetengine.calc.calculateChangedSheets();
-        sheetengine.drawing.drawScene();
+        if(mouseState == mouseStates.create){
+            var obj;
+            switch (selectedObject[0]){
+                case "building":
+                    obj = objectBuilder.buildBuilding(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0);
+                    break;
+
+                case "ground":
+                    obj = objectBuilder.buildGround(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0);
+                    break;
+                case "tree":
+                    obj = objectBuilder.buildTree(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0);
+                    break;
+            }
+
+            hoverObjects.push(obj);
+            densityMap.addSheets(obj.sheets);
+        }
+
 
         if (hover && mouseState == mouseStates.delete && target != null) {
 
             hover = false;
-            target.destroy();
+
             for(var i = 0;i<target.sheets.length;i++){
                 target.sheets[i].destroy();
                 densityMap.removeSheet(target.sheets[i]);
             }
 
-            sheetengine.calc.calculateChangedSheets();
-            sheetengine.drawing.drawScene(true);
+            target.destroy();
+
+
             helperFunctions.removeFromArray(target,hoverObjects);
 
         }
 
-        else if(mouseState == mouseStates.create){
-            var obj;
-            console.log(selectedObject[0]);
-            switch (selectedObject[0]){
-                case "building":
-                    obj = objectBuilder.buildBuilding(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0)
-                    break;
+        if(target != null){
+            target.setDimming(true,true);
+            target = null;
 
-                case "ground":
-                    obj = objectBuilder.buildGround(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0)
-                    break;
-                default :
-                    obj = objectBuilder.buildBuilding(1,{x:pxy.x,y:pxy.y,z:0},0)
-                    break;
-            }
-            console.log(obj);
-
-            hoverObjects.push(obj);
-            densityMap.addSheets(obj.sheets);
-            sheetengine.calc.calculateChangedSheets();
-            sheetengine.drawing.drawScene();
         }
-        target = null;
+
+        sheetengine.calc.calculateAllSheets();
+        sheetengine.drawing.drawScene();
+
     }
 
     canvasElement.onmousemove = function(event) {
@@ -203,24 +275,22 @@ function initCanvas(){
             v:puv.v + sheetengine.scene.center.v
         });
 
+        pxy.x = Math.round(pxy.x/5)*5;
+        pxy.y = Math.round(pxy.y/5)*5;
+
         if(mouseDown == true && target != null){
             // move the target;
             if(mouseState == mouseStates.move){
                 densityMap.removeSheets(target.sheets);
-                target.setPosition({x:pxy.x,y:pxy.y,z:0})
+                target.setPosition({x:Math.ceil(pxy.x),y:Math.ceil(pxy.y),z:0})
                 densityMap.addSheets(target.sheets);
-                sheetengine.calc.calculateChangedSheets();
-                sheetengine.drawing.drawScene();
             }
             else if(mouseState == mouseStates.rotate){
                 densityMap.removeSheets(target.sheets);
                 var verticalDist = mouseStart.y - pxy.y;
-                var angle = (verticalDist/5);
+                var angle = Math.round(verticalDist/25)*15;
                 target.setOrientation({alphaD:0,betaD:0,gammaD: startOrientation + angle});
-                console.log(target)
                 densityMap.addSheets(target.sheets);
-                sheetengine.calc.calculateChangedSheets();
-                sheetengine.drawing.drawScene();
             }
         }
         else{
@@ -230,6 +300,9 @@ function initCanvas(){
                 hover = objhovered;
 
         }
+        mouseObject.setPosition({x:pxy.x,y:pxy.y,z:0});
+        sheetengine.calc.calculateAllSheets();
+        sheetengine.drawing.drawScene();
     }
 
 //  enter frame method
@@ -242,13 +315,15 @@ function getBuildingsJson(){
 
 
     for(var i=0;i<testJSON.objects.length;i++){
-        console.log(testJSON.objects[i]);
         var category = testJSON.objects[i].category;
         if(category == "building"){
-            hoverObjects.push(objectBuilder.buildBuilding(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation.gammaD));
+            hoverObjects.push(objectBuilder.buildBuilding(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation));
         }
         else if(category == "ground"){
-            hoverObjects.push(objectBuilder.buildGround(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation.gammaD));
+            hoverObjects.push(objectBuilder.buildGround(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation));
+        }
+        else if(category == "tree"){
+            hoverObjects.push(objectBuilder.buildTree(testJSON.objects[i].type,testJSON.objects[i].position,testJSON.objects[i].rotation));
         }
     }
 }
@@ -269,7 +344,7 @@ function defineCharacter(centerp) {
     leg2.context.fillRect(0,0,5,10);
 
     // define character object
-    var character = new sheetengine.SheetObject(centerp, {alphaD:0,betaD:0,gammaD:90}, [body,backhead,leg1,leg2], {w:70, h:110, relu:10, relv:25});
+    var character = new sheetengine.SheetObject(centerp, {alphaD:0,betaD:0,gammaD:90}, [body,backhead,leg1,leg2], {w:300, h:310, relu:10, relv:25});
 
     character.leg1 = leg1;
     character.leg2 = leg2;
@@ -294,6 +369,7 @@ function defineCharacter(centerp) {
     ctx.fillRect(10,11,1,2);
 
     character.animationState = 0;
+    character.setDimming(true, true)
     return character;
 };
 
@@ -330,7 +406,7 @@ function setKeys(event, val) {
     if (event.keyCode == '32') {
         if (jump == 0 && val == 1) {
             jump = 1;
-            jumpspeed = 15;
+            jumpspeed = 30;
         }
         keyProcessed = 1;
     }
@@ -344,16 +420,17 @@ function isObjectHovered(puv) {
     var tester = false;
     for(var i=0;i<hoverObjects.length;i++){
         var ouv = sheetengine.drawing.getPointuv(hoverObjects[i].centerp);
+        var width = hoverObjects[i].canvasSize.w;
+        var height = hoverObjects[i].canvasSize.y;
+        var relu = hoverObjects[i].canvasSize.relu;;
+        var relv = hoverObjects[i].canvasSize.relv;
 
-        if (puv.u > ouv.u - 20 &&
-            puv.u < ouv.u - 20 + 40 &&
-            puv.v > ouv.v - 30 &&
-            puv.v < ouv.v - 30 + 40){
+        if (puv.u > ouv.u - 40&&
+            puv.u < ouv.u - 40 + 80 &&
+            puv.v > ouv.v - 40 &&
+            puv.v < ouv.v - 40 + 80){
             target = hoverObjects[i];
             tester =  true;
-        }
-        else{
-
         }
     }
 
@@ -366,19 +443,19 @@ function mainloop() {
     var dx = 0;
     var dy = 0;
     if (keys.u) {
-        dy = -5;
+        dy = -10;
         character.setOrientation({alphaD:0,betaD:0,gammaD:180});
     }
     if (keys.d) {
-        dy = 5;
+        dy = 10;
         character.setOrientation({alphaD:0,betaD:0,gammaD:0});
     }
     if (keys.l) {
-        dx = -5;
+        dx = -10;
         character.setOrientation({alphaD:0,betaD:0,gammaD:270});
     }
     if (keys.r) {
-        dx = 5;
+        dx = 10;
         character.setOrientation({alphaD:0,betaD:0,gammaD:90});
     }
     if (dx != 0)
@@ -409,10 +486,10 @@ function mainloop() {
 
         // move center
         sheetengine.scene.setCenter({x:character.centerp.x, y:character.centerp.y, z:0});
-
         // calculate sheets and draw scene
-        sheetengine.calc.calculateChangedSheets();
+        sheetengine.calc.calculateAllSheets();
         sheetengine.drawing.drawScene();
+
     }
 
     // draw rectangle
@@ -430,5 +507,30 @@ function mainloop() {
 
     }
 
-};
+
+}
+
+exportAndSaveCanvas = function () {
+
+    // Get the canvas screenshot as PNG
+    var screenshot = Canvas2Image.saveAsPNG(canvasElement, true);
+
+    // This is a little trick to get the SRC attribute from the generated <img> screenshot
+    canvasElement.parentNode.appendChild(screenshot);
+    screenshot.id = "canvasimage";
+    data = $('#canvasimage').attr('src');
+    canvasElement.parentNode.removeChild(screenshot);
+
+
+    // Send the screenshot to PHP to save it on the server
+    var url = 'upload.php';
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'text',
+        data: {
+            base64data : data
+        }
+    });
+}
 
