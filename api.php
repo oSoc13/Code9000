@@ -101,7 +101,7 @@ function ShowError($app, $errormsg = "You do not have permission to view this pa
  * Gets all locations added to the database, returns JSON
  */
 
-$app->get('/api/locations', function () use ($app) {
+$app->get('/api/locations/', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM locations";
     $data = GetDatabaseObj($sql);

@@ -69,7 +69,7 @@ function initMarker(lat, long, id, description, proposed, up, down){
 
 function addSpot(id, description, proposed, up, down, img){
 	var element = "<a href='/Code9000/spots/" + id + "'>" +
-			"<div>" + showPicture(img) + "<section class='spotcontent'><h3>" + description + "</h3>" + 
+			"<div  class='spotcontent'>" + showPicture(img) + "<section><h3>" + description + "</h3>" + 
 			"<p>Solution: " + proposed + "</p>" +
 			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
