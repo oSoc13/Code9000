@@ -81,6 +81,18 @@ $app->get('/spots/create', function () use ($app) {
     $app->render('spot_create.phtml');
 });
 
+$app->get('/myspots/', function () use ($app){
+	if (isset($_SESSION['9K_USERID']))
+	{
+        $data = array('id' => $_SESSION['9K_USERID']);
+		$app->render('spots_user.phtml', $data);
+	}
+	else
+	{
+		$app-render('index.phtml');
+	}
+});
+
 $app->get('/help', function () use ($app) {
     $app->render('help.phtml');
 });

@@ -68,8 +68,30 @@ body{
 }
 
 .downvote{
-	color: lightblue;
+	color: darkslateblue;
 	font-size: 0.8em;
+}
+
+#mapbutton, #listbutton{
+	padding: 15px;
+	margin-bottom: 15px;
+	background-color: #199387;
+	color: #FFF;
+	float: left;
+	width: 100%;
+}
+
+#mapbutton:hover, #listbutton:hover{
+	background-color: #d04526;
+}
+
+#mapbutton i, #listbutton i{
+	font-size: 1.5em !important;
+}
+
+.spotlink{
+	display: block;
+	float: none;
 }
 
 /* =============================
