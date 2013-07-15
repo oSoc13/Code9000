@@ -242,7 +242,7 @@ $app->post('/login', function () use ($app) {
             break;
         
         case 'OK':
-            $app->redirect('/code9000/spotter');
+            $app->redirect('/code9000/spottings');
             break;
     }
     $app->redirect('/code9000/login/'.$msg);
