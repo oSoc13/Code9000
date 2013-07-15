@@ -611,7 +611,7 @@ $app->delete('/api/cityprojects/:id/comments/:cid', function($id,$cid) use ($app
  */
 $app->get('/api/cityproposals', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    $sql = "select * from cityproposals";
+    $sql = "SELECT c.name, c.description, c.upvotes, c.downvotes, c.createddate, l.coords from cityproposals c inner join locations l on c.location_id = l.location_id where c.deleteddate IS NOT NULL";
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
@@ -622,7 +622,7 @@ $app->get('/api/cityproposals', function () use ($app) {
 $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
-	$sql = "SELECT * FROM cityproposals WHERE cityproposal_id = :id";
+	$sql = "SELECT * FROM cityproposals WHERE cityproposal_id = :id AND cityproposals.deleteddate IS NOT NULL";
 	$data = GetDatabaseObj($sql, $execute);
 	CheckIfEmpty($data, $app);
 });
@@ -630,13 +630,13 @@ $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 
 $app->post('/api/cityproposals/:id/voteup', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "select * from 
+   $sqlcheck = "SELECT * FROM 
         (
-            select * from users_like_cityproposals uls 
+            SELECT * from users_like_cityproposals uls 
             where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
         UNION 
-            select * from users_dislike_cityproposals uds 
-            where uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
+            SELECT * from users_dislike_cityproposals uds 
+            WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
         ) result";
    
     $vars = array('user_id' => $uid, 'cityproposal_d' => $id);
