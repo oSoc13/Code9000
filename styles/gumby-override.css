@@ -108,6 +108,10 @@ body{
 	float: none;
 }
 
+#map, #listbutton{
+	clear: both !important;
+}
+
 /* =============================
 * HACKS (ugly, fix later)
 * ============================== */

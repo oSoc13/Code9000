@@ -78,6 +78,9 @@ function loadData(){
 			beforeSend: function(xhr){
 			},
 			success: function(data){
+			if (data !== null){
+				
+			}
 				$.each(data, function(i, element){
 					var finalcoords = Array;
 					finalcoords = element.coords.split(" ");
@@ -90,7 +93,7 @@ function loadData(){
 				});
 			},
 			error: function(){
-
+				$("#spotlist").html("<p>There do not seem to be any spots associated with your account.</p>");
 			}
 	});
 }

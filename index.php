@@ -89,7 +89,8 @@ $app->get('/myspots/', function () use ($app){
 	}
 	else
 	{
-		$app-render('index.phtml');
+		$_SESSION["loginmsg"] = "Please login first before you can see your own spottings.";
+		$app->render('login.phtml');
 	}
 });
 
