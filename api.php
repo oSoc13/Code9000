@@ -1,45 +1,57 @@
 <?php
 /**
-9K API
----------
-# COPYRIGHT
-(c) 2013, OKFN Belgium. Some rights reserved.
+    9K API
+    ---------
+    # COPYRIGHT
+    (c) 2013, OKFN Belgium. Some rights reserved.
 
-# AUTHOR
-Nico Verbruggen (nico.verb@gmail.com)
-Stefaan Christiaens (stefaan.ch@gmail.com)
+    # AUTHOR
+    Nico Verbruggen (nico.verb@gmail.com)
+    Stefaan Christiaens (stefaan.ch@gmail.com)
 **/
 
+
+
 /******************************************************************************/
-/* INCLUDE FILES
+    INCLUDE FILES
+    -------------
 /******************************************************************************/
 
 include_once('routes.php');
 include_once('config/Authentication.php');
 include_once('utils/connectiondb.php');
 
+
+
+
 /******************************************************************************/
-/* RENDER API PAGE
+    RENDER API PAGE
+    ---------------
 /******************************************************************************/
 
 $app->get('/api/', function () use ($app) {
     $app->render('api.phtml');
 });
 
+
+
+
 /******************************************************************************/
-/* API FUNCTIONS
+    API FUNCTIONS
+    -------------
 /******************************************************************************/
 
 /**
- * Checks if the data provided is empty. If it is, response code 404 is sent
- * and "no data available" is shown.
- * 
- * @param array $data
- * @param Slim instance $app
- * @param error messsage $errormsg, default = "No data available"
- * @param status code $status, default = 404
- */
 
+    Checks if the data provided is empty. If it is, response code 404 is sent
+    and "no data available" is shown.
+    
+    @param array $data
+    @param Slim instance $app
+    @param error messsage $errormsg, default = "No data available"
+    @param status code $status, default = 404
+
+ */
 function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 404){
 	if (empty($data)){
 		$ERR_NO_DATA = array("error"=>$errormsg);
@@ -51,14 +63,16 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
 }
 
 /**
- * Calculate the distance between two coodinates in the given unit system
- * 
- * @param decimal $lat1
- * @param decimal $lon1
- * @param decimal $lat2
- * @param decimal $lon2
- * @param string $unit
- * @return decimal
+
+    Calculate the distance between two coodinates in the given unit system
+    
+    @param decimal $lat1
+    @param decimal $lon1
+    @param decimal $lat2
+    @param decimal $lon2
+    @param string $unit
+    @return decimal
+
  */
 function distance($lat1, $lon1, $lat2, $lon2, $unit) 
 {
@@ -79,12 +93,14 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit)
 }
 
 /**
- * Shows an error message. If only $app is provided, the default message is:
- * "You do not have permission to view this page" with status code 401.
- *
- * @param Slim instance $app
- * @param error message $errormsg
- * @param status code $status
+
+    Shows an error message. If only $app is provided, the default message is:
+    "You do not have permission to view this page" with status code 401.
+    
+    @param Slim instance $app
+    @param error message $errormsg
+    @param status code $status
+
  */
 
 function ShowError($app, $errormsg = "You do not have permission to view this page", $status = 401){
@@ -93,14 +109,21 @@ function ShowError($app, $errormsg = "You do not have permission to view this pa
 	$app->response()->status($status);
 }
 
+
+
+
+
+
 /******************************************************************************/
-/* LOCATIONS
+    LOCATIONS
+    ---------
 /******************************************************************************/
 
 /**
- * Gets all locations added to the database, returns JSON
- */
 
+    Get all locations
+
+ */
 $app->get('/api/locations', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM locations";
@@ -109,9 +132,10 @@ $app->get('/api/locations', function () use ($app) {
 });
 
 /**
- *  Gets all last 15 locations added to the database, returns JSON
- */
 
+    Get last 15 locations
+
+ */
 $app->get('/api/locations/last15', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $sql = "SELECT * FROM locations LIMIT 15";
@@ -120,9 +144,10 @@ $app->get('/api/locations/last15', function () use ($app) {
 });
 
 /**
- * Gets one single location added to the database, returns JSON
- */
 
+    Get one single location
+
+ */
 $app->get('/api/locations/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
@@ -131,10 +156,12 @@ $app->get('/api/locations/:id', function ($id) use ($app) {
 	CheckIfEmpty($data, $app);
 });
 
-/**
- * Gets spots associated with a location with a specific id
- */
 
+/**
+
+    Get spots associated with a location with a specific id
+
+ */
 $app->get('/api/locations/:id/spots', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
@@ -144,14 +171,27 @@ $app->get('/api/locations/:id/spots', function ($id) use ($app) {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
 /******************************************************************************/
-/* SPOTS
+    SPOTS
+    -----
 /******************************************************************************/
 
 /**
- * Gets all spots added to the database, returns JSON
- */
 
+    Get all spots
+
+ */
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
 	$sql = "SELECT s.spot_id, s.description, s.proposed, s.photo_id, s.upvotes, s.downvotes, s.location_id, l.coords, l.location_id, p.photo_id, p.url
@@ -165,7 +205,26 @@ $app->get('/api/spots', function () use ($app) {
 });
 
 /**
- * Adds a new spot to the database, returns JSON of this spot
+
+    Get all spots from a specific user
+
+ */
+$app->get('/api/users/:id/spots', function ($id) use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+    $sql = "select * from spots s
+    Inner join ls.location_id = l.location_id  where user_id=:id";
+    $vars = array('id' => $id);
+    $data = GetDatabaseObj($sql, $vars);
+    CheckIfEmpty($data, $app);
+});
+
+/**
+
+    Add a new spot to the database
+
+    The location is calculated in a way that no spots will be apart less then 50 meters
+    If the spots are closer, the first added spotlocation is appointed to the second on to create spotclusters
+
  */
 $app->post('/api/spots/create', function () use ($app) {
 	try{
@@ -238,7 +297,9 @@ $app->post('/api/spots/create', function () use ($app) {
 });
 
 /**
- * Gets one single spot added to the database, returns JSON
+
+    Get a single spot
+
  */
 $app->get('/api/spots/:id', function ($id) use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -263,6 +324,12 @@ $app->get('/api/spots/:id', function ($id) use ($app) {
     CheckIfEmpty($data, $app);
 });
 
+
+/**
+
+    Vote up on a spotting
+
+ */
 $app->post('/api/spots/:id/voteup', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
    $sqlcheck = "select * from 
@@ -288,6 +355,12 @@ $app->post('/api/spots/:id/voteup', function ($id) use ($app) {
 	
 });
 
+
+/**
+
+    Vote down on a spotting
+
+ */
 $app->post('/api/spots/:id/votedown', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
     $sqlcheck = "select * from 
@@ -312,7 +385,9 @@ $app->post('/api/spots/:id/votedown', function ($id) use ($app) {
 });
 
 /**
- * get all comments of a spotting
+
+    Get all comments of a spotting
+
  */
 $app->get('/api/spots/:id/comments', function($id) use ($app){
     $app->response()->header('Content-Type', 'application/json');
@@ -331,10 +406,12 @@ $app->get('/api/spots/:id/comments', function($id) use ($app){
 });
 
 /**
- * insert a comment of a spotting
- * 
- * postvars:
- *      text => comment text
+
+    Insert a comment of a spotting
+
+    postvars:
+        text => comment text
+
  */
 $app->post('/api/spots/:id/comments', function($id) use ($app){
     $requestBody = $app->request()->getBody();
@@ -365,10 +442,12 @@ $app->post('/api/spots/:id/comments', function($id) use ($app){
 });
 
 /**
- * edit a comment of a spotting
- * 
- * postvars:
- *    text => comment text
+
+    Edit a comment of a spotting
+ 
+    postvars:
+        text => comment text
+
  */
 $app->post('/api/spots/:id/comments/:cid', function($id, $cid) use ($app){
     $requestBody = $app->request()->getBody();
@@ -396,7 +475,9 @@ $app->post('/api/spots/:id/comments/:cid', function($id, $cid) use ($app){
 });
 
 /**
- * delete a comment of a spotting
+
+    Delete a comment of a spotting
+
  */
 $app->delete('/api/spots/:id/comments/:cid', function($id,$cid) use ($app){
     try{
@@ -419,12 +500,132 @@ $app->delete('/api/spots/:id/comments/:cid', function($id,$cid) use ($app){
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /******************************************************************************/
-/* CITY PROJECTS
+    CITY PROJECTS
+    -------------
 /******************************************************************************/
 
 /**
- * Gets all city projects added to the database, returns JSON
+
+    Adds a new cityproject to the database
+
+ */
+$app->post('/api/cityproject/create', function () use ($app) {
+    try{
+        $req = $app->request();
+        $name = trim($req->post('name'));
+        $descr = trim($req->post('description'));
+        $location = trim($req->post('location'));
+        $data = trim($req->post('data'));
+
+        if (!isset($_SESSION['9K_USERID'])) {
+            echo json_encode($var = array("status"=>"Not logged in."));exit();
+        }
+        $id = $_SESSION['9K_USERID'];
+        if (!isset($_SESSION['9K_ROLE'])) {
+            if ($_SESSION['9K_ROLE'] != "admin") {
+                echo json_encode($var = array("status"=>"You need to be an administrator to create a new city project"));exit();
+            }
+        }
+
+        $sql = "insert into cityprojects(name,description,user_id,location_id,data) values (:name,:description,:user_id,:location_id,:data);";
+        $vars = array("name" => $name, "description" =>$description, "user_id" => $id, "location_id" => $location_id, "data" => $data);
+        $projId = InsertDatabaseObject($sql, $vars);
+        echo json_encode($var = array("status"=>"OK", "id" => $projId));
+
+    }
+    catch(Exception $e){
+            
+        echo json_encode($var = array("status"=>"Your creation of a project failed. Please try again later!", "error" => $e->getMessage()));
+    }
+
+});
+
+/**
+
+    Adds a new cityproject to the database based on an project template made by an administrator
+
+ */
+$app->post('/api/cityproject/:parent_id/base', function ($parent_id) use ($app) {
+    try{
+        $req = $app->request();
+        $name = trim($req->post('name'));
+        $descr = trim($req->post('description'));
+        $location = trim($req->post('location'));
+        $data = trim($req->post('data'));
+
+        if (!isset($_SESSION['9K_USERID'])) {
+            echo json_encode($var = array("status"=>"Not logged in."));exit();
+        }
+        $id = $_SESSION['9K_USERID'];
+        
+
+        $sql = "insert into cityprojects(name,description,user_id,location_id,data, parent_cityproject) values (:name,:description,:user_id,:location_id,:data, :parent);";
+        $vars = array("name" => $name, "description" =>$description, "user_id" => $id, "location_id" => $location_id, "data" => $data, "parent" => $parent_id);
+        $projId = InsertDatabaseObject($sql, $vars);
+        echo json_encode($var = array("status"=>"OK", "id" => $projId));
+
+    }
+    catch(Exception $e){
+            
+        echo json_encode($var = array("status"=>"Failed to adapt template. Please try again later!", "error" => $e->getMessage()));
+    }
+
+});
+
+/**
+
+    Update a cityproject based on an project template made by an administrator
+
+ */
+$app->post('/api/cityproject/:id', function ($id) use ($app) {
+    try{
+        $req = $app->request();
+        $name = trim($req->post('name'));
+        $descr = trim($req->post('description'));
+        $data = trim($req->post('data'));
+
+        if (!isset($_SESSION['9K_USERID'])) {
+            echo json_encode($var = array("status"=>"Not logged in."));exit();
+        }
+        $id = $_SESSION['9K_USERID'];
+
+        $sql = "UPDATE cityprojects SET name = :name, description = :description, data = :data;";
+        $vars = array("name" => $name, "description" =>$description, "data" => $data);
+        $count = UpdateDatabaseObject($sql, $vars);
+        if ($count > 0) {
+            echo json_encode($var = array("status"=>"OK", "count" => $count));
+        }
+        else
+        {
+            throw new Exception("No rows were updated.");
+        }
+
+    }
+    catch(Exception $e){
+            
+        echo json_encode($var = array("status"=>"Failed to update playground. Please try again later!", "error" => $e->getMessage()));
+    }
+
+});
+
+/**
+
+    Get all cityprojects
+
  */
 $app->get('/api/cityprojects', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -434,7 +635,9 @@ $app->get('/api/cityprojects', function () use ($app) {
 });
 
 /**
- * Gets one single cityproject added to the database, returns JSON
+
+    Get one single cityproject
+
  */
 $app->get('/api/cityprojects/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
@@ -444,7 +647,11 @@ $app->get('/api/cityprojects/:id', function ($id) use ($app) {
 	CheckIfEmpty($data, $app);
 });
 
+/**
 
+    Vote up on a cityproject
+
+*/
 $app->post('/api/cityprojects/:id/voteup', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
    $sqlcheck = "select * from 
@@ -470,9 +677,14 @@ $app->post('/api/cityprojects/:id/voteup', function ($id) use ($app) {
 	
 });
 
+/**
+
+    Vote down on a cityproject
+
+*/
 $app->post('/api/cityprojects/:id/votedown', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "select * from 
+    $sqlcheck = "select * from 
         (
             select * from users_like_cityprojects uls 
             where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
@@ -494,7 +706,9 @@ $app->post('/api/cityprojects/:id/votedown', function ($id) use ($app) {
 });
 
 /**
- * get all comments of a cityproject
+
+    Get all comments of a cityproject
+
  */
 $app->get('/api/cityprojects/:id/comments', function($id) use ($app){
     $app->response()->header('Content-Type', 'application/json');
@@ -513,10 +727,12 @@ $app->get('/api/cityprojects/:id/comments', function($id) use ($app){
 });
 
 /**
- * insert a comment of a cityproject
- * 
- * postvars:
- *      text => comment text
+
+    Insert a comment of a cityproject
+ 
+    postvars:
+        text => comment text
+
  */
 $app->post('/api/cityprojects/:id/comments', function($id) use ($app){
     $requestBody = $app->request()->getBody();
@@ -547,10 +763,12 @@ $app->post('/api/cityprojects/:id/comments', function($id) use ($app){
 });
 
 /**
- * edit a comment of a cityproject
- * 
- * postvars:
- *    text => comment text
+
+    Edit a comment of a cityproject
+ 
+    postvars:
+        text => comment text
+
  */
 $app->post('/api/cityprojects/:id/comments/:cid', function($id, $cid) use ($app){
     $requestBody = $app->request()->getBody();
@@ -578,7 +796,9 @@ $app->post('/api/cityprojects/:id/comments/:cid', function($id, $cid) use ($app)
 });
 
 /**
- * delete a comment of a cityproject
+
+    Delete a comment of a cityproject
+
  */
 $app->delete('/api/cityprojects/:id/comments/:cid', function($id,$cid) use ($app){
     try{
@@ -602,12 +822,25 @@ $app->delete('/api/cityprojects/:id/comments/:cid', function($id,$cid) use ($app
 });
 
 
+
+
+
+
+
+
+
+
+
+
 /******************************************************************************/
-/* CITY PROPOSALS
+    CITY PROPOSALS
+    --------------
 /******************************************************************************/
 
 /**
- * Gets all city proposals added to the database, returns JSON
+
+    Gets all city proposals added to the database
+
  */
 $app->get('/api/cityproposals', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -617,7 +850,9 @@ $app->get('/api/cityproposals', function () use ($app) {
 });
 
 /**
- * Gets one specific city proposal added to the database, returns JSON
+
+    Gets one specific city proposal added to the database
+
  */
 $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
@@ -627,7 +862,11 @@ $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 	CheckIfEmpty($data, $app);
 });
 
+/**
 
+    Vote up for a specific city proposal
+
+*/
 $app->post('/api/cityproposals/:id/voteup', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
    $sqlcheck = "select * from 
@@ -651,6 +890,11 @@ $app->post('/api/cityproposals/:id/voteup', function ($id) use ($app) {
         echo 'voted';
 });
 
+/**
+
+    Vote down for a specific city proposal
+
+*/
 $app->post('/api/cityproposals/:id/votedown', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
     $sqlcheck = "select * from 
@@ -675,8 +919,10 @@ $app->post('/api/cityproposals/:id/votedown', function ($id) use ($app) {
 });
 
 /**
- * get all comments of a cityproposal
- */
+
+    Get all comments of a citproposal
+
+*/
 $app->get('/api/cityproposals/:id/comments', function($id) use ($app){
     $app->response()->header('Content-Type', 'application/json');
     $execute = array(":id"=>$id);
@@ -694,10 +940,12 @@ $app->get('/api/cityproposals/:id/comments', function($id) use ($app){
 });
 
 /**
- * insert a comment of a cityproposal
- * 
- * postvars:
- *      text => comment text
+
+    Insert a comment of a cityproposal
+    
+    postvars:
+        text => comment text
+
  */
 $app->post('/api/cityproposals/:id/comments', function($id) use ($app){
     $requestBody = $app->request()->getBody();
@@ -728,10 +976,12 @@ $app->post('/api/cityproposals/:id/comments', function($id) use ($app){
 });
 
 /**
- * edit a comment of a cityproposal
- * 
- * postvars:
- *    text => comment text
+
+    Edit a comment of a cityproposal
+    
+    postvars:
+        text => comment text
+
  */
 $app->post('/api/cityproposals/:id/comments/:cid', function($id, $cid) use ($app){
     $requestBody = $app->request()->getBody();
@@ -759,7 +1009,9 @@ $app->post('/api/cityproposals/:id/comments/:cid', function($id, $cid) use ($app
 });
 
 /**
- * delete a comment of a cityproposals
+
+    Delete a comment of a cityproposal
+
  */
 $app->delete('/api/cityproposals/:id/comments/:cid', function($id,$cid) use ($app){
     try{
@@ -784,12 +1036,19 @@ $app->delete('/api/cityproposals/:id/comments/:cid', function($id,$cid) use ($ap
 
 
 
+
+
+
+
 /******************************************************************************/
-/* COMMENTS
+    COMMENTS
+    --------
 /******************************************************************************/
 
 /**
- * Gets all comments added to the database
+
+    Get all comments
+    
  */
 $app->get('/api/comments', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -799,7 +1058,9 @@ $app->get('/api/comments', function () use ($app) {
 });
 
 /**
- * Get a specific comment
+
+    Get a specific comment
+    s
  */
 $app->get('/api/comments/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
@@ -811,12 +1072,27 @@ $app->get('/api/comments/:id', function ($id) use ($app) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /******************************************************************************/
-/* PHOTOS
+    PHOTOS
+    ------
 /******************************************************************************/
 
 /**
- * Gets all photo information. Returns JSON.
+
+    Get all photo information.
+
  */
 $app->get('/api/photos', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -826,7 +1102,9 @@ $app->get('/api/photos', function () use ($app) {
 });
 
 /**
- * Gets all last 15 photos uploaded to the database.
+
+    Get last 15 photos.
+
  */
 $app->get('/api/photos/last15', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
@@ -836,7 +1114,9 @@ $app->get('/api/photos/last15', function () use ($app) {
 });
 
 /**
- * Gets all photo information for one specific image. Returns JSON.
+
+    Gets all photo information for one specific image.
+
  */
 $app->get('/api/photos/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
@@ -847,7 +1127,9 @@ $app->get('/api/photos/:id', function ($id) use ($app) {
 });
 
 /**
- * Adds an image to the database. Returns JSON with success or failure status.
+
+    Adds an image to the database.
+
  */
 $app->post('/api/photos', function () use ($app){
 try{
@@ -886,13 +1168,27 @@ catch(Exception $e){
 }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
 /******************************************************************************/
-/* USERS
+    USERS
+    -----
 /******************************************************************************/
 
 /**
- * Gets all user data. Only available when the session variable 9k_admin is set
- * to true.
+
+    Gets all users. Only available when logged in as administrator
+
  */
 $app->get('/api/users', function () use ($app) {
 	// Check if administrator permissions are set for current user
@@ -907,8 +1203,10 @@ $app->get('/api/users', function () use ($app) {
 });
 
 /**
- * Get user data for one specific user. Available to the general public, only
- * shows id, name and avatar.
+
+    Get user data for one specific user. Available to the general public, only
+    shows id, name and avatar.
+
  */
 $app->get('/api/users/:id', function ($id) use ($app){
 	// Check if administrator permissions are set for current user
@@ -932,7 +1230,9 @@ $app->get('/api/users/:id', function ($id) use ($app){
 });
 
 /**
- * Gets all comments added to the database by a specific user
+
+    Get all comments by a specific user
+
  */
 
 $app->get('/api/users/:id/comments', function ($id) use ($app) {
@@ -942,3 +1242,4 @@ $app->get('/api/users/:id/comments', function ($id) use ($app) {
 	$data = GetDatabaseObj($sql, $execute);
 	CheckIfEmpty($data, $app);
 });
+
