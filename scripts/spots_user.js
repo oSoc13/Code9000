@@ -107,5 +107,3 @@ function loadMap(){
         maxZoom: 20
     }).addTo(map);
 }
-
-var _root = "http://" + window.location.host.toString() + "/Code9000/api/spots";

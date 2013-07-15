@@ -942,3 +942,19 @@ $app->get('/api/users/:id/comments', function ($id) use ($app) {
 	$data = GetDatabaseObj($sql, $execute);
 	CheckIfEmpty($data, $app);
 });
+
+/**
+    Get all spots from a specific user
+ */
+$app->get('/api/users/:id/spots', function ($id) use ($app) {
+    $app->response()->header('Content-Type', 'application/json');
+    $sql = "SELECT s.spot_id, s.description, s.proposed, s.photo_id, s.upvotes, s.downvotes, s.location_id, l.coords, l.location_id, p.photo_id, p.url
+			FROM spots s 
+			INNER JOIN locations l 
+			ON s.location_id=l.location_id 
+			LEFT JOIN photos p 
+			ON s.photo_id=p.photo_id WHERE s.user_id=:id";
+    $vars = array('id' => $id);
+    $data = GetDatabaseObj($sql, $vars);
+    CheckIfEmpty($data, $app);
+});
