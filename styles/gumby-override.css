@@ -1,3 +1,17 @@
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+
 /* =============================
 * OVERRIDES FOR GUMBY
 * BECAUSE IT NEEDED FIXING
@@ -102,17 +116,27 @@ body{
 	clear: both;
 	padding: 15px;
 	border-top: 1px solid #AAA;
+	padding-bottom: 25px;
 }
 
 .spotcontent:hover{
 	background-color: #EEE;
 }
 
-.spotimg{
+.spotimg, .spotimg_noimg{
 	float: left;
-	margin-top: 15px;
-	padding-right: 25px;
+	margin-top: 25px;
+	margin-right: 50px;
 	max-width: 150px;
+	border: 4px solid #FFF;
+	box-shadow: 1px 1px 5px #999;
+}
+
+.spotimg_noimg{
+}
+
+.text{
+	float: left;
 }
 
 .sloth404{
