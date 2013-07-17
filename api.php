@@ -53,7 +53,6 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
 		echo(json_encode($ERR_NO_DATA));
 		$app->response()->status($status);
 	}else{
-		array_walk_recursive($data, "filter");
 		echo(json_encode($data));
 		$app->response()->header('Content-Type', 'application/json');
 	}
