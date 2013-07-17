@@ -31,6 +31,7 @@ $(function(){
 	loadData();
 	$("#mapbutton").hide();
 	$("#spotlist").hide();
+	alert(htmlspecialchars("<script></script>", 2));
 });
 
 function showPicture(img){

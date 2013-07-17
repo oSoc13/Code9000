@@ -116,7 +116,6 @@ body{
 }
 #map, #listbutton{
 	clear: both !important;
-
 }
 
 /* =============================
@@ -130,6 +129,7 @@ body{
 
 .spotcontent{
 	clear: both;
+	width: 100%;
 	padding: 15px;
 	border-top: 1px solid #AAA;
 	padding-bottom: 25px;
