@@ -46,7 +46,8 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
 		echo(json_encode($ERR_NO_DATA));
 		$app->response()->status($status);
 	}else{
-		echo(json_encode($data));
+		echo(json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT));
+		$app->response()->header('Content-Type', 'application/json');
 	}
 }
 
@@ -179,7 +180,6 @@ $app->post('/api/spots/create', function () use ($app) {
                 echo json_encode($var = array("status"=>"Not logged in."));exit();
             }
             $id = $_SESSION['9K_USERID'];
-
             // Four different parameter sets
             $photospot_params = array(":spot_img"=>$data->spot_img);
             $location_params = array(":latlong"=>"[$data->lat $data->long]",":user_id"=>$id);

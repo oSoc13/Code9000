@@ -104,9 +104,9 @@ body{
 }
 
 .spotlink{
-	display: block;
-	float: none;
+	z-index: 999;
 }
+
 .dateaccent{
 	margin-left: 10px;
 	color: orangered;
@@ -116,7 +116,6 @@ body{
 }
 #map, #listbutton{
 	clear: both !important;
-
 }
 
 /* =============================
@@ -130,6 +129,7 @@ body{
 
 .spotcontent{
 	clear: both;
+	width: 100%;
 	padding: 15px;
 	border-top: 1px solid #AAA;
 	padding-bottom: 25px;
@@ -141,6 +141,7 @@ body{
 
 .spotimg, .spotimg_noimg{
 	float: left;
+	clear: none !important;
 	margin-top: 25px;
 	margin-right: 50px;
 	max-width: 150px;
