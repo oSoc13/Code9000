@@ -151,10 +151,6 @@ body{
 .spotimg_noimg{
 }
 
-.text{
-	float: left;
-}
-
 .sloth404{
 	max-width: 300px;
 }
@@ -338,8 +334,22 @@ ul.breathe {
 
 .italic {font-style: italic;}
 .uppercase {text-transform: uppercase;}
+.marginTop {margin-top: 20px;}
 
 .borderTop {
-	border-top: 1px solid #ccc !important;
+	border-top: 1px solid #ccc;
 	padding-top: 30px;
+}
+
+.btnFL {
+	width: 50%;
+	height: 1em;
+	float: left;
+	padding: 1em 0;
+	display: block;
+	color: #199387;
+	background: #fff;
+	border: 1px solid #ccc;
+	text-align: center;
+	line-height: 0.2em;
 }
