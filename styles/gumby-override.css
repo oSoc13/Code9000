@@ -312,15 +312,18 @@ button#confirm {text-align: right;}
 .negative {
 	background: #199387;
 	color: #fff;
-	padding: 0.3em;
+	padding: 0.3em 0.5em;
 }
 
 ul.breathe {
-	padding-bottom: 30px;
-	margin-bottom: 30px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .italic {font-style: italic;}
 .uppercase {text-transform: uppercase;}
 
-.borderBtm {border-bottom: 1px solid #ccc;}
+.borderTop {
+	border-top: 1px solid #ccc !important;
+	padding-top: 30px;
+}
