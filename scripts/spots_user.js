@@ -91,9 +91,9 @@ function loadData(){
 			},
 			error: function(){
 				var element =  "<div class='spotcontent'><section class='clearfix'><h3>No content found.</h3>" + 
-			"<p>We found no content.</p></section></div></a>";
+			"<p>You do not seem to have posted any spots. Did you know you can spot anything in Ghent? It's pretty cool. Why not give it a try?</p></section></div></a>";
 	$("#spotlist").append(element);
-				$("#status").html("Found nothing, sorry.");
+				$("#status").html("<p class='warning alert'>Found nothing, sorry. You might not have any spots associated with this account.</p>");
 			}
 	});
 }
