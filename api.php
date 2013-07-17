@@ -247,69 +247,81 @@ $app->post('/api/spots/create', function () use ($app) {
 $app->get('/api/spots/:id', function ($id) use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $execute = array(":id"=>$id);
-    $sql = "SELECT s.*, l.location_id, l.coords FROM spots s Inner Join locations l on s.location_id=l.location_id WHERE s.spot_id = :id";
+    $sql = "SELECT c.spot_id, c.proposed, c.description, c.upvotes, c.downvotes, c.createddate, l.coords, c.user_id 
+            from spots c 
+            inner join locations l on c.location_id = l.location_id 
+            where c.deleteddate IS NULL AND spot_id = :id";
     $data = GetDatabaseObj($sql, $execute);
+
+
+    //CHECK IF USER ALREADY VOTED
     $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "select * from 
+    $sqlcheck = "SELECT * FROM 
         (
-            select * from users_like_spots uls 
+            SELECT * from users_like_spots uls 
             where uls.user_id=:user_id and uls.spot_id = :spot_id 
         UNION 
-            select * from users_dislike_spots uds 
-            where uds.user_id=:user_id and uds.spot_id = :spot_id 
+            SELECT * from users_dislike_spots uds 
+            WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
         ) result";
-    
+   
     $vars = array('user_id' => $uid, 'spot_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
-    if (!empty($check)) {
-        $data['voted'] = true;
+    if (empty($check)) {
+        $data["voted"] = false;
+    }else{
+        $data["voted"] = true;
     }
     CheckIfEmpty($data, $app);
 });
 
+/**
+ * vote up a spot
+ */
 $app->post('/api/spots/:id/voteup', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "select * from 
+    $sqlcheck = "SELECT * FROM 
         (
-            select * from users_like_spots uls 
+            SELECT * from users_like_spots uls 
             where uls.user_id=:user_id and uls.spot_id = :spot_id 
         UNION 
-            select * from users_dislike_spots uds 
-            where uds.user_id=:user_id and uds.spot_id = :spot_id 
+            SELECT * from users_dislike_spots uds 
+            WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
         ) result";
    
     $vars = array('user_id' => $uid, 'spot_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
     if (empty($check)) {
         $execute = array("id"=>$id, "user_id" => $uid);
-	$sql = "UPDATE spots SET upvotes=(upvotes+1) WHERE spot_id = :id;Insert INTO users_like_spots (user_id, spot_id) values(:user_id,:id);";
-	$data = UpdateDatabaseObject($sql, $execute);
-	CheckIfEmpty($data, $app);
+        $sql = "UPDATE spots SET upvotes=(upvotes+1) WHERE spot_id = :id;Insert INTO users_like_spots (user_id, spot_id) values(:user_id,:id);";
+        $data = UpdateDatabaseObject($sql, $execute);
+        CheckIfEmpty($data, $app);
     }
     else
         echo 'voted';
-    
-	
 });
 
+/**
+ * vote down a spot
+ */
 $app->post('/api/spots/:id/votedown', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "select * from 
+    $sqlcheck = "SELECT * FROM 
         (
-            select * from users_like_spots uls 
+            SELECT * from users_like_spots uls 
             where uls.user_id=:user_id and uls.spot_id = :spot_id 
         UNION 
-            select * from users_dislike_spots uds 
-            where uds.user_id=:user_id and uds.spot_id = :spot_id 
+            SELECT * from users_dislike_spots uds 
+            WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
         ) result";
-    
+   
     $vars = array('user_id' => $uid, 'spot_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
     if (empty($check)) {
-       $execute = array("id"=>$id, "user_id" => $uid);
-	$sql = "UPDATE spots SET downvotes=(downvotes+1) WHERE spot_id = :id;Insert INTO users_dislike_spots (user_id, spot_id) values(:user_id,:id);";
-	$data = UpdateDatabaseObject($sql, $execute);
-	CheckIfEmpty($data, $app);
+        $execute = array("id"=>$id, "user_id" => $uid);
+        $sql = "UPDATE spots SET downvotes=(downvotes+1) WHERE spot_id = :id;Insert INTO users_dislike_spots (user_id, spot_id) values(:user_id,:id);";
+        $data = UpdateDatabaseObject($sql, $execute);
+        CheckIfEmpty($data, $app);
     }
     else
         echo 'voted';
@@ -441,60 +453,86 @@ $app->get('/api/cityprojects', function () use ($app) {
  * Gets one single cityproject added to the database, returns JSON
  */
 $app->get('/api/cityprojects/:id', function ($id) use ($app) {
-	$app->response()->header('Content-Type', 'application/json');
-	$execute = array(":id"=>$id);
-	$sql = "SELECT * FROM cityprojects WHERE cityproject_id = :id";
-	$data = GetDatabaseObj($sql, $execute);
-	CheckIfEmpty($data, $app);
-});
+    $app->response()->header('Content-Type', 'application/json');
+    $execute = array(":id"=>$id);
+    $sql = "SELECT c.cityproject_id, c.name, c.description, c.upvotes, c.downvotes, c.createddate, l.coords 
+            from cityprojects c 
+            inner join locations l on c.location_id = l.location_id 
+            where c.deleteddate IS NULL AND cityproject_id = :id";
+    $data = GetDatabaseObj($sql, $execute);
 
 
-$app->post('/api/cityprojects/:id/voteup', function ($id) use ($app) {
+    //CHECK IF USER ALREADY VOTED
     $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "select * from 
+    $sqlcheck = "SELECT * FROM 
         (
-            select * from users_like_cityprojects uls 
+            SELECT * from users_like_cityprojects uls 
             where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
         UNION 
-            select * from users_dislike_cityprojects uds 
-            where uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
+            SELECT * from users_like_cityprojects uds 
+            WHERE uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
         ) result";
    
-    $vars = array('user_id' => $uid, 'cityprojects' => $id);
+    $vars = array('user_id' => $uid, 'cityproject_id' => $id);
+    $check = GetDatabaseObj($sqlcheck, $vars);
+    if (empty($check)) {
+        $data["voted"] = false;
+    }else{
+        $data["voted"] = true;
+    }
+    CheckIfEmpty($data, $app);
+});
+
+/**
+ * vote up a cityproject
+ */
+$app->post('/api/cityprojects/:id/voteup', function ($id) use ($app) {
+    $uid = $_SESSION['9K_USERID'];
+   $sqlcheck = "SELECT * FROM 
+        (
+            SELECT * from users_like_cityprojects uls 
+            where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
+        UNION 
+            SELECT * from users_dislike_cityprojects uds 
+            WHERE uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
+        ) result";
+   
+    $vars = array('user_id' => $uid, 'cityproject_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
     if (empty($check)) {
         $execute = array("id"=>$id, "user_id" => $uid);
-	$sql = "UPDATE cityprojects SET upvotes=(upvotes+1) WHERE cityproject_id = :id;Insert INTO users_like_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
-	$data = UpdateDatabaseObject($sql, $execute);
-	CheckIfEmpty($data, $app);
+        $sql = "UPDATE cityprojects SET upvotes=(upvotes+1) WHERE cityproject_id = :id;Insert INTO users_like_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
+        $data = UpdateDatabaseObject($sql, $execute);
+        CheckIfEmpty($data, $app);
     }
     else
         echo 'voted';
-    
-	
 });
 
+/**
+ * vote down a cityproject
+ */
 $app->post('/api/cityprojects/:id/votedown', function ($id) use ($app) {
     $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "select * from 
+    $sqlcheck = "select * from 
         (
             select * from users_like_cityprojects uls 
             where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
         UNION 
-            select * from users_dislike_cityprojects uds 
+            select * from users_dislike_cityproposals uds 
             where uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
         ) result";
    
-    $vars = array('user_id' => $uid, 'cityprojects' => $id);
+    $vars = array('user_id' => $uid, 'cityproject_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
     if (empty($check)) {
         $execute = array("id"=>$id, "user_id" => $uid);
-	$sql = "UPDATE cityprojects SET downvotes=(downvotes+1) WHERE cityproject_id = :id;Insert INTO users_dislike_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
-	$data = UpdateDatabaseObject($sql, $execute);
-	CheckIfEmpty($data, $app);
+    $sql = "UPDATE cityprojects SET downvotes=(downvotes+1) WHERE cityproject_id = :id;Insert INTO users_dislike_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
+    $data = UpdateDatabaseObject($sql, $execute);
+    CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';	
+        echo 'voted';
 });
 
 /**
