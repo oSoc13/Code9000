@@ -12,7 +12,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 include_once('routes.php');
-include_once(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Authentication.php');
+include_once(__DIR__ . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'Authentication.php');
 
 
 // import the Intervention Image Class

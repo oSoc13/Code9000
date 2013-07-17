@@ -1,7 +1,7 @@
 <?php
 
 /**
-9K AUTH SAMPLE 
+9K AUTH system
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -15,7 +15,8 @@ class Authentication {
     
     function __construct()
     {
-        include_once('utils/connectiondb.php');
+        include_once('/utils/connectiondb.php');
+        include_once('/config/keys.php');
     }
     
     function register($data)
@@ -25,7 +26,7 @@ class Authentication {
         $email = mysql_real_escape_string($data['email']);
         $dob = mysql_real_escape_string($data['dob']);
         $admin = ( $data['admin']? "admin" : "user" );
-        $passwordData = $this->hashPassword($data['pwd'], 'ALGO');
+        $passwordData = $this->hashPassword($data['pwd'], 'sha256');
         $activationcode = $this->generateRandomString(15);
         $avatar = $data['avatar'];
         
@@ -54,7 +55,7 @@ class Authentication {
     function hashPassword($pwd, $algo)
     {
         $salt = $this->generateSalt();
-        $pwdH = hash($algo, $pwd . $salt);
+        $pwdH = hash($algo, GLOBAL_SALT . $pwd . $salt);
         return array('salt' => $salt, 'pwdH' => $pwdH);
     }
     
@@ -81,7 +82,7 @@ class Authentication {
         $mail->Port = "465";
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         $mail->Username = '9KBuilder@gmail.com';                            // SMTP username
-        $mail->Password = 'PASSWORD!';  
+        $mail->Password = EMAIL_PWD;  
         $mail->SMTPDebug = 1;
         $mail->From = '9KBuilder@gmail.com';
         $mail->FromName = "9KBuilder";
@@ -89,7 +90,7 @@ class Authentication {
         $mail->IsHTML(true);                                  // Set email format to HTML
 
         $mail->Subject = 'Activation code';
-        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
+        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
                 
         if(!$mail->Send()) {
            echo 'Message could not be sent.';
@@ -133,7 +134,7 @@ class Authentication {
         }
         else
         {
-            $pwdH = hash('ALGO', $password . $passwordArray['passwordsalt']);
+            $pwdH = hash('sha256', GLOBAL_SALT . $password . $passwordArray['passwordsalt']);
 
             if ($pwdH == $passwordArray['password']) 
             {
@@ -162,7 +163,7 @@ class Authentication {
     
     function checkPassword($pwd, $salt, $test)
     {
-        $pwdH = hash('ALGO', $test . $salt);
+        $pwdH = hash('sha256', GLOBAL_SALT . $test . $salt);
 
         return ($pwdH == $pwd? true:false); 
     }
