@@ -35,13 +35,13 @@ $(function(){
 
 function showPicture(img){
 	if (img !== null){
-		return "<div><img class='spotimg' src='/Code9000/uploads/" + img + "'/></div>";
+		return "<img class='spotimg' src='/Code9000/uploads/" + img + "'/>";
 	}else{
-		return "<div><img class='spotimg' src='/Code9000/img/NoImage.jpg'/></div>";
+		return "";
 	}
 }
 
-function initMarker(lat, long, id, description, proposed, up, down){
+function initMarker(lat, long, id, name, description, up, down, date){
     
 	$("#map").width = $(window).width();
 	// Show the map if it was hidden
@@ -50,20 +50,20 @@ function initMarker(lat, long, id, description, proposed, up, down){
     marker = L.marker([lat, long]).addTo(map);
     marker.bindPopup("<a href='/Code9000/spots/" + id + "'>" +
 			"<div>" +
-			"<h3>" + description + "</h3>" + 
-			"<p>Solution: " + proposed + "</p>" +
+			"<h3>" + name + "</h3>" + 
 			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
 			"<span class='downvote'>-" + down + "</span>)</p></div></a>");
 }
 
-function addSpot(id, description, proposed, up, down, img){
-	var element = "<a class='spotlink' href='/Code9000/spots/" + id + "'>" +
-			"<div class='spotcontent'>" + showPicture(img) + "<section class='clearfix'><h3>" + description + "</h3>" + 
-			"<p>Solution: " + proposed + "</p>" +
+function addSpot(id, name, description, up, down, date){
+	var element = "<a class='spotlink' href='/Code9000/cityproposals/" + id + "'>" +
+			"<div class='spotcontent'><section><h3>" + name + "<span class='dateaccent'>"+ date +"</span></h3>" + 
+			"<p>Description: " + description + "</p>" +
 			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
-			"<span class='downvote'>-" + down + "</span>)</p></section></div></a>";
+			"<span class='downvote'>-" + down + "</span>)</p>" +
+			"</section></div></a>";
 	$("#spotlist").append(element);
 }
 
@@ -78,22 +78,19 @@ function loadData(){
 			beforeSend: function(xhr){
 			},
 			success: function(data){
-			$.each(data, function(i, element){
+				$.each(data, function(i, element){
 					var finalcoords = Array;
 					finalcoords = element.coords.split(" ");
 					var lat = finalcoords[0].substr(1);
 					var long = finalcoords[1].substr(0,finalcoords[1].length-2);
 					console.log(lat);
 					console.log(long);
-					initMarker(lat, long, element.spot_id, element.description, element.proposed, element.upvotes, element.downvotes);
-					addSpot(element.spot_id, element.description, element.proposed, element.upvotes, element.downvotes, element.url);
+					initMarker(lat, long, element.cityproposal_id, element.name, element.description, element.upvotes, element.downvotes, element.createddate);
+					addSpot(element.cityproposal_id, element.name, element.description, element.upvotes, element.downvotes, element.createddate);
 				});
 			},
 			error: function(){
-				var element =  "<div class='spotcontent'><section class='clearfix'><h3>No content found.</h3>" + 
-			"<p>We found no content.</p></section></div></a>";
-	$("#spotlist").append(element);
-				$("#status").html("Found nothing, sorry.");
+
 			}
 	});
 }
@@ -110,3 +107,5 @@ function loadMap(){
         maxZoom: 20
     }).addTo(map);
 }
+
+var _root = "http://" + window.location.host.toString() + "/Code9000/api/cityproposals";

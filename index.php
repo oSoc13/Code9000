@@ -89,7 +89,8 @@ $app->get('/myspots/', function () use ($app){
 	}
 	else
 	{
-		$app-render('index.phtml');
+		$_SESSION["loginmsg"] = "Please login first before you can see your own spottings.";
+		$app->render('login.phtml');
 	}
 });
 
@@ -108,6 +109,22 @@ $app->get('/spots', function () use ($app) {
 $app->get('/spots/:id', function ($id) use ($app) {
     $data = array('id'=>$id);
     $app->render('spot.phtml', $data);
+});
+
+$app->get('/cityproposals', function () use ($app) {
+    $app->render('cityprops.phtml');
+});
+
+$app->get('/cityproposals/:id', function ($id) use ($app) {
+    if (!isset($_SESSION['9K_USERID'])) {
+        $app->redirect("/code9000/login");
+    }
+    else
+    {
+        $uid = $_SESSION['9K_USERID'];
+    }
+    $data = array('id'=>$id, 'user'=> $uid);
+    $app->render('cityprop.phtml', $data);
 });
 
 /***********************
@@ -291,7 +308,7 @@ $app->get('/account/edit', function () use ($app) {
         $app->render('account-edit.phtml', $data);
     }
  else {
-    $app->redirect('/code9000/login/please login first');    
+    $app->redirect('/code9000/login');    
     }
 });
 
@@ -342,11 +359,13 @@ $app->post('/account/edit', function () use ($app) {
         }
         else
         {
-            $app->redirect('/code9000/edit/Your password was incorrect.');  
+			$_SESSION["loginmsg"] = "Your password was incorrect. Please enter the correct details.";
+            $app->redirect('/code9000/edit');  
         }
      }
     else {
-       $app->redirect('/code9000/login/Please login first.');    
+		$_SESSION["loginmsg"] = "Please login first.";
+       $app->redirect('/code9000/login');    
     }
 });
 
@@ -356,7 +375,8 @@ $app->get('/account/delete', function () use ($app) {
         $app->render('account-delete.phtml');
     }
  else {
-    $app->redirect('/code9000/login/Please login first before deleting any profile.');    
+	 $_SESSION["loginmsg"] = "Please login first before deleting your profile.";
+    $app->redirect('/code9000/login');    
     }
 });
 
@@ -371,7 +391,8 @@ $app->post('/account/delete', function () use ($app) {
         
     }
  else {
-    $app->redirect('/code9000/login/Please login first before deleting any profile.');    
+	 $_SESSION["loginmsg"] = "Please login first before deleting your profile.";
+    $app->redirect('/code9000/login');    
     }
 });
 

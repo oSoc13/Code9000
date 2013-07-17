@@ -107,10 +107,26 @@ body{
 	display: block;
 	float: none;
 }
+.dateaccent{
+	margin-left: 10px;
+	color: orangered;
+	font-size: 0.40em;
+	position: relative;
+	top: -11px;
+}
+#map, #listbutton{
+	clear: both !important;
+
+}
 
 /* =============================
 * HACKS (ugly, fix later)
 * ============================== */
+
+.imgwide{
+	float: left;
+	height: 100%;
+}
 
 .spotcontent{
 	clear: both;
