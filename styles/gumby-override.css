@@ -17,7 +17,7 @@
 * BECAUSE IT NEEDED FIXING
 * ============================== */
 
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5,h6{
 	font-weight: 300;
 	margin: 15px 0px;
 }
@@ -152,10 +152,6 @@ body{
 .spotimg_noimg{
 }
 
-.text{
-	float: left;
-}
-
 .sloth404{
 	max-width: 300px;
 }
@@ -220,11 +216,6 @@ body{
 	width: 120px;
 	height: 100%;
 	background: url('../img/logo.png') no-repeat left center / contain;
-}
-
-#map{
-	height:200px !important;
-	width: 100% !important;
 }
 
 span.adjoined {background-color: rgba(0, 0, 0, 0) !important;}
@@ -312,4 +303,54 @@ button#confirm {text-align: right;}
 	width: 20%;
 	margin: 10% 0 10% 40%;
 	display: block;
+}
+
+#map{
+	height: 200px !important;
+	width: 100% !important;
+}
+
+#map a {
+	width: auto;
+	background: inherit;
+	color: inherit;
+	padding: 0 5px;
+	margin: inherit;
+	clear: inherit;
+	display: inherit;
+	text-align: center;
+	margin-left: 2px;
+}
+
+.negative {
+	background: #199387;
+	color: #fff;
+	padding: 0.3em 0.5em;
+}
+
+ul.breathe {
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+
+.italic {font-style: italic;}
+.uppercase {text-transform: uppercase;}
+.marginTop {margin-top: 20px;}
+
+.borderTop {
+	border-top: 1px solid #ccc;
+	padding-top: 30px;
+}
+
+.btnFL {
+	width: 50%;
+	height: 1em;
+	float: left;
+	padding: 1em 0;
+	display: block;
+	color: #199387;
+	background: #fff;
+	border: 1px solid #ccc;
+	text-align: center;
+	line-height: 0.2em;
 }

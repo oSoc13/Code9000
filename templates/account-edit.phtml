@@ -15,7 +15,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 	<div id="container" class="row">
     <h1>edit Profile</h1>
 <?php if (isset($this->data['user'])): ?>
-    <form method="POST">
+    <form method="POST" action="/code9000/account/edit">
                         <div class="row xwide valign">
                                         <ul class="seven columns centered">
                                             <li class="field prepend">
@@ -68,7 +68,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
                                             <li class="field">
                                                 <div class="medium primary btn" style="width: 100%"><input type="submit" value="Edit"></div>
-                                                <div class="medium primary btn" style="width: 100%"><input type="submit" onclick="location='/code9000/account'" value="cancel" value="Cancel"></div>
+                                                <div class="medium primary btn" style="width: 100%"><input type="button" onclick="location='/code9000/account'" value="cancel" value="Cancel"></div>
 
                                             </li>
                                         </ul>
@@ -81,11 +81,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 </div>
 
 
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
+<?php echo $this->render('libsfooter.phtml') ?>
 <script src="/Code9000/scripts/avatarupload.js"></script>
 </body>
 </html>

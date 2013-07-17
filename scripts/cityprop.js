@@ -79,21 +79,21 @@ function showLocation(lat, lng){
 function showData(data){
     var s = "";
     s+= "<section>";
-    s+= "<h3>"+ data.name +"</p>";
+    s+= "<h3 class='italic uppercase negative'>"+ data.name +"</h3>";
     s+= "<p>Description: "+ data.description +"</p>";
     s+= "<p>Created: "+ data.createddate +"</p>";
-    s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
+    s+= "<p class='btnFL'>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
     }
     
-    s+= "<p>Downvotes: <span id='down'>"+ data.downvotes +"</span></p>";
+    s+= "<p class='btnFL'>Dislikes: <span id='down'>"+ data.downvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='downbtn' value='I do not get it..' onclick='votedown()' />";
     }
     
     s+= "<div id='comments'>";
-    s+= "<h2>Comments</h2>";
+    s+= "<h3 class='italic uppercase negative marginTop'>What do people think?</h3>";
     s+= "<div id='comm_inh'>Comments</div>";
     s+= "<textarea id='comm_text' placeholder='Fill in your comment.'></textarea>";
     s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
