@@ -18,6 +18,7 @@ var map;
 var marker = null;
 
 var voted = false;
+var _user = 0;
 
 var edit = false;
 
@@ -43,13 +44,10 @@ function getData(){
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/cityproposals/" + prop_id,
         success: function(data){
-            
             voted = data.voted;
             showLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
-            console.log(voted);
             showData(data[0]);
         },
         error: function(){
@@ -114,11 +112,11 @@ function getComments(prop)
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/cityproposals/" + prop_id + "/comments",
         success: function(data){
             var comments = data.comments;
             parseComments(comments);
+            _user = data.user;
         },
         error: function(){
             $("#comm_inh").html("No comments for this project.");
@@ -182,7 +180,6 @@ function votedown()
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/cityproposals/" + prop_id + "/votedown",
         success: function(data){
             if (data != "voted") {

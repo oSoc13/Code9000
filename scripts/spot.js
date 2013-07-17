@@ -44,7 +44,6 @@ function getData(){
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/spots/" + spot_id,
         success: function(data){
             voted = data.voted;
@@ -149,7 +148,6 @@ function getComments(spot)
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/spots/" + spot + "/comments",
         success: function(data){
             var comments = data.comments;
@@ -167,8 +165,8 @@ function parseComments(comments)
     s= "";
     for (i = 0; i < comments.length; i++) {
         s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + comments[i].text + " ";
-        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + comments[i].modifieddate +"</strong></span></p>";
-        if (_user = comments[i].user_id) {
+        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
+        if (_user == comments[i].user_id) {
             s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
             s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";
         }
@@ -189,7 +187,7 @@ function voteup()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/" + spot_id + "/voteup/",
+        url: _root + "/api/spots/" + spot_id + "/voteup",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
@@ -215,8 +213,7 @@ function votedown()
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
-        url: _root + "/api/spots/" + spot_id + "/votedown/",
+        url: _root + "/api/spots/" + spot_id + "/votedown",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
