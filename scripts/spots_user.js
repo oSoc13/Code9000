@@ -35,9 +35,9 @@ $(function(){
 
 function showPicture(img){
 	if (img !== null){
-		return "<img class='spotimg' src='/Code9000/uploads/" + img + "'/>";
+		return "<div><img class='spotimg' src='/Code9000/uploads/" + img + "'/></div>";
 	}else{
-		return "";
+		return "<div><img class='spotimg' src='/Code9000/img/NoImage.jpg'/></div>";
 	}
 }
 
@@ -59,7 +59,7 @@ function initMarker(lat, long, id, description, proposed, up, down){
 
 function addSpot(id, description, proposed, up, down, img){
 	var element = "<a class='spotlink' href='/Code9000/spots/" + id + "'>" +
-			"<div class='spotcontent'>" + showPicture(img) + "<section><h3>" + description + "</h3>" + 
+			"<div class='spotcontent'>" + showPicture(img) + "<section class='clearfix'><h3>" + description + "</h3>" + 
 			"<p>Solution: " + proposed + "</p>" +
 			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
@@ -78,6 +78,9 @@ function loadData(){
 			beforeSend: function(xhr){
 			},
 			success: function(data){
+			if (data !== null){
+				
+			}
 				$.each(data, function(i, element){
 					var finalcoords = Array;
 					finalcoords = element.coords.split(" ");
@@ -90,7 +93,7 @@ function loadData(){
 				});
 			},
 			error: function(){
-
+				$("#spotlist").html("<p>There do not seem to be any spots associated with your account.</p>");
 			}
 	});
 }

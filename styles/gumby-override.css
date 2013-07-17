@@ -1,3 +1,17 @@
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+
 /* =============================
 * OVERRIDES FOR GUMBY
 * BECAUSE IT NEEDED FIXING
@@ -93,13 +107,16 @@ body{
 	display: block;
 	float: none;
 }
-
 .dateaccent{
 	margin-left: 10px;
 	color: orangered;
 	font-size: 0.40em;
 	position: relative;
 	top: -11px;
+}
+#map, #listbutton{
+	clear: both !important;
+
 }
 
 /* =============================
@@ -110,17 +127,27 @@ body{
 	clear: both;
 	padding: 15px;
 	border-top: 1px solid #AAA;
+	padding-bottom: 25px;
 }
 
 .spotcontent:hover{
 	background-color: #EEE;
 }
 
-.spotimg{
+.spotimg, .spotimg_noimg{
 	float: left;
-	margin-top: 15px;
-	padding-right: 25px;
+	margin-top: 25px;
+	margin-right: 50px;
 	max-width: 150px;
+	border: 4px solid #FFF;
+	box-shadow: 1px 1px 5px #999;
+}
+
+.spotimg_noimg{
+}
+
+.text{
+	float: left;
 }
 
 .sloth404{
@@ -159,10 +186,10 @@ body{
 
 /** TABLET APP */
 @media screen and (min-width: 481px) and (max-width: 768px){
-	.logo a img{
+	/*.logo a img{
 		position:relative !important;
 		top: 7px !important;
-	}
+	}*/
 }
 
 /** DESKTOP (960px max) */
@@ -173,4 +200,110 @@ body{
 /** DESKTOP (960px min) */
 @media screen and (min-width: 961px){
 
+}
+
+.btn,.drawer { margin-bottom:10px; }
+	.drawer { text-align: center; }
+	h1.lead { border-bottom: 1px dotted #ccc; margin-bottom: 30px; }
+	h4.lead { margin-bottom:10px; }
+	#icon_map ul li { font-size: 16px; }
+	.smallify { font-size: 13px; }
+	.modal h2, .modal .btn { margin: 5% 0 20px; }
+
+#logoNav {
+	width: 120px;
+	height: 100%;
+	background: url('../img/logo.png') no-repeat left center / contain;
+}
+
+#map{
+	height:200px !important;
+	width: 100% !important;
+}
+
+span.adjoined {background-color: rgba(0, 0, 0, 0) !important;}
+
+#Spotter {
+	padding-bottom: 5em;
+}
+
+#Spotter h1 {
+	background: #0D6359;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 2em;
+	font-style: italic;
+	font-weight: 300;
+	padding: 0.5em 0;
+	margin: 0 0 1em 0;
+}
+
+#Spotter img {
+	margin: 0 auto;
+}
+
+#Spotter h2 {display: none;}
+
+#Spotter a {
+	width: 74%;
+	background: #199387;
+	color: #fff;
+	padding: 1em;
+	margin: 2em 0 2em 14%;
+	clear: both;
+	display: block;
+}
+
+#Spotter input[type=text], #solution, #img_spot {
+	width: 74%;
+}
+
+#img_spot {
+	width: 50%;
+	margin: 0 0 3% 32%;
+}
+
+#pageActions {
+	width: 100%;
+	padding: 2em;
+	margin-top: -5em;
+}
+
+button#cancel, button#confirm {
+	width: 50%;
+	float: left;
+	background: none;
+	border: none;
+	font-style: italic;
+	text-transform: uppercase;
+	color: #999;
+}
+
+button#cancel {text-align: left;}
+button#confirm {text-align: right;}
+
+#streetlocation, #autolocation {
+	width: 20%;
+	float: left;
+	margin-bottom: 3em;
+	display: block;
+}
+
+.icon-user {
+	background: url('../img/icons/icon-user.png') no-repeat left bottom;
+	background-size: contain;
+	display: block;
+}
+
+.icon-pwd {
+	background: url('../img/icons/icon-pwd.png') no-repeat left bottom;
+	background-size: contain;
+	display: block;
+}
+
+.cImg {
+	width: 20%;
+	margin: 10% 0 10% 40%;
+	display: block;
 }

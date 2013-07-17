@@ -19,7 +19,7 @@
 
 # Deployment instructions
 
-In short, here's what you need to do in order to deploy the project
+In short, here's what you need to do in order to deploy the project 
 
 1) Place the Code9000 dir onto the server root.
 2) Create an /uploads folder in the Code9000 directory

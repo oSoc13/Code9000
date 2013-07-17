@@ -76,11 +76,12 @@ function showSpotLocation(lat, lng){
 }
 
 function showData(data){
+	$("#spotTitle").html(data.description);
     var s = "";
     s+= "<section>";
-    s+= "<p>Description: "+ data.description +"</p>";
-    s+= "<p>Proposal: "+ data.proposed +"</p>";
-    s+= "<p>Created: "+ data.createddate +"</p>";
+    s+= "<h3>Problem or</h3><p>" + data.description +"</p>";
+    s+= "<h3>Proposal</h3><p>" + data.proposed +"</p>";
+    s+= "<h3>Created</h3><p>" + data.createddate +"</p>";
     s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
@@ -306,8 +307,6 @@ function deleteComment(id){
         });
     }
 }
-
-
 
 (function($) {
     $.fn.goTo = function() {
