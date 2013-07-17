@@ -78,10 +78,7 @@ function loadData(){
 			beforeSend: function(xhr){
 			},
 			success: function(data){
-			if (data !== null){
-				
-			}
-				$.each(data, function(i, element){
+			$.each(data, function(i, element){
 					var finalcoords = Array;
 					finalcoords = element.coords.split(" ");
 					var lat = finalcoords[0].substr(1);
@@ -93,7 +90,10 @@ function loadData(){
 				});
 			},
 			error: function(){
-				$("#spotlist").html("<p>There do not seem to be any spots associated with your account.</p>");
+				var element =  "<div class='spotcontent'><section class='clearfix'><h3>No content found.</h3>" + 
+			"<p>We found no content.</p></section></div></a>";
+	$("#spotlist").append(element);
+				$("#status").html("Found nothing, sorry.");
 			}
 	});
 }

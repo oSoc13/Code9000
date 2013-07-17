@@ -292,7 +292,7 @@ $app->get('/account/edit', function () use ($app) {
         $app->render('account-edit.phtml', $data);
     }
  else {
-    $app->redirect('/code9000/login/please login first');    
+    $app->redirect('/code9000/login');    
     }
 });
 
@@ -343,11 +343,13 @@ $app->post('/account/edit', function () use ($app) {
         }
         else
         {
-            $app->redirect('/code9000/edit/Your password was incorrect.');  
+			$_SESSION["loginmsg"] = "Your password was incorrect. Please enter the correct details.";
+            $app->redirect('/code9000/edit');  
         }
      }
     else {
-       $app->redirect('/code9000/login/Please login first.');    
+		$_SESSION["loginmsg"] = "Please login first.";
+       $app->redirect('/code9000/login');    
     }
 });
 
@@ -357,7 +359,8 @@ $app->get('/account/delete', function () use ($app) {
         $app->render('account-delete.phtml');
     }
  else {
-    $app->redirect('/code9000/login/Please login first before deleting any profile.');    
+	 $_SESSION["loginmsg"] = "Please login first before deleting your profile.";
+    $app->redirect('/code9000/login');    
     }
 });
 
@@ -372,7 +375,8 @@ $app->post('/account/delete', function () use ($app) {
         
     }
  else {
-    $app->redirect('/code9000/login/Please login first before deleting any profile.');    
+	 $_SESSION["loginmsg"] = "Please login first before deleting your profile.";
+    $app->redirect('/code9000/login');    
     }
 });
 

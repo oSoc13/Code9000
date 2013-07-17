@@ -116,6 +116,11 @@ body{
 * HACKS (ugly, fix later)
 * ============================== */
 
+.imgwide{
+	float: left;
+	height: 100%;
+}
+
 .spotcontent{
 	clear: both;
 	padding: 15px;
