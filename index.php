@@ -357,11 +357,12 @@ $app->post('/account/edit', function () use ($app) {
                 $sql = "UPDATE users SET firstname = :firstname, surname =:surname, dateofbirth =:dateofbirth". $sqlAvatar ." , password=:password, passwordsalt=:salt WHERE user_id = :id";
             }
             UpdateDatabaseObject($sql,$user);
+            $app->redirect('/code9000/account');
         }
         else
         {
 			$_SESSION["loginmsg"] = "Your password was incorrect. Please enter the correct details.";
-            $app->redirect('/code9000/edit');  
+            $app->redirect('/code9000/account/edit');  
         }
      }
     else {
