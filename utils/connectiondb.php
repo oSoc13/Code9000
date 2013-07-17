@@ -228,8 +228,6 @@ class Connection
         $user = DB_USER;
         $password = DB_PASSWORD;
         $dbname = DB_NAME;
-        
-        
 
         try {
             self::$instance  = new PDO ("mysql:host=$hostname;dbname=$dbname","$user","$password");

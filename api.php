@@ -10,6 +10,13 @@ Nico Verbruggen (nico.verb@gmail.com)
 Stefaan Christiaens (stefaan.ch@gmail.com)
 **/
 
+/* Run through data arrays to escape input
+
+function filter(&$value) {
+  $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+*/
+
 /******************************************************************************/
 /* INCLUDE FILES
 /******************************************************************************/
@@ -46,7 +53,8 @@ function CheckIfEmpty($data, $app, $errormsg = "No data available", $status = 40
 		echo(json_encode($ERR_NO_DATA));
 		$app->response()->status($status);
 	}else{
-		echo(json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT));
+		array_walk_recursive($data, "filter");
+		echo(json_encode($data));
 		$app->response()->header('Content-Type', 'application/json');
 	}
 }
