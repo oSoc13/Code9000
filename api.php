@@ -154,12 +154,16 @@ $app->get('/api/locations/:id/spots', function ($id) use ($app) {
 
 $app->get('/api/spots', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-	$sql = "SELECT s.spot_id, s.description, s.proposed, s.photo_id, s.upvotes, s.downvotes, s.location_id, l.coords, l.location_id, p.photo_id, p.url
-			FROM spots s 
-			INNER JOIN locations l 
-			ON s.location_id=l.location_id 
-			LEFT JOIN photos p 
-			ON s.photo_id=p.photo_id";
+	$sql = "
+        SELECT * 
+        FROM (
+            SELECT s.spot_id, s.description, s.proposed, s.upvotes, s.downvotes, l.coords, l.location_id, p.photo_id, p.url, SUM( s.upvotes - s.downvotes ) votes
+            FROM spots s
+            INNER JOIN locations l ON s.location_id = l.location_id
+            LEFT JOIN photos p ON s.photo_id = p.photo_id
+            GROUP BY s.spot_id
+        )test
+        ORDER BY votes DESC";
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
@@ -611,7 +615,11 @@ $app->delete('/api/cityprojects/:id/comments/:cid', function($id,$cid) use ($app
  */
 $app->get('/api/cityproposals', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    $sql = "SELECT c.name, c.description, c.upvotes, c.downvotes, c.createddate, l.coords from cityproposals c inner join locations l on c.location_id = l.location_id where c.deleteddate IS NOT NULL";
+    $sql = "SELECT c.cityproposal_id, c.name, c.description, c.upvotes, c.downvotes, c.createddate, l.coords 
+            from cityproposals c 
+            inner join locations l on c.location_id = l.location_id 
+            where c.deleteddate IS NULL";
+
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
@@ -622,8 +630,31 @@ $app->get('/api/cityproposals', function () use ($app) {
 $app->get('/api/cityproposals/:id', function ($id) use ($app) {
 	$app->response()->header('Content-Type', 'application/json');
 	$execute = array(":id"=>$id);
-	$sql = "SELECT * FROM cityproposals WHERE cityproposal_id = :id AND cityproposals.deleteddate IS NOT NULL";
+	$sql = "SELECT c.cityproposal_id, c.name, c.description, c.upvotes, c.downvotes, c.createddate, l.coords 
+            from cityproposals c 
+            inner join locations l on c.location_id = l.location_id 
+            where c.deleteddate IS NULL AND cityproposal_id = :id";
 	$data = GetDatabaseObj($sql, $execute);
+
+
+    //CHECK IF USER ALREADY VOTED
+     $uid = $_SESSION['9K_USERID'];
+    $sqlcheck = "SELECT * FROM 
+        (
+            SELECT * from users_like_cityproposals uls 
+            where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
+        UNION 
+            SELECT * from users_dislike_cityproposals uds 
+            WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
+        ) result";
+   
+    $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
+    $check = GetDatabaseObj($sqlcheck, $vars);
+    if (empty($check)) {
+        $data["voted"] = false;
+    }else{
+        $data["voted"] = true;
+    }
 	CheckIfEmpty($data, $app);
 });
 
@@ -639,13 +670,13 @@ $app->post('/api/cityproposals/:id/voteup', function ($id) use ($app) {
             WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
         ) result";
    
-    $vars = array('user_id' => $uid, 'cityproposal_d' => $id);
+    $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
     if (empty($check)) {
         $execute = array("id"=>$id, "user_id" => $uid);
-	$sql = "UPDATE cityproposals SET upvotes=(upvotes+1) WHERE cityproposal_id = :id;Insert INTO users_like_cityproposals (user_id, cityproposal_id) values(:user_id,:id);";
-	$data = UpdateDatabaseObject($sql, $execute);
-	CheckIfEmpty($data, $app);
+    	$sql = "UPDATE cityproposals SET upvotes=(upvotes+1) WHERE cityproposal_id = :id;Insert INTO users_like_cityproposals (user_id, cityproposal_id) values(:user_id,:id);";
+    	$data = UpdateDatabaseObject($sql, $execute);
+    	CheckIfEmpty($data, $app);
     }
     else
         echo 'voted';
@@ -662,7 +693,7 @@ $app->post('/api/cityproposals/:id/votedown', function ($id) use ($app) {
             where uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
         ) result";
    
-    $vars = array('user_id' => $uid, 'cityproposal_d' => $id);
+    $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
     $check = GetDatabaseObj($sqlcheck, $vars);
     if (empty($check)) {
         $execute = array("id"=>$id, "user_id" => $uid);
@@ -680,7 +711,7 @@ $app->post('/api/cityproposals/:id/votedown', function ($id) use ($app) {
 $app->get('/api/cityproposals/:id/comments', function($id) use ($app){
     $app->response()->header('Content-Type', 'application/json');
     $execute = array(":id"=>$id);
-    $sql = "SELECT c.comment_id, c.text, c.modifieddate, u.avatar, u.firstname, u.surname, u.user_id FROM `comments` c
+    $sql = "SELECT c.comment_id, c.text, c.modifieddate,c.createddate, u.avatar, u.firstname, u.surname, u.user_id FROM `comments` c
         RIGHT JOIN cityproposals_has_comments sc
         ON sc.cityproposal_id=:id AND sc.comment_id=c.comment_id
         Inner join users u on c.user_id=u.user_id
@@ -689,7 +720,6 @@ $app->get('/api/cityproposals/:id/comments', function($id) use ($app){
     $datac = GetDatabaseObj($sql, $execute);
     
     $data['comments'] = $datac;
-    $data['user'] = $_SESSION['9K_USERID'];
     CheckIfEmpty($data, $app);
 });
 
@@ -944,7 +974,7 @@ $app->get('/api/users/:id/comments', function ($id) use ($app) {
 });
 
 /**
-    Get all spots from a specific user
+ * Get all spots from a specific user
  */
 $app->get('/api/users/:id/spots', function ($id) use ($app) {
     $app->response()->header('Content-Type', 'application/json');

@@ -1,6 +1,6 @@
 /**
-SPOT.JS
-Because we want to spot things.
+CityProposals.JS
+Because we want to discuss projects.
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -18,7 +18,6 @@ var map;
 var marker = null;
 
 var voted = false;
-var _user = 0;
 
 var edit = false;
 
@@ -45,10 +44,12 @@ function getData(){
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/" + spot_id,
+        url: _root + "/api/cityproposals/" + prop_id,
         success: function(data){
+            
             voted = data.voted;
-            showSpotLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
+            showLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
+            console.log(voted);
             showData(data[0]);
         },
         error: function(){
@@ -59,7 +60,7 @@ function getData(){
 
 
 // Add a marker (only one allowed!)
-function showSpotLocation(lat, lng){
+function showLocation(lat, lng){
     
     $("#map").width = $(window).width();
 
@@ -70,18 +71,17 @@ function showSpotLocation(lat, lng){
 
     // Add marker to map
     marker = L.marker([lat,lng]).addTo(map);
-    marker.bindPopup("<b>This is the location for your spotting.</b>");
+    marker.bindPopup("<b>This is the location of the project.</b>");
     // Zoom to marker
-    map.setView([lat,lng], 16);
+    map.setView([lat,lng], 15);
 }
 
 function showData(data){
-	$("#spotTitle").html(data.description);
     var s = "";
     s+= "<section>";
-    s+= "<h3>Problem or</h3><p>" + data.description +"</p>";
-    s+= "<h3>Proposal</h3><p>" + data.proposed +"</p>";
-    s+= "<h3>Created</h3><p>" + data.createddate +"</p>";
+    s+= "<h3>"+ data.name +"</p>";
+    s+= "<p>Description: "+ data.description +"</p>";
+    s+= "<p>Created: "+ data.createddate +"</p>";
     s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
@@ -92,10 +92,6 @@ function showData(data){
         s+= "<input type='button' id='downbtn' value='I do not get it..' onclick='votedown()' />";
     }
     
-    s+= "<div id='user'>";
-    s+= "<h2>User</h2>";
-    s+= "<div id='user_inh'>Loading...</div>";
-    s+= "</div>";
     s+= "<div id='comments'>";
     s+= "<h2>Comments</h2>";
     s+= "<div id='comm_inh'>Comments</div>";
@@ -103,16 +99,15 @@ function showData(data){
     s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
     s+= "</div>";
     s+= "</section>";
-    $("#spot").html(s);
+    $("#prop_content").html(s);
     
     
-    getUser(data.user_id);
     getComments(data.spot_id);
     
     
 }
 
-function getUser(id)
+function getComments(prop)
 {
     $.ajax({
         type: "GET",
@@ -120,44 +115,13 @@ function getUser(id)
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/users/" + id,
-        success: function(data){
-            var user = data[0];
-            parseUser(user);
-        },
-        error: function(){
-            console.log("user " + id + " not found.");
-        }
-    });
-}
-function parseUser(user)
-{
-    var s = "";
-    s+= "<section>";
-    s+= "<p>firstname: "+ user.firstname +"</p>";
-    s+= "<p>surname: "+ user.surname +"</p>";
-    s+= "<p>avatar: </p>";
-    s+= "<img src='"+ _root +"/uploads/"+ user.avatar +"' />";
-    s+= "</section>";
-    $("#user_inh").html(s);
-}
-
-function getComments(spot)
-{
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        contentType: "application/json",
-        cache: false,
-        data: null,
-        url: _root + "/api/spots/" + spot + "/comments",
+        url: _root + "/api/cityproposals/" + prop_id + "/comments",
         success: function(data){
             var comments = data.comments;
-            _user = data.user;
             parseComments(comments);
         },
         error: function(){
-            $("#comm_inh").html("No comments for this spotting.");
+            $("#comm_inh").html("No comments for this project.");
         }
     });
 }
@@ -167,8 +131,11 @@ function parseComments(comments)
     s= "";
     for (i = 0; i < comments.length; i++) {
         s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + comments[i].text + " ";
-        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + comments[i].modifieddate +"</strong></span></p>";
-        if (_user = comments[i].user_id) {
+        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
+        
+        console.log("User: " + _user + ". commentuser: " + comments[i].user_id);
+
+        if (_user == comments[i].user_id) {
             s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
             s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";
         }
@@ -176,7 +143,7 @@ function parseComments(comments)
         s+="<hr/>";
     }
     if (comments.length == 0) {
-        s = "No comments for this spotting.";
+        s = "No comments for this project.";
     }
     $("#comm_inh").html(s);
 }
@@ -189,7 +156,7 @@ function voteup()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/" + spot_id + "/voteup/",
+        url: _root + "/api/cityproposals/" + prop_id + "/voteup",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
@@ -216,7 +183,7 @@ function votedown()
         contentType: "application/json",
         cache: false,
         data: null,
-        url: _root + "/api/spots/" + spot_id + "/votedown/",
+        url: _root + "/api/cityproposals/" + prop_id + "/votedown",
         success: function(data){
             if (data != "voted") {
                 console.log("ok");
@@ -246,12 +213,12 @@ function comment()
         var dataS = null;
         if (edit)
         {
-            url = _root + "/api/spots/"+spot_id+"/comments/" + $("#comm_text").data('id');
+            url = _root + "/api/cityproposals/"+prop_id+"/comments/" + $("#comm_text").data('id');
             dataS = {"text":$("#comm_text").val()};
         }
         else
         {
-           url = _root + "/api/spots/"+spot_id+"/comments";
+           url = _root + "/api/cityproposals/"+prop_id+"/comments";
            dataS = {"text":$("#comm_text").val()};
         }
         dataS =JSON.stringify(dataS);
@@ -267,7 +234,7 @@ function comment()
                 edit = false;
                 $("#comm_text").data('id', "");
                 $("#comment_enter").val('Comment');
-                getComments(spot_id);
+                getComments(prop_id);
             },
             error: function(xhr){
                 edit = false;
@@ -297,9 +264,9 @@ function deleteComment(id){
             contentType: "application/json",
             cache: false,
             data: JSON.stringify({"lol":1}),
-            url: _root + "/api/spots/"+spot_id+"/comments/" + id,
+            url: _root + "/api/cityproposals/"+prop_id+"/comments/" + id,
             success: function(data){
-                getComments(spot_id);
+                getComments(prop_id);
             },
             error: function(xhr){
                 console.log(xhr);
@@ -307,6 +274,8 @@ function deleteComment(id){
         });
     }
 }
+
+
 
 (function($) {
     $.fn.goTo = function() {
