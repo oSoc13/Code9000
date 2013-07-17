@@ -89,8 +89,10 @@ class Authentication {
         $mail->AddAddress($email, $name);  // Add a recipient
         $mail->IsHTML(true);                                  // Set email format to HTML
 
-        $mail->Subject = 'Activation code';
-        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
+        $mail->Subject = '9K Spotter Activation';
+        $mail->Body    = '<h3>Hi there, and welcome to 9K Spotter!</h3>
+<p>You just registered a new account. Please activate your account before you can use the application. Thanks.</p>
+<p><a href="http://code9000.gent.be/Code9000/activateaccount/' . $code . '/'.$email.'">Please activate your account by clicking this link</a>.</p>';
                 
         if(!$mail->Send()) {
            echo 'Message could not be sent.';
