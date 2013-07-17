@@ -27,7 +27,10 @@ Nico Verbruggen (nico.verb@gmail.com)
 				<p>Born: <?php echo $this->data['user']['dateofbirth']?></p>
 				<p>Joined: <?php echo $this->data['user']['createddate']?></p>
 				<p>Last time you logged in: <?php echo $this->data['user']['lastloggedindate']?></p>
-				<a href="/code9000/account/edit" >Edit your details</a>
+				<ul>
+					<li><div class="medium btn primary"><a href="/code9000/account/edit" >Edit your details</a></div></li>
+					<li><div class="medium btn primary"><a href="/Code9000/logout">Log out</a></div></li>
+				</ul>
 			</div>
 			</div>
 			<?php endif;?>
