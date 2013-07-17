@@ -21,10 +21,10 @@ class Authentication {
     
     function register($data)
     {
-        $fname = mysql_real_escape_string($data['fname']);
-        $sname = mysql_real_escape_string($data['sname']);
-        $email = mysql_real_escape_string($data['email']);
-        $dob = mysql_real_escape_string($data['dob']);
+        $fname = $data['fname'];
+        $sname = $data['sname'];
+        $email = $data['email'];
+        $dob = $data['dob'];
         $admin = ( $data['admin']? "admin" : "user" );
         $passwordData = $this->hashPassword($data['pwd'], 'sha256');
         $activationcode = $this->generateRandomString(15);

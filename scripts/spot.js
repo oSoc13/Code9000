@@ -36,8 +36,6 @@ $(function(){
         }).addTo(map);
 });
 
-
-
 function getData(){
     $.ajax({
         type: "GET",
@@ -75,11 +73,11 @@ function showSpotLocation(lat, lng){
 }
 
 function showData(data){
-	$("#spotTitle").html(data.description);
+	$("#spotTitle").html(htmlEncode(data.description));
     var s = "";
     s+= "<section>";
-    s+= "<h3>Problem or</h3><p>" + data.description +"</p>";
-    s+= "<h3>Proposal</h3><p>" + data.proposed +"</p>";
+    s+= "<h3>Problem</h3><p>" + htmlEncode(data.description) +"</p>";
+    s+= "<h3>Proposal</h3><p>" + htmlEncode(data.proposed) +"</p>";
     s+= "<h3>Created</h3><p>" + data.createddate +"</p>";
     s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
@@ -133,8 +131,8 @@ function parseUser(user)
 {
     var s = "";
     s+= "<section>";
-    s+= "<p>firstname: "+ user.firstname +"</p>";
-    s+= "<p>surname: "+ user.surname +"</p>";
+    s+= "<p>firstname: "+ htmlEncode(user.firstname) +"</p>";
+    s+= "<p>surname: "+ htmlEncode(user.surname) +"</p>";
     s+= "<p>avatar: </p>";
     s+= "<img src='"+ _root +"/uploads/"+ user.avatar +"' />";
     s+= "</section>";
