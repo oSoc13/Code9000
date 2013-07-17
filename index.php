@@ -57,6 +57,10 @@ $app->get('/home', function () use ($app) {
     $app->render('index.phtml');
 });
 
+$app->get('/admin', function () use ($app) {
+    $app->render('admin.phtml');
+});
+
 $app->get('/upload', function () use ($app) {
     $app->render('upload.phtml');
 });

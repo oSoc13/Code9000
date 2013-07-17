@@ -10,83 +10,61 @@ Nico Verbruggen (nico.verb@gmail.com)
 Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 ?>
-<!doctype html>
-<html dir="ltr" lang="nl-be">
-    <head>
-        <!-- CHARACTER ENCODING -->
-        <meta charset="UTF-8">
-        <!-- LATEST VERSION OF RENDERING ENGINE -->
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <!-- MOST IMPORTANT SEO FRIENDLY TAG -->
-        <title>9KBuilder | API</title>
-        <!-- OTHER IMPORTANT SEO TAGS -->
-        <meta name="description" content="">
-        <meta name="keywords" content="">
-        <meta name="author" content="Stefaan Christiaens">
-        <meta name="copyright" content="">
-        <!-- HUMANS.TXT FILE -->
-        <link rel="author" type="text/plain" href="humans.txt">
-        <!-- MOBILE VIEWPORT -->
-        <meta name="viewport" content="width=device-width">
-        <!-- LINK MY OWN STYLESHEET -->
-        <link rel="stylesheet" href="/Code9000/styles/index.css">
-    </head>
-<body>
-<!-- LAYOUT / TYPO / CONTENT -->
-<div id="page-wrapper" class="page">
-    <nav>
-        <ul>
-            <li><a href='/Code9000/home'>Home</a></li>
-            <li><a href='/Code9000/alerts'>Meldingen</a></li>
-            <li><a href='/Code9000/tips'>Tips</a></li>
-            <li><a href='/Code9000/about'>Over deze app</a></li>
+<?php
+		echo $this->render('header.phtml');
+?>
+	<div class="row">		
+		<h1 class='h_und'>About 9K Spotter</h1>
+		<div class="row">
+			<div class='twelve columns breathe'>
+                <h2>9KBuilder API</h2>
+                <h3 class="italic uppercase negative">Get information</h3>
+                <p>Using GET, you can get (excuse the pun) data from our application.</p>
+            </div>
+		</div>
+        <div class='twelve columns breathe'>
+            <ul class="borderBtm">
+                <li class="italic uppercase borderTop">Locations</li>
+            <ul class="breathe">
+                <li><a href="/Code9000/api/locations">locations</a></li>
+                <li><a href="/Code9000/api/locations/1">specific location</a></li>
+                <li><a href="/Code9000/api/locations/last15">last 15 locations</a></li>
+            </ul>
+            <li class="italic uppercase borderTop">Spots</li>
+            <ul class="breathe">
+                <li><a href="/Code9000/api/spots">get all spots</a></li>
+                <li><a href="/Code9000/api/spots/1">one specific spot</a></li>
+                <li><a href="/Code9000/api/locations/1/spots">get all spots for one specific location</a></li>
+            </ul>
+            <li class="italic uppercase borderTop">Comments</li>
+            <ul class="breathe">
+                <li><a href="/Code9000/api/comments">get all comments</a></li>
+                <li><a href="/Code9000/api/comments/1">get one specific comment</a></li>
+                <li><a href="/Code9000/api/users/1/comments">get all comments for one specific user</a></li>
+            </ul>
+            <li class="italic uppercase borderTop">Pictures</li>
+            <ul class="breathe">
+                <li><a href="/Code9000/api/photos">photos</a></li>
+                <li><a href="/Code9000/api/photos/1">specific photo</a></li>
+                <li><a href="/Code9000/api/photos/last15">last 15 photos</a></li>
+            </ul>
+            <li class="italic uppercase borderTop">City Projects &amp; Proposals</li>
+            <ul class="breathe">
+            <li><a href="/Code9000/api/cityprojects">cityprojects</a></li>
+            <li><a href="/Code9000/api/cityproposals">cityproposals</a></li>
+            </ul>
         </ul>
-    </nav>
-    <h2>9KBuilder API</h2>
-<hr />
-<h3>Get information</h3>
-<p>Using GET, you can get (excuse the pun) data from our application.</p>
-<ul>
-	<li>Locations</li>
-	<ul>
-		<li><a href="/Code9000/api/locations">locations</a></li>
-		<li><a href="/Code9000/api/locations/1">specific location</a></li>
-		<li><a href="/Code9000/api/locations/last15">last 15 locations</a></li>
-	</ul>
-	<li>Spots</li>
-	<ul>
-		<li><a href="/Code9000/api/spots">get all spots</a></li>
-		<li><a href="/Code9000/api/spots/1">one specific spot</a></li>
-		<li><a href="/Code9000/api/locations/1/spots">get all spots for one specific location</a></li>
-	</ul>
-	<li>Comments</li>
-	<ul>
-		<li><a href="/Code9000/api/comments">get all comments</a></li>
-		<li><a href="/Code9000/api/comments/1">get one specific comment</a></li>
-		<li><a href="/Code9000/api/users/1/comments">get all comments for one specific user</a></li>
-	</ul>
-	<li>Pictures</li>
-	<ul>
-		<li><a href="/Code9000/api/photos">photos</a></li>
-		<li><a href="/Code9000/api/photos/1">specific photo</a></li>
-		<li><a href="/Code9000/api/photos/last15">last 15 photos</a></li>
-	</ul>
-	<li>City Projects &amp; Proposals</li>
-	<ul>
-    <li><a href="/Code9000/api/cityprojects">cityprojects</a></li>
-    <li><a href="/Code9000/api/cityproposals">cityproposals</a></li>
-	</ul>
-</ul>
-<p>The following information requires you to log in with your account. If you are not an administrator, you cannot get this information or get limited information.</p>
-<ul>
-	<li><a href="/Code9000/api/users">users*</a></li>
-	<li><a href="/Code9000/api/users/1">user with a specific ID**</a></li>
-</ul>
-<h3>Legend</h3>
-<ul>
-	<li>* (not accessible without admin rights)</li>
-	<li>** (accessible without admin rights, gives limited information</li>
-</ul>
+        <p class="borderTop">The following information requires you to log in with your account. If you are not an administrator, you cannot get this information or get limited information.</p>
+        <ul class="breathe">
+            <li><a href="/Code9000/api/users">users*</a></li>
+            <li><a href="/Code9000/api/users/1">user with a specific ID**</a></li>
+        </ul>
+        <h3 class="italic uppercase negative">Legend</h3>
+        <ul class="breathe">
+            <li>* (not accessible without admin rights)</li>
+            <li>** (accessible without admin rights, gives limited information</li>
+        </ul>
+    </div>
 </div>
 <!-- BOTTOM SCRIPTS -->
 <!-- 1. GRAB GOOGLE'S JQUERY CDN -->
