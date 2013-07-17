@@ -278,7 +278,8 @@ $app->post('/login', function () use ($app) {
             $app->redirect('/code9000/spottings');
             break;
     }
-    $app->redirect('/code9000/login/'.$msg);
+	$_SESSION["loginmsg"] = $msg;
+    $app->redirect('/code9000/login');
 });
 
 $app->get('/account', function () use ($app) {
@@ -375,7 +376,7 @@ $app->get('/account/delete', function () use ($app) {
         $app->render('account-delete.phtml');
     }
  else {
-	 $_SESSION["loginmsg"] = "Please login first before deleting your profile.";
+	$_SESSION["loginmsg"] = "Please login first before deleting your profile.";
     $app->redirect('/code9000/login');    
     }
 });
