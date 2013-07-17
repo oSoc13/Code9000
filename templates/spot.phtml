@@ -28,8 +28,13 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<footer class='row'>
 			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
 		</footer>
-<?php echo $this->render('libsfooter.phtml') ?>
-
+		<script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
+		
+		<?php echo $this->render('libsfooter.phtml') ?>
+		<script>
+			var spot_id = <?php echo $this->data['id'] ?>;
+		</script>
+		<script src="/code9000/scripts/spot.js"></script>
 	<style>
 		#map{
 			height:300px !important;
