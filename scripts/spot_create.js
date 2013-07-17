@@ -197,11 +197,11 @@ function uploadFile(file, p){
                     switch (kind){
                             case "img_location":
                                 var url = evt.target.responseText.split("\\").join("/");
-                                $("#locationimg").html("<img class='upload' src='http://" + url + "'/>");
+                                $("#locationimg").html("<img class='upload' src='http://" + htmlEncode(url) + "'/>");
                                 break;
                             case "img_spot":
                                 var url = evt.target.responseText.split("\\").join("/");
-                                $("#spotimg").html("<img class='upload' src='http://" + url + "'/>");
+                                $("#spotimg").html("<img class='upload' src='http://" + htmlEncode(url) + "'/>");
                                 break;
                             default:
                             break;
@@ -257,9 +257,9 @@ function returnJSON(){
 			},
 			success: function(data){
                             if (data.status =="Not logged in.") {
-                                window.location=_loginPath + "/Please login first.";
+                                window.location=_loginPath;
                             }
-				$("#Spotter").html("<p>" + data.status + "</p>");
+				$("#Spotter").html("<p>" + htmlEncode(data.status) + "</p>");
                             if (data.spot_created != null) {
                                 window.location=_root + data.spot_created;
                             }

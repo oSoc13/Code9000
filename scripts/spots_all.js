@@ -53,8 +53,8 @@ function initMarker(lat, long, id, description, proposed, up, down){
     marker = L.marker([lat, long]).addTo(map);
     marker.bindPopup("<a href='/Code9000/spots/" + id + "'>" +
 			"<div>" +
-			"<h3>" + description.substring(0, 60) + "(...)</h3>" + 
-			"<p>Solution: " + proposed.substring(0, 120) + "(...)</p>" +
+			"<h3>" + htmlEncode(description.substring(0, 60)) + "(...)</h3>" + 
+			"<p>Solution: " + htmlEncode(proposed.substring(0, 120)) + "(...)</p>" +
 			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
 			"<span class='downvote'>-" + down + "</span>)</p></div></a>");
@@ -66,8 +66,8 @@ function addSpot(id, description, proposed, up, down, img){
 	if (proposed === null){proposed="";};
 	
 	var element = "<a class='spotlink' href='/Code9000/spots/" + id + "'>" +
-			"<div class='spotcontent clearfix'>" + showPicture(img) + "<section class='clearfix eight columns'><h3>" + description.substring(0, 120) + "</h3>" + 
-			"<p>Solution: " + proposed.substring(0,400) + "</p>" +
+			"<div class='spotcontent clearfix'>" + showPicture(img) + "<section class='clearfix eight columns'><h3>" + htmlEncode(description.substring(0, 120)) + "</h3>" + 
+			"<p>Solution: " + htmlEncode(proposed.substring(0,400)) + "</p>" +
 			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
 			"<span class='downvote'>-" + down + "</span>)</p></section></div></a>";

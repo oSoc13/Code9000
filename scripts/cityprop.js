@@ -77,8 +77,8 @@ function showLocation(lat, lng){
 function showData(data){
     var s = "";
     s+= "<section>";
-    s+= "<h3 class='italic uppercase negative'>"+ data.name +"</h3>";
-    s+= "<p>Description: "+ data.description +"</p>";
+    s+= "<h3 class='italic uppercase negative'>"+ htmlEncode(data.name) +"</h3>";
+    s+= "<p>Description: "+ htmlEncode(data.description) +"</p>";
     s+= "<p>Created: "+ data.createddate +"</p>";
     s+= "<p class='btnFL'>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
@@ -128,8 +128,8 @@ function parseComments(comments)
 {
     s= "";
     for (i = 0; i < comments.length; i++) {
-        s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + comments[i].text + " ";
-        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
+        s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + htmlEncode(comments[i].text) + " ";
+        s+="</span><span>By " + htmlEncode(comments[i].firstname) + " " + htmlEncode(comments[i].surname) + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
         
         console.log("User: " + _user + ". commentuser: " + comments[i].user_id);
 
