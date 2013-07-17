@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Genereertijd: 11 jul 2013 om 17:23
+-- Genereertijd: 17 jul 2013 om 11:13
 -- Serverversie: 5.5.27
 -- PHP-versie: 5.4.7
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `cityproposals` (
 --
 
 INSERT INTO `cityproposals` (`cityproposal_id`, `name`, `description`, `upvotes`, `downvotes`, `createddate`, `modifieddate`, `deleteddate`, `location_id`, `user_id`) VALUES
-(1, 'AC Portus is going down baby.', 'In the beginning of time, AC Portus was a giant building reknown for it''s telecommunitive potential. That is one of the reasons that Belgacome took over the buidling in 27 AD.', 0, 0, '2013-07-04 09:44:37', '2013-07-04 21:34:07', NULL, 1, 1);
+(1, 'AC Portus is going down baby.', 'In the beginning of time, AC Portus was a giant building reknown for it''s telecommunitive potential. That is one of the reasons that Belgacome took over the buidling in 27 AD.', 1, 1, '2013-07-04 09:44:37', '2013-07-15 16:05:26', NULL, 1, 1);
 
 --
 -- Triggers `cityproposals`
@@ -136,6 +136,16 @@ CREATE TABLE IF NOT EXISTS `cityproposals_has_comments` (
   KEY `comment_id` (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Gegevens worden uitgevoerd voor tabel `cityproposals_has_comments`
+--
+
+INSERT INTO `cityproposals_has_comments` (`cityproposal_id`, `comment_id`) VALUES
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7);
+
 -- --------------------------------------------------------
 
 --
@@ -150,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `fk_comments_users1_idx` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='	' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='	' AUTO_INCREMENT=8 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `comments`
@@ -159,7 +169,11 @@ CREATE TABLE IF NOT EXISTS `comments` (
 INSERT INTO `comments` (`comment_id`, `text`, `createddate`, `modifieddate`, `user_id`) VALUES
 (1, 'Proposal is witty but shitty.', '2013-07-04 09:44:37', '2013-07-11 14:23:23', 6),
 (2, 'Project is cool, only lacks girls.', '2013-07-04 09:44:37', NULL, 1),
-(3, 'spot is awesome', '2013-07-05 08:07:37', '2013-07-11 14:23:23', 6);
+(3, 'spot is awesome', '2013-07-05 08:07:37', '2013-07-11 14:23:23', 6),
+(4, 'test lol', '2013-07-15 15:19:31', '2013-07-15 15:20:27', 6),
+(5, 'zeteg', '2013-07-15 15:20:35', NULL, 6),
+(6, 'test', '2013-07-15 15:59:49', NULL, 7),
+(7, 'mamam- mia 2', '2013-07-15 16:05:15', '2013-07-15 16:05:20', 7);
 
 --
 -- Triggers `comments`
@@ -265,8 +279,8 @@ CREATE TABLE IF NOT EXISTS `spots` (
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `deleteddate` datetime DEFAULT NULL,
-  `upvotes` int(10) unsigned DEFAULT NULL,
-  `downvotes` int(10) unsigned DEFAULT NULL,
+  `upvotes` int(10) DEFAULT NULL,
+  `downvotes` int(10) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
   `photo_id` int(11) DEFAULT NULL,
@@ -352,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lastloggedindate` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `users`
@@ -361,7 +375,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`user_id`, `email`, `password`, `passwordsalt`, `role`, `dateofbirth`, `firstname`, `surname`, `avatar`, `activationcode`, `activationdate`, `createddate`, `modifieddate`, `deleteddate`, `lastloggedindate`) VALUES
 (1, 'test', 'admin', '9kbuildersalt', 'admin', '2013-07-04 00:00:00', 'Stefaan', 'Christiaens', NULL, '12345678910', '2013-07-04 00:00:00', '2013-07-04 09:44:37', '2013-07-08 12:02:12', NULL, NULL),
 (5, 'tobmav@gmail.com', 'af2db466b684d1b57be7023bace33ae4af4b769a29b0199c04ad9972abe0956a', 'VnFFQjI0dVlDajBGVVk4Z0NwbFNZc0Q0R3RyWVhoS2F4ZjFKRGJlZ1h0UlNKVlE5RlVGYjBnanlyamVuZFZvZQ==', 'admin', '1991-01-10 00:00:00', 'Tom', 'Van humbeek', 'MDUuanBnMTM3MzM2NzMyMTM5OQ==.jpg', '1qhe6GRW90Atpgq', NULL, '2013-07-09 12:55:24', NULL, NULL, NULL),
-(6, 'stefaan.ch@gmail.com', 'bb101c7fd3da9e88f17fce8d1d4c4e180354e039ea3decbc3beea6098c2e0fe2', 'akxsSXY4NkR4NjNsdlU0TjFmdXNhbDhqeFduT2VlMldQV3Rhcmh3ckRaeGZ4aGx6SlFpUWlXZjNQZ3hGcjJaRQ==', 'admin', '1991-01-10 00:00:00', 'Stef', 'chri', 'MDYuanBnMTM3MzQ1NTM1MTk5MQ==.jpg', '33FSmlUBfZ6QPd6', '2013-07-09 13:00:56', '2013-07-09 13:00:31', '2013-07-11 17:18:26', NULL, '2013-07-11 17:18:26');
+(6, 'stefaan.ch@gmail.com', 'bb101c7fd3da9e88f17fce8d1d4c4e180354e039ea3decbc3beea6098c2e0fe2', 'akxsSXY4NkR4NjNsdlU0TjFmdXNhbDhqeFduT2VlMldQV3Rhcmh3ckRaeGZ4aGx6SlFpUWlXZjNQZ3hGcjJaRQ==', 'admin', '1991-01-10 00:00:00', 'Stef', 'chri', 'MDYuanBnMTM3MzQ1NTM1MTk5MQ==.jpg', '33FSmlUBfZ6QPd6', '2013-07-09 13:00:56', '2013-07-09 13:00:31', '2013-07-15 15:36:04', NULL, '2013-07-15 15:36:04'),
+(7, 'stef_christiaens@hotmail.com', '70d687a799c6a78bb90187ad95e50af4ed0f289fccd77b2809e24a32e93ba005', 'bkVXcHdMNmNqdmpBc2M0R2JIajNjbHdOSVpGeHRYZWtINjlONExVMFFOdXpJeWx6VlFzQ2IyaE5HWU1IYlpzcQ==', 'user', '1991-01-10 00:00:00', 'Stefaan', 'Christiaens', 'Slim->run()\r\n#11 {main}</pre></body></html>', 'SVeyu9CbftyVRgw', '2013-07-15 15:40:32', '2013-07-15 15:39:04', '2013-07-17 11:10:39', NULL, '2013-07-17 11:10:39');
 
 --
 -- Triggers `users`
@@ -404,6 +419,13 @@ CREATE TABLE IF NOT EXISTS `users_dislike_cityproposals` (
   PRIMARY KEY (`user_id`,`cityproposal_id`),
   KEY `cityproposal_id` (`cityproposal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `users_dislike_cityproposals`
+--
+
+INSERT INTO `users_dislike_cityproposals` (`user_id`, `cityproposal_id`) VALUES
+(7, 1);
 
 -- --------------------------------------------------------
 
@@ -451,6 +473,13 @@ CREATE TABLE IF NOT EXISTS `users_like_cityproposals` (
   PRIMARY KEY (`user_id`,`cityproposal_id`),
   KEY `cityproposal_id` (`cityproposal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `users_like_cityproposals`
+--
+
+INSERT INTO `users_like_cityproposals` (`user_id`, `cityproposal_id`) VALUES
+(6, 1);
 
 -- --------------------------------------------------------
 
@@ -531,43 +560,43 @@ ALTER TABLE `spots_has_comments`
 -- Beperkingen voor tabel `users_dislike_cityprojects`
 --
 ALTER TABLE `users_dislike_cityprojects`
-  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_dislike_cityproposals`
 --
 ALTER TABLE `users_dislike_cityproposals`
-  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_dislike_spots`
 --
 ALTER TABLE `users_dislike_spots`
-  ADD CONSTRAINT `users_dislike_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_dislike_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_dislike_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_dislike_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_like_cityprojects`
 --
 ALTER TABLE `users_like_cityprojects`
-  ADD CONSTRAINT `users_like_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_like_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_like_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_like_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_like_cityproposals`
 --
 ALTER TABLE `users_like_cityproposals`
-  ADD CONSTRAINT `users_like_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_like_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_like_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_like_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_like_spots`
 --
 ALTER TABLE `users_like_spots`
-  ADD CONSTRAINT `users_like_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_like_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_like_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_like_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
