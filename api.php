@@ -179,7 +179,6 @@ $app->post('/api/spots/create', function () use ($app) {
                 echo json_encode($var = array("status"=>"Not logged in."));exit();
             }
             $id = $_SESSION['9K_USERID'];
-
             // Four different parameter sets
             $photospot_params = array(":spot_img"=>$data->spot_img);
             $location_params = array(":latlong"=>"[$data->lat $data->long]",":user_id"=>$id);
