@@ -322,3 +322,5 @@ ul.breathe {
 
 .italic {font-style: italic;}
 .uppercase {text-transform: uppercase;}
+
+.borderBtm {border-bottom: 1px solid #ccc;}
