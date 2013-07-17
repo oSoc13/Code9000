@@ -107,9 +107,16 @@ body{
 	display: block;
 	float: none;
 }
-
+.dateaccent{
+	margin-left: 10px;
+	color: orangered;
+	font-size: 0.40em;
+	position: relative;
+	top: -11px;
+}
 #map, #listbutton{
 	clear: both !important;
+
 }
 
 /* =============================
