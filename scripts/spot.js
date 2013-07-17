@@ -165,7 +165,7 @@ function parseComments(comments)
     s= "";
     for (i = 0; i < comments.length; i++) {
         s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + comments[i].text + " ";
-        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + comments[i].modifieddate +"</strong></span></p>";
+        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
         if (_user == comments[i].user_id) {
             s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
             s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";

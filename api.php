@@ -247,7 +247,7 @@ $app->post('/api/spots/create', function () use ($app) {
 $app->get('/api/spots/:id', function ($id) use ($app) {
     $app->response()->header('Content-Type', 'application/json');
     $execute = array(":id"=>$id);
-    $sql = "SELECT c.spot_id, c.proposed, c.description, c.upvotes, c.downvotes, c.createddate, l.coords, c.user_id 
+    $sql = "SELECT c.spot_id, c.proposed, c.description, c.upvotes, c.downvotes, c.createddate, c.modifieddate, l.coords, c.user_id 
             from spots c 
             inner join locations l on c.location_id = l.location_id 
             where c.deleteddate IS NULL AND spot_id = :id";
@@ -333,7 +333,7 @@ $app->post('/api/spots/:id/votedown', function ($id) use ($app) {
 $app->get('/api/spots/:id/comments', function($id) use ($app){
     $app->response()->header('Content-Type', 'application/json');
     $execute = array(":id"=>$id);
-    $sql = "SELECT c.comment_id, c.text, c.modifieddate, u.avatar, u.firstname, u.surname, u.user_id FROM `comments` c
+    $sql = "SELECT c.comment_id, c.text, c.modifieddate, c.createddate, u.avatar, u.firstname, u.surname, u.user_id FROM `comments` c
         RIGHT JOIN spots_has_comments sc
         ON sc.spot_id=:id AND sc.comment_id=c.comment_id
         Inner join users u on c.user_id=u.user_id
