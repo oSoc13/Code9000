@@ -43,6 +43,9 @@ function showPicture(img){
 
 function initMarker(lat, long, id, description, proposed, up, down){
     
+	if (description === null){description="";};
+	if (proposed === null){proposed="";};
+	
 	$("#map").width = $(window).width();
 	// Show the map if it was hidden
 	$("#map").css("display","block");
@@ -58,6 +61,10 @@ function initMarker(lat, long, id, description, proposed, up, down){
 }
 
 function addSpot(id, description, proposed, up, down, img){
+	
+	if (description === null){description="";};
+	if (proposed === null){proposed="";};
+	
 	var element = "<a class='spotlink' href='/Code9000/spots/" + id + "'>" +
 			"<div class='spotcontent clearfix'>" + showPicture(img) + "<section class='clearfix eight columns'><h3>" + description.substring(0, 120) + "</h3>" + 
 			"<p>Solution: " + proposed.substring(0,400) + "</p>" +
