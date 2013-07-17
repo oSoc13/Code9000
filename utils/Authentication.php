@@ -89,7 +89,14 @@ class Authentication {
         $mail->IsHTML(true);                                  // Set email format to HTML
 
         $mail->Subject = 'Activation code';
-        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
+        $mail->Body    = "<style>
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100,300italic,400italic,700);
+h3, p{
+	font-family: Roboto;
+}
+</style><h3>Hi there, and welcome to 9K Spotter!</h3>
+<p>You just registered a new account. Please activate your account before you can use the application. Thanks.</p>
+<p><a href=\"localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.'\">Activate now</a> or go to <a href=\"localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.'\">localhost:8888/Code9000/activateaccount/' . $code . '/'.$email.'</a> to activate your account.</p>";
                 
         if(!$mail->Send()) {
            echo 'Message could not be sent.';
