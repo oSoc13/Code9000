@@ -15,8 +15,8 @@ class Authentication {
     
     function __construct()
     {
-        include_once('/utils/connectiondb.php');
-        include_once('/config/keys.php');
+        include_once('utils/connectiondb.php');
+        include_once('config/keys.php');
     }
     
     function register($data)
