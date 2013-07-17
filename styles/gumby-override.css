@@ -94,6 +94,14 @@ body{
 	float: none;
 }
 
+.dateaccent{
+	margin-left: 10px;
+	color: orangered;
+	font-size: 0.40em;
+	position: relative;
+	top: -11px;
+}
+
 /* =============================
 * HACKS (ugly, fix later)
 * ============================== */

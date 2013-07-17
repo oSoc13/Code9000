@@ -110,6 +110,22 @@ $app->get('/spots/:id', function ($id) use ($app) {
     $app->render('spot.phtml', $data);
 });
 
+$app->get('/cityproposals', function () use ($app) {
+    $app->render('cityprops.phtml');
+});
+
+$app->get('/cityproposals/:id', function ($id) use ($app) {
+    if (!isset($_SESSION['9K_USERID'])) {
+        $app->redirect("/code9000/login");
+    }
+    else
+    {
+        $uid = $_SESSION['9K_USERID'];
+    }
+    $data = array('id'=>$id, 'user'=> $uid);
+    $app->render('cityprop.phtml', $data);
+});
+
 /***********************
 * FILE UPLOAD
 ***********************/
