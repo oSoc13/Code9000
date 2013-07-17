@@ -17,11 +17,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
     <input type="button" value="Delete profile" onclick="deleteProfile()" />
     <input type="button" onclick="location='/code9000/account'" value="cancel" />
 </div>
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="_scripts/libs/jquery-2.0.2.js"><\/script>')</script>
+<?php echo $this->render('libsfooter.phtml') ?>
 <script>
     var _deleteProfilePath = "http://" + window.location.host.toString() + "/Code9000/account/delete";
     function deleteProfile()
