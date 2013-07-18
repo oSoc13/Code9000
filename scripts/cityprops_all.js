@@ -48,7 +48,7 @@ function initMarker(lat, long, id, name, description, up, down, date){
 	$("#map").css("display","block");
 	// Add marker to map
     marker = L.marker([lat, long]).addTo(map);
-    marker.bindPopup("<a href='/Code9000/spots/" + id + "'>" +
+    marker.bindPopup("<a class='markera' href='/Code9000/spots/" + id + "'>" +
 			"<div>" +
 			"<h3>" + name + "</h3>" + 
 			"<p class='vote'>Score: " + (up - down) +
