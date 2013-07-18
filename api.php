@@ -516,7 +516,16 @@ $app->delete('/api/spots/:id/comments/:cid', function($id,$cid) use ($app){
  */
 $app->get('/api/cityprojects', function () use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    $sql = "select * from cityprojects";
+    $sql = "select * from cityprojects" .
+     "SELECT * 
+        FROM (
+            SELECT s.cityproject_id, s.name, s.proposed, s.upvotes, s.downvotes, l.coords, l.location_id, p.photo_id, p.url, SUM( s.upvotes - s.downvotes ) votes
+            FROM spots s
+            INNER JOIN locations l ON s.location_id = l.location_id
+            LEFT JOIN photos p ON s.photo_id = p.photo_id
+            GROUP BY s.spot_id
+        )test
+        ORDER BY votes DESC";
     $data = GetDatabaseObj($sql);
 	CheckIfEmpty($data, $app);
 });
@@ -1203,12 +1212,19 @@ $app->get('/api/users/:id/comments', function ($id) use ($app) {
  */
 $app->get('/api/users/:id/spots', function ($id) use ($app) {
     $app->response()->header('Content-Type', 'application/json');
-    $sql = "SELECT s.spot_id, s.description, s.proposed, s.photo_id, s.upvotes, s.downvotes, s.location_id, l.coords, l.location_id, p.photo_id, p.url
-			FROM spots s 
-			INNER JOIN locations l 
-			ON s.location_id=l.location_id 
-			LEFT JOIN photos p 
-			ON s.photo_id=p.photo_id WHERE s.user_id=:id";
+
+    $sql = "SELECT * 
+                FROM (
+
+                SELECT s.spot_id, s.description, s.proposed, s.upvotes, s.downvotes, l.coords, l.location_id, p.photo_id, p.url, SUM( s.upvotes - s.downvotes ) votes
+                FROM spots s
+                INNER JOIN locations l ON s.location_id = l.location_id
+                LEFT JOIN photos p ON s.photo_id = p.photo_id
+                WHERE s.user_id =:id
+                GROUP BY s.spot_id
+                )test
+            ORDER BY votes DESC";
+
     $vars = array('id' => $id);
     $data = GetDatabaseObj($sql, $vars);
     CheckIfEmpty($data, $app);
