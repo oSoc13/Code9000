@@ -68,22 +68,25 @@ body{
 	margin: auto;
 }
 
-.developer{
-	padding: 15px auto;
+.developer{padding: 15px auto;}
+.vote{font-size: 1.3em;}
+
+.upvote, .downvote {
+	font-size: 0.8em;
+	padding: 0.5em 1em;
 }
 
-.vote{
-	font-size: 1.3em;
-}
+#scores {float: right;}
 
 .upvote{
-	color: orangered;
-	font-size: 0.8em;
+	color: #060;
+	background: #c0f7bd;
+	margin: 0 10px 0 30px;
 }
 
 .downvote{
-	color: darkslateblue;
-	font-size: 0.8em;
+	color: #F00;
+	background: #f7bdbd;
 }
 
 #mapbutton, #listbutton{
@@ -269,7 +272,7 @@ span.adjoined {background-color: rgba(0, 0, 0, 0) !important;}
 button#cancel, button#confirm {
 	width: 50%;
 	float: left;
-	background: none;
+	/*background: none;*/
 	border: none;
 	font-style: italic;
 	text-transform: uppercase;
@@ -304,27 +307,17 @@ button#confirm {text-align: right;}
 	display: block;
 }
 
-#map{
-	height: 200px !important;
-	width: 100% !important;
-}
-
-#map a {
-	width: auto;
-	background: inherit;
-	color: inherit;
-	padding: 0 5px;
-	margin: inherit;
-	clear: inherit;
-	display: inherit;
-	text-align: center;
-	margin-left: 2px;
-}
-
 .negative {
 	background: #199387;
 	color: #fff;
 	padding: 0.3em 0.5em;
+	margin: 1.2em 0;
+}
+
+.title {
+	color: #199387;
+	border-bottom: 1px solid #199387;
+	padding: 20px 0;
 }
 
 ul.breathe {
@@ -333,8 +326,10 @@ ul.breathe {
 }
 
 .italic {font-style: italic;}
+.underline {text-decoration: underline;}
 .uppercase {text-transform: uppercase;}
 .marginTop {margin-top: 20px;}
+.lightgreen {color: #25ab9e;}
 
 .borderTop {
 	border-top: 1px solid #ccc;
@@ -352,4 +347,108 @@ ul.breathe {
 	border: 1px solid #ccc;
 	text-align: center;
 	line-height: 0.2em;
+}
+
+#upBtn {margin-right: 15% !important;}
+#btnEdit {clear: left;}
+
+#propLiking {
+	margin-bottom: 20px;
+	background: #ccc;
+}
+
+#comments {margin-top: 120px !important;}
+
+.commentImg {
+	float: right;
+	margin: -35px 0 20px 0;
+}
+
+.btnAction {
+	background: #199387;
+	color: #fff;
+	padding: 0.5em 1em;
+	border: none;
+	margin-right: 1em;
+	clear: left;
+}
+
+.commentTxt {
+	width: 65%;
+	display: block;
+	clear: both;
+}
+
+#comm_txt, .commTA {
+	width: 100%;
+	height: 200px;
+	padding: 1%;
+	border: 1px solid #ccc;
+	clear: both;
+	resize: none;
+}
+
+#comment_enter {
+	width: 100%;
+	margin-top: 20px;
+}
+
+.dateaccent {float: right;}
+#spotcontent .downvote {margin-left: 100px;}
+
+#map{
+	height: 220px !important;
+	width: 100% !important;
+	top: 0px;
+	left: 0;
+	clear: both;
+}
+
+#map a {
+	width: auto;
+	background: inherit;
+	color: inherit;
+	padding: inherit;
+	margin: inherit;
+	clear: inherit;
+	display: inherit;
+	text-align: center;
+	margin-left: inherit;
+}
+
+.leaflet-bottom {display: none;}
+
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	background: rgba(255, 255, 255, 0.7);
+}
+
+#user {clear: both;}
+
+.spot_bBtm {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+#spotTitle {
+	background: #199387;
+	color: #fff;
+	text-transform: uppercase;
+	padding: 0.5em 1em;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 2em;
+}
+
+.borderTop {
+	padding-top: 20px;
+	border-top: 1px solid #ccc;
+}
+
+#upbtn, #downbtn {
+	width: 50%;
+	height: 1em;
+	padding: 1em 0;
+	float: left !important;
+	display: block;
 }

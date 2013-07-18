@@ -78,10 +78,10 @@ function showLocation(lat, lng){
 
 function showData(data){
     var s = "";
-    s+= "<section>";
-    s+= "<h3 class='italic uppercase negative'>"+ data.name +"</h3>";
+    s+= "<section id='propData'>";
+    s+= "<h3 class='italic uppercase title'>"+ data.name +"</h3>";
     s+= "<p>Description: "+ data.description +"</p>";
-    s+= "<p>Created: "+ data.createddate +"</p>";
+    s+= "<p class='italic lightgreen'>Created: "+ data.createddate +"</p>";
     s+= "<p class='btnFL'>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
@@ -89,14 +89,14 @@ function showData(data){
     
     s+= "<p class='btnFL'>Dislikes: <span id='down'>"+ data.downvotes +"</span></p>";
     if (!voted) {
-        s+= "<input type='button' id='downbtn' value='I do not get it..' onclick='votedown()' />";
+        s+= "<input type='button' id='downbtn' value='I don&apos;t get it' onclick='votedown()' />";
     }
     
     s+= "<div id='comments'>";
-    s+= "<h3 class='italic uppercase negative marginTop'>What do people think?</h3>";
+    s+= "<h3 class='italic uppercase title marginTop'>What do people think?</h3>";
     s+= "<div id='comm_inh'>Comments</div>";
-    s+= "<textarea id='comm_text' placeholder='Fill in your comment.'></textarea>";
-    s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
+    s+= "<textarea id='comm_text' class='commTA' placeholder='What do you think?'></textarea>";
+    s+= "<input type='button' class='btnAction' value='Post comment' onclick='comment()' id='comment_enter' />";
     s+= "</div>";
     s+= "</section>";
     $("#prop_content").html(s);
@@ -129,21 +129,21 @@ function getComments(prop)
 function parseComments(comments)
 {
     s= "";
-    for (i = 0; i < comments.length; i++) {
-        s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + comments[i].text + " ";
-        s+="</span><span>By " + comments[i].firstname + " " + comments[i].surname + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
+    for (i = 0; i < comments.length; i++) {		
+		s+="</span><span>" +" <strong>" + comments[i].firstname + " " + comments[i].surname + " </strong>" + "<span class='italic'>" + "posted on " + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) + '</span>' + "</span></p>";
+		s+="<p id='"+ comments[i].comment_id +"-comment'><span class='commentTxt'>" + comments[i].text + "</p> ";
         
         console.log("User: " + _user + ". commentuser: " + comments[i].user_id);
 
         if (_user == comments[i].user_id) {
-            s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
-            s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";
+            s+= "<input type='button' value='Edit' class='btnAction' onclick='editComment("+ comments[i].comment_id +")' />";
+            s+= "<input type='button' value='Delete' class='btnAction' onclick='deleteComment("+ comments[i].comment_id +")' />";
         }
-        s+="<img src='"+ _root +"/uploads/"+ comments[i].avatar + "' />";
+        s+="<img src='"+ _root +"/uploads/"+ comments[i].avatar + "' class='commentImg' />";
         s+="<hr/>";
     }
     if (comments.length == 0) {
-        s = "No comments for this project.";
+        s = "No comments... yet.";
     }
     $("#comm_inh").html(s);
 }
@@ -205,7 +205,7 @@ function comment()
 {
     
     if ($("#comm_text").val() == "") {
-        alert("Can't comment with empty comment sherlock.");
+        alert("Can't comment with empty comment, Sherlock!");
     }
     else
     {
@@ -233,13 +233,13 @@ function comment()
                 $("#comm_text").val('');
                 edit = false;
                 $("#comm_text").data('id', "");
-                $("#comment_enter").val('Comment');
+                $("#comment_enter").val('Post comment');
                 getComments(prop_id);
             },
             error: function(xhr){
                 edit = false;
                 $("#comm_text").data('id', "");
-                $("#comment_enter").val('Comment');
+                $("#comment_enter").val('Post comment');
                 console.log(xhr);
             }
         });
@@ -251,7 +251,7 @@ function editComment(id){
     $("#comm_text").goTo();
     $("#comm_text").val(($("body").find("#" + id + "-comment .text").html()));
     $("#comm_text").data('id',id);
-    $("#comment_enter").val('Edit');
+    $("#comment_enter").val('Save changes');
     
 }
 

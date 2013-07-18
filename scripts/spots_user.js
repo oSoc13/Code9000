@@ -52,7 +52,7 @@ function initMarker(lat, long, id, description, proposed, up, down){
 			"<div>" +
 			"<h3>" + description + "</h3>" + 
 			"<p>Solution: " + proposed + "</p>" +
-			"<p class='vote'>Score: " + (up - down)  + " (" +
+			"<p class='vote'>Score: " + (up - down)  +
 			"<span class='upvote'>+" + up + "</span>" + 
 			"<span class='downvote'>-" + down + "</span>)</p></div></a>");
 }
@@ -61,9 +61,9 @@ function addSpot(id, description, proposed, up, down, img){
 	var element = "<a class='spotlink' href='/Code9000/spots/" + id + "'>" +
 			"<div class='spotcontent'>" + showPicture(img) + "<section class='clearfix'><h3>" + description + "</h3>" + 
 			"<p>Solution: " + proposed + "</p>" +
-			"<p class='vote'>Score: " + (up - down)  + " (" +
+			"<p class='vote'>Score: " + (up - down) +
 			"<span class='upvote'>+" + up + "</span>" + 
-			"<span class='downvote'>-" + down + "</span>)</p></section></div></a>";
+			"<span class='downvote'>-" + down + "</span></p></section></div></a>";
 	$("#spotlist").append(element);
 }
 
