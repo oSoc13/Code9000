@@ -90,17 +90,17 @@ function showData(data){
 	$("#spotTitle").html(htmlEncode(data.description));
     var s = "";
     s+= "<section>";
-    s+= "<h3>Problem</h3><p>" + htmlEncode(data.description) +"</p>";
-    s+= "<h3>Proposal</h3><p>" + htmlEncode(data.proposed) +"</p>";
-    s+= "<h3>Created</h3><p>" + data.createddate +"</p>";
-    s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
-    if (_logged_in && !voted) {
-        s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
+    s+= "<h3 class='spot_bBtm''>Your spotting</h3><p>" + htmlEncode(data.description) +"</p>";
+    s+= "<h3 class='spot_bBtm'>Your suggestion</h3><p>" + htmlEncode(data.proposed) +"</p>";
+    s+= "<h3 class='spot_bBtm'>Created</h3><p>" + data.createddate +"</p>";
+    s+= "<p>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
+	s+= "<p>Dislikes: <span id='down'>"+ data.downvotes +"</span></p>";
+    if (!voted) {
+        s+= "<input type='button' class='btnFL' id='upbtn' value='Fancy that!' onclick='voteup()' />";
     }
     
-    s+= "<p>Downvotes: <span id='down'>"+ data.downvotes +"</span></p>";
-    if (_logged_in && !voted) {
-        s+= "<input type='button' id='downbtn' value='I do not get it..' onclick='votedown()' />";
+    if (!voted) {
+        s+= "<input type='button' class='btnFL' id='downbtn' value='I don&apos;t get it' onclick='votedown()' />";
     }
     
     s+= "<div id='user'>";
@@ -110,10 +110,10 @@ function showData(data){
     s+= "<div id='comments'>";
     s+= "<h2 class='spot_bBtm'>Comments</h2>";
     s+= "<div id='comm_inh'>Comments</div>";
-    if (_logged_in) {
-        s+= "<textarea id='comm_text' placeholder='Fill in your comment.'></textarea>";
-        s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
-    };
+	if (_logged_in) {
+	    s+= "<textarea id='comm_text' class='commTA' placeholder='Fill in your comment.'></textarea>";
+	    s+= "<input type='button' class='btnAction' value='Comment' onclick='comment()' id='comment_enter' />";
+	}
     s+= "</div>";
     s+= "</section>";
     $("#spot").html(s);
@@ -147,9 +147,9 @@ function parseUser(user)
 {
     var s = "";
     s+= "<section>";
-    s+= "<p>firstname: "+ htmlEncode(user.firstname) +"</p>";
-    s+= "<p>surname: "+ htmlEncode(user.surname) +"</p>";
-    s+= "<p>avatar: </p>";
+    s+= "<p>Your first name: "+ htmlEncode(user.firstname) +"</p>";
+    s+= "<p>Your surname: "+ htmlEncode(user.surname) +"</p>";
+    s+= "<p>Your avatar: </p>";
     s+= "<img src='"+ _root +"/uploads/"+ user.avatar +"' />";
     s+= "</section>";
     $("#user_inh").html(s);

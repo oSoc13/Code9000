@@ -47,8 +47,8 @@ class Authentication {
         }
                 
         $id = InsertDatabaseObject($sql, $vars);
-                
-        $this->sendRegistrationMail($id, $activationcode, $fname . " " . $sname);        
+                var_dump($id);
+        $this->sendRegistrationMail($email, $activationcode, $fname . " " . $sname, $id);        
     }
     
     function hashPassword($pwd, $algo)
@@ -72,7 +72,7 @@ class Authentication {
         return $randomString;
     }
     
-    function sendRegistrationMail($id, $code,  $name)
+    function sendRegistrationMail($email, $code,  $name, $id)
     {
         $mail = new PHPMailer();
         $mail->IsSMTP();                                    // Set mailer to use SMTP

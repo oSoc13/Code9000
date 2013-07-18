@@ -76,23 +76,17 @@ function showLocation(lat, lng){
 
 function showData(data){
     var s = "";
-<<<<<<< HEAD
     s+= "<section id='propData'>";
-    s+= "<h3 class='italic uppercase title'>"+ data.name +"</h3>";
-    s+= "<p>Description: "+ data.description +"</p>";
-    s+= "<p class='italic lightgreen'>Created: "+ data.createddate +"</p>";
-=======
-    s+= "<section>";
-    s+= "<h3 class='italic uppercase negative'>"+ htmlEncode(data.name) +"</h3>";
+    s+= "<h3 class='italic uppercase title'>"+ htmlEncode(data.name) +"</h3>";
     s+= "<p>Description: "+ htmlEncode(data.description) +"</p>";
-    s+= "<p>Created: "+ data.createddate +"</p>";
->>>>>>> c5498d3348e5fd6a4a9b20cfbde81fe67838b106
-    s+= "<p class='btnFL'>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
+    s+= "<p class='italic lightgreen'>Created: "+ data.createddate +"</p>";
+    s+= "<p>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
+	s+= "<p>Dislikes: <span id='down'>"+ data.downvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
     }
     
-    s+= "<p class='btnFL'>Dislikes: <span id='down'>"+ data.downvotes +"</span></p>";
+    
     if (!voted) {
         s+= "<input type='button' id='downbtn' value='I don&apos;t get it' onclick='votedown()' />";
     }
@@ -106,10 +100,7 @@ function showData(data){
     s+= "</section>";
     $("#prop_content").html(s);
     
-    
     getComments(data.spot_id);
-    
-    
 }
 
 function getComments(prop)
@@ -134,15 +125,10 @@ function getComments(prop)
 function parseComments(comments)
 {
     s= "";
-<<<<<<< HEAD
+	
     for (i = 0; i < comments.length; i++) {		
-		s+="</span><span>" +" <strong>" + comments[i].firstname + " " + comments[i].surname + " </strong>" + "<span class='italic'>" + "posted on " + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) + '</span>' + "</span></p>";
-		s+="<p id='"+ comments[i].comment_id +"-comment'><span class='commentTxt'>" + comments[i].text + "</p> ";
-=======
-    for (i = 0; i < comments.length; i++) {
-        s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + htmlEncode(comments[i].text) + " ";
-        s+="</span><span>By " + htmlEncode(comments[i].firstname) + " " + htmlEncode(comments[i].surname) + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
->>>>>>> c5498d3348e5fd6a4a9b20cfbde81fe67838b106
+		s+="</span><span>" +" <strong>" + htmlEncode(comments[i].firstname) + " " + htmlEncode(comments[i].surname) + " </strong>" + "<span class='italic'>" + "posted on " + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) + '</span>' + "</span></p>";
+		s+="<p id='"+ comments[i].comment_id +"-comment'><span class='commentTxt'>" + htmlEncode(comments[i].text) + "</p> ";
         
         console.log("User: " + _user + ". commentuser: " + comments[i].user_id);
 
