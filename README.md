@@ -19,12 +19,4 @@
 
 # Deployment instructions
 
-In short, here's what you need to do in order to deploy the project 
-
-1) Place the Code9000 dir onto the server root.
-2) Create an /uploads folder in the Code9000 directory
-3) Deploy an empty database from /docs into the MySQL server
-4) Install all required vendor packages using Composer
-5) Ensure that the server configuration runs, see example file in /docs/Database/Connection/connectiondetails.php which needs to be moved to Code9000/config/connectiondetails.php
-6) Run the servers and navigate to www.yourdomain.com/Code9000
-7) Set up referrals to refer www.yourdomain.com/ to www.yourdomain.com/Code9000
+Deployment instructions can be found in /docs/Deployment_instructions.md
