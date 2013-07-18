@@ -19,6 +19,7 @@ var marker = null;
 
 var voted = false;
 var _user = 0;
+var _logged_in = false;
 
 var edit = false;
 
@@ -44,11 +45,24 @@ function getData(){
         cache: false,
         url: _root + "/api/spots/" + spot_id,
         success: function(data){
-            voted = data.voted;
-            showSpotLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
-            showData(data[0]);
+            console.log(data);
+            if (data.hasOwnProperty('logged_in') && !data.logged_in) 
+            {
+                _logged_in = false;
+                showSpotLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
+                showData(data[0]);
+            }
+            else
+            {
+                _logged_in = true;
+                voted = data.voted;
+                showSpotLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
+                showData(data[0]);
+
+            }
         },
         error: function(){
+            console.log("Spot not loaded");
             //window.location= _root + "/404";
         }
     });
@@ -80,12 +94,12 @@ function showData(data){
     s+= "<h3>Proposal</h3><p>" + htmlEncode(data.proposed) +"</p>";
     s+= "<h3>Created</h3><p>" + data.createddate +"</p>";
     s+= "<p>Upvotes: <span id='up'>"+ data.upvotes +"</span></p>";
-    if (!voted) {
+    if (_logged_in && !voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
     }
     
     s+= "<p>Downvotes: <span id='down'>"+ data.downvotes +"</span></p>";
-    if (!voted) {
+    if (_logged_in && !voted) {
         s+= "<input type='button' id='downbtn' value='I do not get it..' onclick='votedown()' />";
     }
     
@@ -96,8 +110,10 @@ function showData(data){
     s+= "<div id='comments'>";
     s+= "<h2>Comments</h2>";
     s+= "<div id='comm_inh'>Comments</div>";
-    s+= "<textarea id='comm_text' placeholder='Fill in your comment.'></textarea>";
-    s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
+    if (_logged_in) {
+        s+= "<textarea id='comm_text' placeholder='Fill in your comment.'></textarea>";
+        s+= "<input type='button' value='Comment' onclick='comment()' id='comment_enter' />";
+    };
     s+= "</div>";
     s+= "</section>";
     $("#spot").html(s);
@@ -148,9 +164,10 @@ function getComments(spot)
         cache: false,
         url: _root + "/api/spots/" + spot + "/comments",
         success: function(data){
+           
             var comments = data.comments;
             _user = data.user;
-            parseComments(comments);
+            parseComments(comments); 
         },
         error: function(){
             $("#comm_inh").html("No comments for this spotting.");
@@ -164,7 +181,7 @@ function parseComments(comments)
     for (i = 0; i < comments.length; i++) {
         s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + htmlEncode(comments[i].text) + " ";
         s+="</span><span>By " + htmlEncode(comments[i].firstname) + " " + htmlEncode(comments[i].surname) + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
-        if (_user == comments[i].user_id) {
+        if (_logged_in && _user == comments[i].user_id) {
             s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
             s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";
         }
@@ -187,15 +204,22 @@ function voteup()
         data: null,
         url: _root + "/api/spots/" + spot_id + "/voteup",
         success: function(data){
-            if (data != "voted") {
-                console.log("ok");
-                var n = $("#up").html();
-                var nn = parseInt(n);
-                nn++;
-                $("#up").html(nn);
+            if (data.hasOwnProperty('logged_in') && !data.logged_in) 
+            {
+                window.location = _root + "/login";
             }
-            $("#upbtn").remove();
-            $("#downbtn").remove();
+            else
+            {
+                if (data != "voted") {
+                    console.log("ok");
+                    var n = $("#up").html();
+                    var nn = parseInt(n);
+                    nn++;
+                    $("#up").html(nn);
+                }
+                $("#upbtn").remove();
+                $("#downbtn").remove();
+            }
             
         },
         error: function(){
@@ -213,15 +237,22 @@ function votedown()
         cache: false,
         url: _root + "/api/spots/" + spot_id + "/votedown",
         success: function(data){
-            if (data != "voted") {
-                console.log("ok");
-                var n = $("#down").html();
-                var nn = parseInt(n);
-                nn++;
-                $("#down").html(nn);
+            if (data.hasOwnProperty('logged_in') && !data.logged_in) 
+            {
+                window.location = _root + "/login";
             }
-            $("#downbtn").remove();
-            $("#upbtn").remove();
+            else
+            {
+                if (data != "voted") {
+                    console.log("ok");
+                    var n = $("#down").html();
+                    var nn = parseInt(n);
+                    nn++;
+                    $("#down").html(nn);
+                }
+                $("#downbtn").remove();
+                $("#upbtn").remove();
+            }
         },
         error: function(){
             //window.location= _root + "/404";
@@ -258,11 +289,18 @@ function comment()
             data: dataS,
             url: url,
             success: function(data){
-                $("#comm_text").val('');
-                edit = false;
-                $("#comm_text").data('id', "");
-                $("#comment_enter").val('Comment');
-                getComments(spot_id);
+                if (data.hasOwnProperty('logged_in') && !data.logged_in) 
+                {
+                 window.location = _root + "/login";
+                }
+                else
+                {
+                    $("#comm_text").val('');
+                    edit = false;
+                    $("#comm_text").data('id', "");
+                    $("#comment_enter").val('Comment');
+                    getComments(spot_id);
+                }
             },
             error: function(xhr){
                 edit = false;
@@ -294,7 +332,14 @@ function deleteComment(id){
             data: JSON.stringify({"lol":1}),
             url: _root + "/api/spots/"+spot_id+"/comments/" + id,
             success: function(data){
-                getComments(spot_id);
+                if (data.hasOwnProperty('logged_in') && !data.logged_in) 
+                {
+                    window.location = _root + "/login";
+                }
+                else
+                {
+                    getComments(spot_id);
+                }
             },
             error: function(xhr){
                 console.log(xhr);

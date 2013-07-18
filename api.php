@@ -261,7 +261,7 @@ $app->get('/api/spots/:id', function ($id) use ($app) {
     $data = GetDatabaseObj($sql, $execute);
 
 
-    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    if (empty($_SESSION['9K_USERID'])) 
     {
         $data["logged_in"] = false;
         CheckIfEmpty($data, $app);
@@ -295,7 +295,7 @@ $app->get('/api/spots/:id', function ($id) use ($app) {
  * vote up a spot
  */
 $app->post('/api/spots/:id/voteup', function ($id) use ($app) {
-    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    if (empty($_SESSION['9K_USERID'])) 
     {
         $data = array();
         $data["logged_in"] = false;
@@ -331,7 +331,7 @@ $app->post('/api/spots/:id/voteup', function ($id) use ($app) {
  * vote down a spot
  */
 $app->post('/api/spots/:id/votedown', function ($id) use ($app) {
-    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    if (empty($_SESSION['9K_USERID'])) 
     {
         $data = array();
         $data["logged_in"] = false;
@@ -377,7 +377,7 @@ $app->get('/api/spots/:id/comments', function($id) use ($app){
     $datac = GetDatabaseObj($sql, $execute);
     
     $data['comments'] = $datac;
-    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    if (empty($_SESSION['9K_USERID'])) 
     {
         $data["logged_in"] = false;
         CheckIfEmpty($data, $app);
@@ -397,7 +397,7 @@ $app->get('/api/spots/:id/comments', function($id) use ($app){
  *      text => comment text
  */
 $app->post('/api/spots/:id/comments', function($id) use ($app){
-    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    if (empty($_SESSION['9K_USERID'])) 
     {
         $data = array();
         $data["logged_in"] = false;
@@ -441,7 +441,7 @@ $app->post('/api/spots/:id/comments', function($id) use ($app){
  *    text => comment text
  */
 $app->post('/api/spots/:id/comments/:cid', function($id, $cid) use ($app){
-    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    if (empty($_SESSION['9K_USERID'])) 
     {
         $data = array();
         $data["logged_in"] = false;
@@ -478,23 +478,32 @@ $app->post('/api/spots/:id/comments/:cid', function($id, $cid) use ($app){
  * delete a comment of a spotting
  */
 $app->delete('/api/spots/:id/comments/:cid', function($id,$cid) use ($app){
-    try{
-        //DELETE RELATION
-        $varsR = array("id" =>$cid);
-        $sqlR = "Delete FROM spots_has_comments WHERE comment_id = :id;";
-        $countR = GetDatabaseObj($sqlR, $varsR);
-        
-        //DELETE ENTITYs
-        $varsE = array("id" =>$cid);
-        $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
-        // Execute query
-        $countE = GetDatabaseObj($sqlE, $varsE);
-        
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
-        exit;
+    else
+    {
+        try{
+            //DELETE RELATION
+            $varsR = array("id" =>$cid);
+            $sqlR = "Delete FROM spots_has_comments WHERE comment_id = :id;";
+            $countR = GetDatabaseObj($sqlR, $varsR);
+            
+            //DELETE ENTITYs
+            $varsE = array("id" =>$cid);
+            $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
+            // Execute query
+            $countE = GetDatabaseObj($sqlE, $varsE);
+            
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
@@ -524,78 +533,105 @@ $app->get('/api/cityprojects/:id', function ($id) use ($app) {
             where c.deleteddate IS NULL AND cityproject_id = :id";
     $data = GetDatabaseObj($sql, $execute);
 
-
-    //CHECK IF USER ALREADY VOTED
-    $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_cityprojects uls 
-            where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
-        UNION 
-            SELECT * from users_like_cityprojects uds 
-            WHERE uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'cityproject_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $data["voted"] = false;
-    }else{
-        $data["voted"] = true;
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    CheckIfEmpty($data, $app);
+    else
+    {
+        //CHECK IF USER ALREADY VOTED
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_cityprojects uls 
+                where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
+            UNION 
+                SELECT * from users_like_cityprojects uds 
+                WHERE uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'cityproject_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $data["voted"] = false;
+        }else{
+            $data["voted"] = true;
+        }
+        $data["logged_in"] = true;
+        CheckIfEmpty($data, $app);
+    }
 });
 
 /**
  * vote up a cityproject
  */
 $app->post('/api/cityprojects/:id/voteup', function ($id) use ($app) {
-    $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_cityprojects uls 
-            where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
-        UNION 
-            SELECT * from users_dislike_cityprojects uds 
-            WHERE uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'cityproject_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $execute = array("id"=>$id, "user_id" => $uid);
-        $sql = "UPDATE cityprojects SET upvotes=(upvotes+1) WHERE cityproject_id = :id;Insert INTO users_like_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
-        $data = UpdateDatabaseObject($sql, $execute);
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
         CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';
+    {
+        $uid = $_SESSION['9K_USERID'];
+       $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_cityprojects uls 
+                where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
+            UNION 
+                SELECT * from users_dislike_cityprojects uds 
+                WHERE uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'cityproject_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $execute = array("id"=>$id, "user_id" => $uid);
+            $sql = "UPDATE cityprojects SET upvotes=(upvotes+1) WHERE cityproject_id = :id;Insert INTO users_like_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
+            $data = UpdateDatabaseObject($sql, $execute);
+            CheckIfEmpty($data, $app);
+        }
+        else
+            echo 'voted';
+    }
 });
 
 /**
  * vote down a cityproject
  */
 $app->post('/api/cityprojects/:id/votedown', function ($id) use ($app) {
-    $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "select * from 
-        (
-            select * from users_like_cityprojects uls 
-            where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
-        UNION 
-            select * from users_dislike_cityproposals uds 
-            where uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'cityproject_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $execute = array("id"=>$id, "user_id" => $uid);
-    $sql = "UPDATE cityprojects SET downvotes=(downvotes+1) WHERE cityproject_id = :id;Insert INTO users_dislike_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
-    $data = UpdateDatabaseObject($sql, $execute);
-    CheckIfEmpty($data, $app);
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';
+    {
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "select * from 
+            (
+                select * from users_like_cityprojects uls 
+                where uls.user_id=:user_id and uls.cityproject_id = :cityproject_id 
+            UNION 
+                select * from users_dislike_cityproposals uds 
+                where uds.user_id=:user_id and uds.cityproject_id = :cityproject_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'cityproject_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $execute = array("id"=>$id, "user_id" => $uid);
+        $sql = "UPDATE cityprojects SET downvotes=(downvotes+1) WHERE cityproject_id = :id;Insert INTO users_dislike_cityprojects (user_id, cityproject_id) values(:user_id,:id);";
+        $data = UpdateDatabaseObject($sql, $execute);
+        CheckIfEmpty($data, $app);
+        }
+        else
+            echo 'voted';
+    }
+
 });
 
 /**
@@ -613,7 +649,16 @@ $app->get('/api/cityprojects/:id/comments', function($id) use ($app){
     $datac = GetDatabaseObj($sql, $execute);
     
     $data['comments'] = $datac;
-    $data['user'] = $_SESSION['9K_USERID'];
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
+    }
+    else
+    {
+        $data["logged_in"] = true;
+        $data['user'] = $_SESSION['9K_USERID'];
+    }
     CheckIfEmpty($data, $app);
 });
 
@@ -624,30 +669,40 @@ $app->get('/api/cityprojects/:id/comments', function($id) use ($app){
  *      text => comment text
  */
 $app->post('/api/cityprojects/:id/comments', function($id) use ($app){
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    try{
-        $text = "";
-        foreach ($data as $key => $val){
-            if ($key == "text"){
-                $text = $val;
-            }
-        }
-        $user_id = $_SESSION['9K_USERID'];
-        $vars = array("text"=>$text, "user_id" =>$user_id);
-        $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
-        // Execute query
-        $comment = InsertDatabaseObject($sql, $vars);
-        
-        $sqlAddCommentToSpot = "Insert INTO cityprojects_has_comments(cityproject_id, comment_id) values(:cityproject_id, :comment_id)";
-        $varsforadding = array('cityproject_id' => $id, 'comment_id' => $comment);
-        
-        GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
-        exit;
+    else
+    {
+        
+        $requestBody = $app->request()->getBody();
+        $data = json_decode($requestBody);
+        try{
+            $text = "";
+            foreach ($data as $key => $val){
+                if ($key == "text"){
+                    $text = $val;
+                }
+            }
+            $user_id = $_SESSION['9K_USERID'];
+            $vars = array("text"=>$text, "user_id" =>$user_id);
+            $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
+            // Execute query
+            $comment = InsertDatabaseObject($sql, $vars);
+            
+            $sqlAddCommentToSpot = "Insert INTO cityprojects_has_comments(cityproject_id, comment_id) values(:cityproject_id, :comment_id)";
+            $varsforadding = array('cityproject_id' => $id, 'comment_id' => $comment);
+            
+            GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
@@ -658,27 +713,36 @@ $app->post('/api/cityprojects/:id/comments', function($id) use ($app){
  *    text => comment text
  */
 $app->post('/api/cityprojects/:id/comments/:cid', function($id, $cid) use ($app){
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    try{
-        $text = "";
-        foreach ($data as $key => $val){
-            if ($key == "text"){
-                $text = $val;
-            }
-        }
-        $user_id = $_SESSION['9K_USERID'];
-        // For each image, query an addition
-        $vars = array("text"=>$text, "id" =>$cid);
-        $sql = "Update comments SET text= :text WHERE comment_id = :id;";
-        // Execute query
-        $count = UpdateDatabaseObject($sql, $vars);
-        
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
-        exit;
+    else
+    {
+        $requestBody = $app->request()->getBody();
+        $data = json_decode($requestBody);
+        try{
+            $text = "";
+            foreach ($data as $key => $val){
+                if ($key == "text"){
+                    $text = $val;
+                }
+            }
+            $user_id = $_SESSION['9K_USERID'];
+            // For each image, query an addition
+            $vars = array("text"=>$text, "id" =>$cid);
+            $sql = "Update comments SET text= :text WHERE comment_id = :id;";
+            // Execute query
+            $count = UpdateDatabaseObject($sql, $vars);
+            
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
@@ -686,23 +750,32 @@ $app->post('/api/cityprojects/:id/comments/:cid', function($id, $cid) use ($app)
  * delete a comment of a cityproject
  */
 $app->delete('/api/cityprojects/:id/comments/:cid', function($id,$cid) use ($app){
-    try{
-        //DELETE RELATION
-        $varsR = array("id" =>$cid);
-        $sqlR = "Delete FROM cityprojects_has_comments WHERE comment_id = :id;";
-        $countR = GetDatabaseObj($sqlR, $varsR);
-        
-        //DELETE ENTITYs
-        $varsE = array("id" =>$cid);
-        $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
-        // Execute query
-        $countE = GetDatabaseObj($sqlE, $varsE);
-        
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
-        exit;
+    else
+    {
+        try{
+            //DELETE RELATION
+            $varsR = array("id" =>$cid);
+            $sqlR = "Delete FROM cityprojects_has_comments WHERE comment_id = :id;";
+            $countR = GetDatabaseObj($sqlR, $varsR);
+            
+            //DELETE ENTITYs
+            $varsE = array("id" =>$cid);
+            $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
+            // Execute query
+            $countE = GetDatabaseObj($sqlE, $varsE);
+            
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
@@ -737,73 +810,99 @@ $app->get('/api/cityproposals/:id', function ($id) use ($app) {
             where c.deleteddate IS NULL AND cityproposal_id = :id";
 	$data = GetDatabaseObj($sql, $execute);
 
-
-    //CHECK IF USER ALREADY VOTED
-     $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_cityproposals uls 
-            where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
-        UNION 
-            SELECT * from users_dislike_cityproposals uds 
-            WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $data["voted"] = false;
-    }else{
-        $data["voted"] = true;
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
+    }
+    else
+    {
+        $data["logged_in"] = true;
+        //CHECK IF USER ALREADY VOTED
+         $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_cityproposals uls 
+                where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
+            UNION 
+                SELECT * from users_dislike_cityproposals uds 
+                WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $data["voted"] = false;
+        }else{
+            $data["voted"] = true;
+        }
     }
 	CheckIfEmpty($data, $app);
 });
 
 
 $app->post('/api/cityproposals/:id/voteup', function ($id) use ($app) {
-    $uid = $_SESSION['9K_USERID'];
-   $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_cityproposals uls 
-            where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
-        UNION 
-            SELECT * from users_dislike_cityproposals uds 
-            WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $execute = array("id"=>$id, "user_id" => $uid);
-    	$sql = "UPDATE cityproposals SET upvotes=(upvotes+1) WHERE cityproposal_id = :id;Insert INTO users_like_cityproposals (user_id, cityproposal_id) values(:user_id,:id);";
-    	$data = UpdateDatabaseObject($sql, $execute);
-    	CheckIfEmpty($data, $app);
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';
+    {
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_cityproposals uls 
+                where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
+            UNION 
+                SELECT * from users_dislike_cityproposals uds 
+                WHERE uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $execute = array("id"=>$id, "user_id" => $uid);
+        	$sql = "UPDATE cityproposals SET upvotes=(upvotes+1) WHERE cityproposal_id = :id;Insert INTO users_like_cityproposals (user_id, cityproposal_id) values(:user_id,:id);";
+        	$data = UpdateDatabaseObject($sql, $execute);
+        	CheckIfEmpty($data, $app);
+        }
+        else
+            echo 'voted';
+    }
 });
 
 $app->post('/api/cityproposals/:id/votedown', function ($id) use ($app) {
-    $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "select * from 
-        (
-            select * from users_like_cityproposals uls 
-            where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
-        UNION 
-            select * from users_dislike_cityproposals uds 
-            where uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $execute = array("id"=>$id, "user_id" => $uid);
-	$sql = "UPDATE cityproposals SET downvotes=(downvotes+1) WHERE cityproposal_id = :id;Insert INTO users_dislike_cityproposals (user_id, cityproposal_id) values(:user_id,:id);";
-	$data = UpdateDatabaseObject($sql, $execute);
-	CheckIfEmpty($data, $app);
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';
+    {
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "select * from 
+            (
+                select * from users_like_cityproposals uls 
+                where uls.user_id=:user_id and uls.cityproposal_id = :cityproposal_id 
+            UNION 
+                select * from users_dislike_cityproposals uds 
+                where uds.user_id=:user_id and uds.cityproposal_id = :cityproposal_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'cityproposal_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $execute = array("id"=>$id, "user_id" => $uid);
+    	$sql = "UPDATE cityproposals SET downvotes=(downvotes+1) WHERE cityproposal_id = :id;Insert INTO users_dislike_cityproposals (user_id, cityproposal_id) values(:user_id,:id);";
+    	$data = UpdateDatabaseObject($sql, $execute);
+    	CheckIfEmpty($data, $app);
+        }
+        else
+            echo 'voted';
+    }
 });
 
 /**
@@ -831,30 +930,39 @@ $app->get('/api/cityproposals/:id/comments', function($id) use ($app){
  *      text => comment text
  */
 $app->post('/api/cityproposals/:id/comments', function($id) use ($app){
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    try{
-        $text = "";
-        foreach ($data as $key => $val){
-            if ($key == "text"){
-                $text = $val;
-            }
-        }
-        $user_id = $_SESSION['9K_USERID'];
-        $vars = array("text"=>$text, "user_id" =>$user_id);
-        $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
-        // Execute query
-        $comment = InsertDatabaseObject($sql, $vars);
-        
-        $sqlAddCommentToSpot = "Insert INTO cityproposals_has_comments(cityproposal_id, comment_id) values(:cityproposal_id, :comment_id)";
-        $varsforadding = array('cityproposal_id' => $id, 'comment_id' => $comment);
-        
-        GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
-        exit;
+    else
+    {
+        $requestBody = $app->request()->getBody();
+        $data = json_decode($requestBody);
+        try{
+            $text = "";
+            foreach ($data as $key => $val){
+                if ($key == "text"){
+                    $text = $val;
+                }
+            }
+            $user_id = $_SESSION['9K_USERID'];
+            $vars = array("text"=>$text, "user_id" =>$user_id);
+            $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
+            // Execute query
+            $comment = InsertDatabaseObject($sql, $vars);
+            
+            $sqlAddCommentToSpot = "Insert INTO cityproposals_has_comments(cityproposal_id, comment_id) values(:cityproposal_id, :comment_id)";
+            $varsforadding = array('cityproposal_id' => $id, 'comment_id' => $comment);
+            
+            GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
@@ -865,27 +973,35 @@ $app->post('/api/cityproposals/:id/comments', function($id) use ($app){
  *    text => comment text
  */
 $app->post('/api/cityproposals/:id/comments/:cid', function($id, $cid) use ($app){
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    try{
-        $text = "";
-        foreach ($data as $key => $val){
-            if ($key == "text"){
-                $text = $val;
-            }
-        }
-        $user_id = $_SESSION['9K_USERID'];
-        // For each image, query an addition
-        $vars = array("text"=>$text, "id" =>$cid);
-        $sql = "Update comments SET text= :text WHERE comment_id = :id;";
-        // Execute query
-        $count = UpdateDatabaseObject($sql, $vars);
-        
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
-        exit;
+    else
+    {
+        $requestBody = $app->request()->getBody();
+        $data = json_decode($requestBody);
+        try{
+            $text = "";
+            foreach ($data as $key => $val){
+                if ($key == "text"){
+                    $text = $val;
+                }
+            }
+            $user_id = $_SESSION['9K_USERID'];
+            // For each image, query an addition
+            $vars = array("text"=>$text, "id" =>$cid);
+            $sql = "Update comments SET text= :text WHERE comment_id = :id;";
+            // Execute query
+            $count = UpdateDatabaseObject($sql, $vars);
+            
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+        }
     }
 });
 
@@ -893,23 +1009,31 @@ $app->post('/api/cityproposals/:id/comments/:cid', function($id, $cid) use ($app
  * delete a comment of a cityproposals
  */
 $app->delete('/api/cityproposals/:id/comments/:cid', function($id,$cid) use ($app){
-    try{
-        //DELETE RELATION
-        $varsR = array("id" =>$cid);
-        $sqlR = "Delete FROM cityproposals_has_comments WHERE comment_id = :id;";
-        $countR = GetDatabaseObj($sqlR, $varsR);
-        
-        //DELETE ENTITYs
-        $varsE = array("id" =>$cid);
-        $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
-        // Execute query
-        $countE = GetDatabaseObj($sqlE, $varsE);
-        
-	echo json_encode($var = array("status"=>"OK"));
+    if (empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
-        exit;
+    else
+    {
+        try{
+            //DELETE RELATION
+            $varsR = array("id" =>$cid);
+            $sqlR = "Delete FROM cityproposals_has_comments WHERE comment_id = :id;";
+            $countR = GetDatabaseObj($sqlR, $varsR);
+            
+            //DELETE ENTITYs
+            $varsE = array("id" =>$cid);
+            $sqlE = "Delete FROM comments  WHERE comment_id = :id;";
+            // Execute query
+            $countE = GetDatabaseObj($sqlE, $varsE);
+            
+    	echo json_encode($var = array("status"=>"OK"));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to delete. Here is some more information: $e"));
+        }
     }
 });
 
@@ -1027,7 +1151,7 @@ catch(Exception $e){
  */
 $app->get('/api/users', function () use ($app) {
 	// Check if administrator permissions are set for current user
-	if (isset($_SESSION['9k_admin']) && $_SESSION['9k_admin'] === true){
+	if (isset($_SESSION['9K_ROLE']) && $_SESSION['9K_ROLE'] == "admin"){
 		// Session variable 9k_admin needs to exist + needs to be true
 		$sql = "SELECT user_id, email, role, dateofbirth, firstname, surname, avatar, createddate, modifieddate, lastloggedindate FROM users";
 		echo(json_encode(GetDatabaseObj($sql)));
@@ -1043,7 +1167,7 @@ $app->get('/api/users', function () use ($app) {
  */
 $app->get('/api/users/:id', function ($id) use ($app){
 	// Check if administrator permissions are set for current user
-	if (isset($_SESSION['9k_admin']) && $_SESSION['9k_admin'] === true){
+	if (isset($_SESSION['9K_ROLE']) && $_SESSION['9K_ROLE'] == "admin"){
 		// Session variable 9k_admin needs to exist + needs to be true
 		$execute = array(":id"=>$id);
 		// SQL query (is prepared and then executed)
