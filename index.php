@@ -214,10 +214,9 @@ $app->post('/register', function () use ($app) {
     $email =    trim($req->post('email'     ));
     $dob =      trim($req->post('dob'       ));
     $pwd =      trim($req->post('password'  ));
-    $admin =    trim($req->post('admin'     ));
     $photo =    trim($req->post('avatarpic' ));
     
-    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'admin' => $admin, 'avatar' => $photo );
+    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'avatar' => $photo );
 
     $auth = new Authentication();
     $auth->register($test);

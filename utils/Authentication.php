@@ -25,7 +25,6 @@ class Authentication {
         $sname = $data['sname'];
         $email = $data['email'];
         $dob = $data['dob'];
-        $admin = ( $data['admin']? "admin" : "user" );
         $passwordData = $this->hashPassword($data['pwd'], 'sha256');
         $activationcode = $this->generateRandomString(15);
         $avatar = $data['avatar'];
@@ -33,7 +32,7 @@ class Authentication {
         //INSERT PROFILE PIC
         if (!empty($avatar)) {
             
-            $vars = array('avatar'=> $avatar, 'firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => $admin, 'activationcode' => $activationcode );
+            $vars = array('avatar'=> $avatar, 'firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => 'user', 'activationcode' => $activationcode );
         
             $sql =  "INSERT INTO users(email, password, passwordsalt, role, dateofbirth, firstname, surname, activationcode, avatar) " .
                     "values(:email , :password, :passwordsalt, :role, :dateofbirth, :firstname, :surname, :activationcode, :avatar)";
@@ -41,7 +40,7 @@ class Authentication {
         }
         else
         {
-            $vars = array('firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => $admin, 'activationcode' => $activationcode );
+            $vars = array('firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => 'user', 'activationcode' => $activationcode );
         
             $sql =  "INSERT INTO users(email, password, passwordsalt, role, dateofbirth, firstname, surname, activationcode) " .
                     "values(:email , :password, :passwordsalt, :role, :dateofbirth, :firstname, :surname, :activationcode)";
