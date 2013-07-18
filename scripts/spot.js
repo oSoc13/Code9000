@@ -104,7 +104,7 @@ function showData(data){
     }
     
     s+= "<div id='user'>";
-    s+= "<h2 class='spot_bBtm'>User</h2>";
+    s+= "<h2 class='spot_bBtm'>Created by</h2>";
     s+= "<div id='user_inh'>Loading...</div>";
     s+= "</div>";
     s+= "<div id='comments'>";
@@ -147,10 +147,8 @@ function parseUser(user)
 {
     var s = "";
     s+= "<section>";
-    s+= "<p>Your first name: "+ htmlEncode(user.firstname) +"</p>";
-    s+= "<p>Your surname: "+ htmlEncode(user.surname) +"</p>";
-    s+= "<p>Your avatar: </p>";
-    s+= "<img src='"+ _root +"/uploads/"+ user.avatar +"' />";
+    s+= "<p>Created by: "+ htmlEncode(user.firstname) + " " + htmlEncode(user.surname)+ "</p>";
+    s+= "<div class='one columns image circle'><img src='"+ _root +"/uploads/"+ user.avatar +"' /></div>";
     s+= "</section>";
     $("#user_inh").html(s);
 }
@@ -185,7 +183,7 @@ function parseComments(comments)
             s+= "<input type='button' value='edit comment' onclick='editComment("+ comments[i].comment_id +")' />";
             s+= "<input type='button' value='delete comment' onclick='deleteComment("+ comments[i].comment_id +")' />";
         }
-        s+="<img src='"+ _root +"/uploads/"+ comments[i].avatar + "' />";
+        s+="<img class='img_comment' src='"+ _root +"/uploads/"+ comments[i].avatar + "' />";
         s+="<hr/>";
     }
     if (comments.length == 0) {
