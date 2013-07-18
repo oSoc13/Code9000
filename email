@@ -1,3 +1,0 @@
-<h3>Hi there, and welcome to 9K Spotter!</h3>
-<p>You just registered a new account. Please activate your account before you can use the application. Thanks.</p>
-<p><a href="http://code9000.gent.be/Code9000/activateaccount/' . $code . '/'.$email.'">Please activate your account by clicking this link</a>.</p>
