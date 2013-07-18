@@ -261,77 +261,105 @@ $app->get('/api/spots/:id', function ($id) use ($app) {
     $data = GetDatabaseObj($sql, $execute);
 
 
-    //CHECK IF USER ALREADY VOTED
-    $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_spots uls 
-            where uls.user_id=:user_id and uls.spot_id = :spot_id 
-        UNION 
-            SELECT * from users_dislike_spots uds 
-            WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'spot_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $data["voted"] = false;
-    }else{
-        $data["voted"] = true;
+    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    {
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    CheckIfEmpty($data, $app);
+    else
+    {
+        $data["logged_in"] = true;
+        //CHECK IF USER ALREADY VOTED
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_spots uls 
+                where uls.user_id=:user_id and uls.spot_id = :spot_id 
+            UNION 
+                SELECT * from users_dislike_spots uds 
+                WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'spot_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $data["voted"] = false;
+        }else{
+            $data["voted"] = true;
+        }
+        CheckIfEmpty($data, $app);
+    }
 });
 
 /**
  * vote up a spot
  */
 $app->post('/api/spots/:id/voteup', function ($id) use ($app) {
-    $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_spots uls 
-            where uls.user_id=:user_id and uls.spot_id = :spot_id 
-        UNION 
-            SELECT * from users_dislike_spots uds 
-            WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'spot_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $execute = array("id"=>$id, "user_id" => $uid);
-        $sql = "UPDATE spots SET upvotes=(upvotes+1) WHERE spot_id = :id;Insert INTO users_like_spots (user_id, spot_id) values(:user_id,:id);";
-        $data = UpdateDatabaseObject($sql, $execute);
+    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
         CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';
+    {
+        $data["logged_in"] = false;
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_spots uls 
+                where uls.user_id=:user_id and uls.spot_id = :spot_id 
+            UNION 
+                SELECT * from users_dislike_spots uds 
+                WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'spot_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $execute = array("id"=>$id, "user_id" => $uid);
+            $sql = "UPDATE spots SET upvotes=(upvotes+1) WHERE spot_id = :id;Insert INTO users_like_spots (user_id, spot_id) values(:user_id,:id);";
+            $data = UpdateDatabaseObject($sql, $execute);
+            CheckIfEmpty($data, $app);
+        }
+        else
+            echo 'voted';
+    }
 });
 
 /**
  * vote down a spot
  */
 $app->post('/api/spots/:id/votedown', function ($id) use ($app) {
-    $uid = $_SESSION['9K_USERID'];
-    $sqlcheck = "SELECT * FROM 
-        (
-            SELECT * from users_like_spots uls 
-            where uls.user_id=:user_id and uls.spot_id = :spot_id 
-        UNION 
-            SELECT * from users_dislike_spots uds 
-            WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
-        ) result";
-   
-    $vars = array('user_id' => $uid, 'spot_id' => $id);
-    $check = GetDatabaseObj($sqlcheck, $vars);
-    if (empty($check)) {
-        $execute = array("id"=>$id, "user_id" => $uid);
-        $sql = "UPDATE spots SET downvotes=(downvotes+1) WHERE spot_id = :id;Insert INTO users_dislike_spots (user_id, spot_id) values(:user_id,:id);";
-        $data = UpdateDatabaseObject($sql, $execute);
+    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
         CheckIfEmpty($data, $app);
     }
     else
-        echo 'voted';
+    {
+        $uid = $_SESSION['9K_USERID'];
+        $sqlcheck = "SELECT * FROM 
+            (
+                SELECT * from users_like_spots uls 
+                where uls.user_id=:user_id and uls.spot_id = :spot_id 
+            UNION 
+                SELECT * from users_dislike_spots uds 
+                WHERE uds.user_id=:user_id and uds.spot_id = :spot_id 
+            ) result";
+       
+        $vars = array('user_id' => $uid, 'spot_id' => $id);
+        $check = GetDatabaseObj($sqlcheck, $vars);
+        if (empty($check)) {
+            $execute = array("id"=>$id, "user_id" => $uid);
+            $sql = "UPDATE spots SET downvotes=(downvotes+1) WHERE spot_id = :id;Insert INTO users_dislike_spots (user_id, spot_id) values(:user_id,:id);";
+            $data = UpdateDatabaseObject($sql, $execute);
+            CheckIfEmpty($data, $app);
+        }
+        else
+            echo 'voted';
+    }
 });
 
 /**
@@ -349,8 +377,17 @@ $app->get('/api/spots/:id/comments', function($id) use ($app){
     $datac = GetDatabaseObj($sql, $execute);
     
     $data['comments'] = $datac;
-    $data['user'] = $_SESSION['9K_USERID'];
-    CheckIfEmpty($data, $app);
+    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    {
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
+    }
+    else
+    {
+        $data["logged_in"] = true;
+        $data['user'] = $_SESSION['9K_USERID'];
+        CheckIfEmpty($data, $app);
+    }
 });
 
 /**
@@ -360,30 +397,40 @@ $app->get('/api/spots/:id/comments', function($id) use ($app){
  *      text => comment text
  */
 $app->post('/api/spots/:id/comments', function($id) use ($app){
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    try{
-        $text = "";
-        foreach ($data as $key => $val){
-            if ($key == "text"){
-                $text = $val;
-            }
-        }
-        $user_id = $_SESSION['9K_USERID'];
-        $vars = array("text"=>$text, "user_id" =>$user_id);
-        $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
-        // Execute query
-        $comment = InsertDatabaseObject($sql, $vars);
-        
-        $sqlAddCommentToSpot = "Insert INTO spots_has_comments(spot_id, comment_id) values(:spot_id, :comment_id)";
-        $varsforadding = array('spot_id' => $id, 'comment_id' => $comment);
-        
-        GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
-	echo json_encode($var = array("status"=>"OK"));
+    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
-        exit;
+    else
+    {
+        $requestBody = $app->request()->getBody();
+        $data = json_decode($requestBody);
+        try{
+            $text = "";
+            foreach ($data as $key => $val){
+                if ($key == "text"){
+                    $text = $val;
+                }
+            }
+
+            $user_id = $_SESSION['9K_USERID'];
+
+            $vars = array("text"=>$text, "user_id" =>$user_id);
+            $sql = "INSERT INTO comments (text, user_id) VALUES (:text, :user_id);";
+            $comment = InsertDatabaseObject($sql, $vars);
+            
+            $sqlAddCommentToSpot = "Insert INTO spots_has_comments(spot_id, comment_id) values(:spot_id, :comment_id)";
+            $varsforadding = array('spot_id' => $id, 'comment_id' => $comment);
+            GetDatabaseObj($sqlAddCommentToSpot, $varsforadding);
+
+	        echo json_encode($var = array("status"=>"OK", "logged_in" => true));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
@@ -394,27 +441,36 @@ $app->post('/api/spots/:id/comments', function($id) use ($app){
  *    text => comment text
  */
 $app->post('/api/spots/:id/comments/:cid', function($id, $cid) use ($app){
-    $requestBody = $app->request()->getBody();
-    $data = json_decode($requestBody);
-    try{
-        $text = "";
-        foreach ($data as $key => $val){
-            if ($key == "text"){
-                $text = $val;
-            }
-        }
-        $user_id = $_SESSION['9K_USERID'];
-        // For each image, query an addition
-        $vars = array("text"=>$text, "id" =>$cid);
-        $sql = "Update comments SET text= :text WHERE comment_id = :id;";
-        // Execute query
-        $count = UpdateDatabaseObject($sql, $vars);
-        
-	echo json_encode($var = array("status"=>"OK"));
+    if (!isset($_SESSION['9K_USERID']) && !empty($_SESSION['9K_USERID'])) 
+    {
+        $data = array();
+        $data["logged_in"] = false;
+        CheckIfEmpty($data, $app);
     }
-    catch(Exception $e){
-        echo json_encode($var = array("status"=>"Failed to comment. Here is some more information: $e"));
-        exit;
+    else
+    {
+        $requestBody = $app->request()->getBody();
+        $data = json_decode($requestBody);
+        try{
+            $text = "";
+            foreach ($data as $key => $val){
+                if ($key == "text"){
+                    $text = $val;
+                }
+            }
+            $user_id = $_SESSION['9K_USERID'];
+            // For each image, query an addition
+            $vars = array("text"=>$text, "id" =>$cid);
+            $sql = "Update comments SET text= :text WHERE comment_id = :id;";
+            // Execute query
+            $count = UpdateDatabaseObject($sql, $vars);
+            
+    	echo json_encode($var = array("status"=>"OK", "logged_in" => true));
+        }
+        catch(Exception $e){
+            echo json_encode($var = array("status"=>"Failed to edit comment. Here is some more information: $e"));
+            exit;
+        }
     }
 });
 
