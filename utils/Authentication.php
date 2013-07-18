@@ -168,4 +168,12 @@ class Authentication {
 
         return ($pwdH == $pwd? true:false); 
     }
+
+    function checkEmail($email)
+    {
+        $sql = "SELECT COUNT(*) FROM users where users.email LIKE :email";
+        $vars = array('email' => $email);
+        return GetFirstDatabaseObject($sql,$vars);
+
+    }
 }
