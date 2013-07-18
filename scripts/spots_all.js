@@ -70,7 +70,7 @@ function addSpot(id, description, proposed, up, down, img){
 			"<p>Solution: " + htmlEncode(proposed.substring(0,400)) + "</p>" +
 			"<p class='vote'>Score: " + (up - down) +
 			"<span class='upvote'>+" + up + "</span>" + 
-			"<span class='downvote'>-" + down + "</span>)</p></section></div></a>";
+			"<span class='downvote'>-" + down + "</span></p></section></div></a>";
 	$("#spotlist").append(element);
 }
 
