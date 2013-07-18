@@ -76,18 +76,18 @@ class Authentication {
     function sendRegistrationMail($id, $code,  $name)
     {
         $mail = new PHPMailer();
-        $mail->IsSMTP();                                      // Set mailer to use SMTP
+        $mail->IsSMTP();                                    // Set mailer to use SMTP
         $mail->Mailer = "smtp";
-        $mail->Host = 'ssl://smtp.gmail.com';  // Specify main and backup server
+        $mail->Host = 'ssl://smtp.gmail.com';				// Specify main and backup server
         $mail->Port = "465";
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = '9KBuilder@gmail.com';                            // SMTP username
+        $mail->SMTPAuth = true;                             // Enable SMTP authentication
+        $mail->Username = '9KBuilder@gmail.com';            // SMTP username
         $mail->Password = EMAIL_PWD;  
         $mail->SMTPDebug = 1;
         $mail->From = '9KBuilder@gmail.com';
         $mail->FromName = "9KBuilder";
-        $mail->AddAddress($email, $name);  // Add a recipient
-        $mail->IsHTML(true);                                  // Set email format to HTML
+        $mail->AddAddress($email, $name);					// Add a recipient
+        $mail->IsHTML(true);                                // Set email format to HTML
 
         $mail->Subject = '9K Spotter Activation';
         $mail->Body    = '<h3>Hi there, and welcome to 9K Spotter!</h3>
