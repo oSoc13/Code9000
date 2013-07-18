@@ -48,13 +48,13 @@ function initMarker(lat, long, id, description, proposed, up, down){
 	$("#map").css("display","block");
 	// Add marker to map
     marker = L.marker([lat, long]).addTo(map);
-    marker.bindPopup("<a href='/Code9000/spots/" + id + "'>" +
+    marker.bindPopup("<a class='markera' href='/Code9000/spots/" + id + "'>" +
 			"<div>" +
 			"<h3>" + htmlEncode(description.substring(0, 60)) + "</h3>" + 
 			"<p>Solution: " + htmlEncode(proposed.substring(0, 120)) + "</p>" +
-			"<p class='vote'>Score: " + (up - down)  + " (" +
+			"<p class='vote'>Score: " + (up - down)  + " " +
 			"<span class='upvote'>+" + up + "</span>" + 
-			"<span class='downvote'>-" + down + "</span>)</p></div></a>");
+			"<span class='downvote'>-" + down + "</span></p></div></a>");
 }
 
 function addSpot(id, description, proposed, up, down, img){
