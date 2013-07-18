@@ -277,6 +277,7 @@ button#cancel, button#confirm {
 	font-style: italic;
 	text-transform: uppercase;
 	color: #999;
+	height: 50px;
 }
 
 button#cancel {text-align: left;}
@@ -287,6 +288,12 @@ button#confirm {text-align: right;}
 	float: left;
 	margin-bottom: 3em;
 	display: block;
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;
 }
 
 .icon-user {

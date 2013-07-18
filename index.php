@@ -225,9 +225,9 @@ $app->post('/register', function () use ($app) {
 });
 
 
-$app->get('/activateaccount/:code/:email', function ($code, $email) use ($app) {
+$app->get('/activateaccount/:code/:id', function ($code, $id) use ($app) {
     $auth = new Authentication();
-    $count = $auth->activateAccount($email, $code);
+    $count = $auth->activateAccount($id, $code);
     if ($count > 0) {
         $_SESSION["loginmsg"] = "Your account has been activated. You can now login.";
         $app->redirect('/code9000/login');

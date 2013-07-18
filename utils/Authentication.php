@@ -49,7 +49,7 @@ class Authentication {
                 
         $id = InsertDatabaseObject($sql, $vars);
                 
-        $this->sendRegistrationMail($email, $activationcode, $fname . " " . $sname);        
+        $this->sendRegistrationMail($id, $activationcode, $fname . " " . $sname);        
     }
     
     function hashPassword($pwd, $algo)
@@ -73,7 +73,7 @@ class Authentication {
         return $randomString;
     }
     
-    function sendRegistrationMail($email, $code,  $name)
+    function sendRegistrationMail($id, $code,  $name)
     {
         $mail = new PHPMailer();
         $mail->IsSMTP();                                      // Set mailer to use SMTP
@@ -92,7 +92,7 @@ class Authentication {
         $mail->Subject = '9K Spotter Activation';
         $mail->Body    = '<h3>Hi there, and welcome to 9K Spotter!</h3>
 <p>You just registered a new account. Please activate your account before you can use the application. Thanks.</p>
-<p><a href="http://code9000.gent.be/Code9000/activateaccount/' . $code . '/'.$email.'">Please activate your account by clicking this link</a>.</p>';
+<p><a href="http://code9000.gent.be/Code9000/activateaccount/' . $code . '/'.$id.'">Please activate your account by clicking this link</a>.</p>';
                 
         if(!$mail->Send()) {
            echo 'Message could not be sent.';
@@ -101,10 +101,10 @@ class Authentication {
         }
     }
     
-    function activateAccount($email, $code)
+    function activateAccount($id, $code)
     {
-        $sqlcheck = "SELECT * From users where email = :email;";
-        $varscheck = array('email' => $email);
+        $sqlcheck = "SELECT * From users where user_id = :id;";
+        $varscheck = array('id' => $id);
         $output = GetFirstDatabaseObject($sqlcheck, $varscheck);
         
         if (empty($output)) {
@@ -117,8 +117,8 @@ class Authentication {
             }
             else
             {
-                $sql = "UPDATE users SET activationdate = NOW() where email = :email AND activationcode = :code";
-                $vars = array('email' =>$email, 'code' => $code);
+                $sql = "UPDATE users SET activationdate = NOW() where user_id = :id AND activationcode = :code";
+                $vars = array('id' =>$id, 'code' => $code);
                 return UpdateDatabaseObject($sql,$vars);
             }
         }

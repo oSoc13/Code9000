@@ -20,7 +20,7 @@ Nico Verbruggen (nico.verb@gmail.com)
 	<section id="Spot1">
 		<h2>What did you spot?</h2>
 		<div class="row xwide valign">
-                <ul class="six columns centered">
+                <ul class="eleven columns centered">
                     <li class="field prepend">
                         <span class="adjoined"></span>
                         <input class="input" type="text" placeholder="What did you spot?" name="what" id="what" />
@@ -35,14 +35,15 @@ Nico Verbruggen (nico.verb@gmail.com)
 	<section id="Spot2">
 		<h2>Where are you?</h2>
 		<div class="row xwide valign">
-                <ul class="six columns centered">
+                <ul class="eleven columns centered">
                     <li class="field prepend">
                         <span class="adjoined"></span>
                         <input class='input' id="location_street" name="location_street" type="text" required placeholder="Your address">
 						
                     </li>
-					<li><a id="streetlocation" name="streetlocation">Use this address</a></li>
-					<li><a id="autolocation" name="autolocation">Get location</a></li>
+					<li><a id="streetlocation" name="streetlocation" class="center">Use this address</a></li>
+					
+					<li><a id="autolocation" name="autolocation" class="center">Get location</a></li>
                 </ul>
          </div>
 		
@@ -62,6 +63,7 @@ Nico Verbruggen (nico.verb@gmail.com)
         <button id="cancel" name="cancel" type="button">Cancel</button>
         <button id="confirm" name="confirm" type="submit">Spot</button>
     </div>
+    <div style="height:50px;"></div>
 </div>
 <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
 <?php echo $this->render('libsfooter.phtml') ?>
