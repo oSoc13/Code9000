@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Genereertijd: 11 jul 2013 om 17:23
+-- Genereertijd: 17 jul 2013 om 16:02
 -- Serverversie: 5.5.27
 -- PHP-versie: 5.4.7
 
@@ -41,13 +41,6 @@ CREATE TABLE IF NOT EXISTS `cityprojects` (
   `parent_cityproject` int(11) DEFAULT NULL,
   PRIMARY KEY (`cityproject_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Table for playgrounds of proposals. By city, props by civili' AUTO_INCREMENT=2 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `cityprojects`
---
-
-INSERT INTO `cityprojects` (`cityproject_id`, `name`, `description`, `createddate`, `modifieddate`, `deleteddate`, `user_id`, `location_id`, `upvotes`, `downvotes`, `data`, `parent_cityproject`) VALUES
-(1, 'AC Portus playground', 'AC portus needs a garden, so this is my best shot!', '2013-07-05 08:06:28', '2013-07-05 08:07:00', NULL, 1, 1, 0, 0, NULL, NULL);
 
 --
 -- Triggers `cityprojects`
@@ -101,13 +94,6 @@ CREATE TABLE IF NOT EXISTS `cityproposals` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Projects by city, can comment and vote. No more.' AUTO_INCREMENT=2 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `cityproposals`
---
-
-INSERT INTO `cityproposals` (`cityproposal_id`, `name`, `description`, `upvotes`, `downvotes`, `createddate`, `modifieddate`, `deleteddate`, `location_id`, `user_id`) VALUES
-(1, 'AC Portus is going down baby.', 'In the beginning of time, AC Portus was a giant building reknown for it''s telecommunitive potential. That is one of the reasons that Belgacome took over the buidling in 27 AD.', 0, 0, '2013-07-04 09:44:37', '2013-07-04 21:34:07', NULL, 1, 1);
-
---
 -- Triggers `cityproposals`
 --
 DROP TRIGGER IF EXISTS `projInsert`;
@@ -150,16 +136,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `fk_comments_users1_idx` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='	' AUTO_INCREMENT=4 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `comments`
---
-
-INSERT INTO `comments` (`comment_id`, `text`, `createddate`, `modifieddate`, `user_id`) VALUES
-(1, 'Proposal is witty but shitty.', '2013-07-04 09:44:37', '2013-07-11 14:23:23', 6),
-(2, 'Project is cool, only lacks girls.', '2013-07-04 09:44:37', NULL, 1),
-(3, 'spot is awesome', '2013-07-05 08:07:37', '2013-07-11 14:23:23', 6);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='	' AUTO_INCREMENT=13 ;
 
 --
 -- Triggers `comments`
@@ -194,20 +171,7 @@ CREATE TABLE IF NOT EXISTS `locations` (
   PRIMARY KEY (`location_id`),
   KEY `fk_locations_users_idx` (`user_id`),
   KEY `fk_locations_photos1_idx` (`photo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='			' AUTO_INCREMENT=8 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `locations`
---
-
-INSERT INTO `locations` (`location_id`, `coords`, `description`, `upvotes`, `downvotes`, `user_id`, `photo_id`) VALUES
-(1, '[51.053515 3.731266]', 'AC Portus', 0, 0, 1, NULL),
-(2, '[51.0536473 3.7317304]', NULL, 0, 0, 1, 2),
-(3, '[51.0368334 3.732133]', NULL, 0, 0, 1, NULL),
-(4, '[51.0536346 3.7316986]', NULL, 0, 0, 1, NULL),
-(5, '[51.0536346 3.7316986]', NULL, 0, 0, 1, NULL),
-(6, '[51.037411 3.735429]', NULL, 0, 0, 6, NULL),
-(7, '[51.0348452 3.7357807999999]', NULL, 0, 0, 6, NULL);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='			' AUTO_INCREMENT=9 ;
 
 --
 -- Triggers `locations`
@@ -231,16 +195,7 @@ CREATE TABLE IF NOT EXISTS `photos` (
   `url` varchar(255) DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
   PRIMARY KEY (`photo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `photos`
---
-
-INSERT INTO `photos` (`photo_id`, `description`, `url`, `createddate`) VALUES
-(1, NULL, 'MDcuanBnMTM3MzQ2MjMzNTI0Mw==.jpg', '2013-07-10 15:19:01'),
-(2, NULL, 'MDQuanBnMTM3MzQ2MjMzOTA2Mw==.jpg', '2013-07-10 15:19:01'),
-(3, NULL, 'MDQuanBnMTM3MzU0NjkxNjU0MA==.jpg', '2013-07-11 14:48:38');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Triggers `photos`
@@ -265,8 +220,8 @@ CREATE TABLE IF NOT EXISTS `spots` (
   `createddate` datetime DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `deleteddate` datetime DEFAULT NULL,
-  `upvotes` int(10) unsigned DEFAULT NULL,
-  `downvotes` int(10) unsigned DEFAULT NULL,
+  `upvotes` int(10) DEFAULT NULL,
+  `downvotes` int(10) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
   `photo_id` int(11) DEFAULT NULL,
@@ -274,21 +229,7 @@ CREATE TABLE IF NOT EXISTS `spots` (
   KEY `fk_proposals_users1_idx` (`user_id`),
   KEY `fk_proposals_locations1_idx` (`location_id`),
   KEY `fk_proposals_photos1_idx` (`photo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
-
---
--- Gegevens worden uitgevoerd voor tabel `spots`
---
-
-INSERT INTO `spots` (`spot_id`, `description`, `proposed`, `createddate`, `modifieddate`, `deleteddate`, `upvotes`, `downvotes`, `user_id`, `location_id`, `photo_id`) VALUES
-(1, 'Voorstel beschrijving', 'Een frigo.', '2013-07-04 09:44:37', '2013-07-11 17:12:58', NULL, 1, 0, 1, 1, NULL),
-(2, 'Bears in my ass', 'Tom', '2013-07-10 15:19:01', '2013-07-11 17:05:04', NULL, 1, 0, 1, 2, 1),
-(3, 'your mother', 'no eyes', '2013-07-10 15:20:07', NULL, NULL, 0, 0, 1, 3, NULL),
-(4, 'test;Delete from users', 'lol', '2013-07-10 15:20:54', '2013-07-11 17:04:57', NULL, 0, 1, 1, 4, NULL),
-(5, 'test;Delete%20from%20users', 'lol', '2013-07-10 15:21:48', NULL, NULL, 0, 0, 1, 5, NULL),
-(6, 'fsdfsdfsdf', 'dfsd', '2013-07-11 11:16:55', '2013-07-11 16:33:30', NULL, 7, 4, 6, 7, NULL),
-(7, 'sdfsdf', 'qsdfqsdfqsdf', '2013-07-11 11:49:11', '2013-07-11 14:44:36', NULL, 16, 0, 6, 7, NULL),
-(8, 'Robbe', 'Computer', '2013-07-11 14:48:38', '2013-07-11 17:04:49', NULL, 360, 379, 6, 6, 3);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Triggers `spots`
@@ -319,15 +260,6 @@ CREATE TABLE IF NOT EXISTS `spots_has_comments` (
   KEY `comment_id` (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Gegevens worden uitgevoerd voor tabel `spots_has_comments`
---
-
-INSERT INTO `spots_has_comments` (`spot_id`, `comment_id`) VALUES
-(7, 1),
-(1, 3),
-(7, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -352,16 +284,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lastloggedindate` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `users`
 --
 
 INSERT INTO `users` (`user_id`, `email`, `password`, `passwordsalt`, `role`, `dateofbirth`, `firstname`, `surname`, `avatar`, `activationcode`, `activationdate`, `createddate`, `modifieddate`, `deleteddate`, `lastloggedindate`) VALUES
-(1, 'test', 'admin', '9kbuildersalt', 'admin', '2013-07-04 00:00:00', 'Stefaan', 'Christiaens', NULL, '12345678910', '2013-07-04 00:00:00', '2013-07-04 09:44:37', '2013-07-08 12:02:12', NULL, NULL),
-(5, 'tobmav@gmail.com', 'af2db466b684d1b57be7023bace33ae4af4b769a29b0199c04ad9972abe0956a', 'VnFFQjI0dVlDajBGVVk4Z0NwbFNZc0Q0R3RyWVhoS2F4ZjFKRGJlZ1h0UlNKVlE5RlVGYjBnanlyamVuZFZvZQ==', 'admin', '1991-01-10 00:00:00', 'Tom', 'Van humbeek', 'MDUuanBnMTM3MzM2NzMyMTM5OQ==.jpg', '1qhe6GRW90Atpgq', NULL, '2013-07-09 12:55:24', NULL, NULL, NULL),
-(6, 'stefaan.ch@gmail.com', 'bb101c7fd3da9e88f17fce8d1d4c4e180354e039ea3decbc3beea6098c2e0fe2', 'akxsSXY4NkR4NjNsdlU0TjFmdXNhbDhqeFduT2VlMldQV3Rhcmh3ckRaeGZ4aGx6SlFpUWlXZjNQZ3hGcjJaRQ==', 'admin', '1991-01-10 00:00:00', 'Stef', 'chri', 'MDYuanBnMTM3MzQ1NTM1MTk5MQ==.jpg', '33FSmlUBfZ6QPd6', '2013-07-09 13:00:56', '2013-07-09 13:00:31', '2013-07-11 17:18:26', NULL, '2013-07-11 17:18:26');
+(8, 'stefaan.ch@gmail.com', '839b8964792ac38868d863eb2fb76df7dbc1987957286acaa97853485bf9baac', 'TG5rR2JVaWNZZUNQdFFuTXdIYU1zZzYzOHdLaVVXZEpCdDY2ekJ1QkVoWVliMEVwMkk3RXdUdFR2dmlTajJHTg==', 'admin', '1991-01-10 00:00:00', 'Stefaan', 'Christiaens', 'Zm90b18xLkpQRzEzNzQwNjk2MjIxOTI=.JPG', 'Oqeoka2THdHZh2i', '2013-07-17 16:01:22', '2013-07-17 16:00:26', '2013-07-17 16:01:31', NULL, '2013-07-17 16:01:31');
 
 --
 -- Triggers `users`
@@ -418,14 +348,6 @@ CREATE TABLE IF NOT EXISTS `users_dislike_spots` (
   KEY `spot_id` (`spot_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Gegevens worden uitgevoerd voor tabel `users_dislike_spots`
---
-
-INSERT INTO `users_dislike_spots` (`user_id`, `spot_id`) VALUES
-(6, 4),
-(6, 8);
-
 -- --------------------------------------------------------
 
 --
@@ -464,15 +386,6 @@ CREATE TABLE IF NOT EXISTS `users_like_spots` (
   PRIMARY KEY (`user_id`,`spot_id`),
   KEY `spot_id` (`spot_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Gegevens worden uitgevoerd voor tabel `users_like_spots`
---
-
-INSERT INTO `users_like_spots` (`user_id`, `spot_id`) VALUES
-(6, 1),
-(6, 2),
-(6, 6);
 
 --
 -- Beperkingen voor gedumpte tabellen
@@ -531,43 +444,43 @@ ALTER TABLE `spots_has_comments`
 -- Beperkingen voor tabel `users_dislike_cityprojects`
 --
 ALTER TABLE `users_dislike_cityprojects`
-  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_dislike_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_dislike_cityproposals`
 --
 ALTER TABLE `users_dislike_cityproposals`
-  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_dislike_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_dislike_spots`
 --
 ALTER TABLE `users_dislike_spots`
-  ADD CONSTRAINT `users_dislike_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_dislike_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_dislike_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_dislike_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_like_cityprojects`
 --
 ALTER TABLE `users_like_cityprojects`
-  ADD CONSTRAINT `users_like_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_like_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_like_cityprojects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_like_cityprojects_ibfk_2` FOREIGN KEY (`cityproject_id`) REFERENCES `cityprojects` (`cityproject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_like_cityproposals`
 --
 ALTER TABLE `users_like_cityproposals`
-  ADD CONSTRAINT `users_like_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_like_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_like_cityproposals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_like_cityproposals_ibfk_2` FOREIGN KEY (`cityproposal_id`) REFERENCES `cityproposals` (`cityproposal_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Beperkingen voor tabel `users_like_spots`
 --
 ALTER TABLE `users_like_spots`
-  ADD CONSTRAINT `users_like_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_like_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_like_spots_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_like_spots_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spots` (`spot_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

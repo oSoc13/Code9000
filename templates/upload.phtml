@@ -63,11 +63,7 @@ Nico Verbruggen (nico.verb@gmail.com)
 		<input id="confirm" type="button" value="Confirm uploads">
 	</section>	
 </div>
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="scripts/vendor/jquery-2.0.2.min.js"><\/script>')</script>
+<?php echo $this->render('libsfooter.phtml') ?>
 <script src="/Code9000/scripts/uploader.js"></script>
 </body>
 </html>

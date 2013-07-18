@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100,300italic,400italic,700);
+
 .clearfix:after {
 	content: ".";
 	display: block;
@@ -17,7 +19,7 @@
 * BECAUSE IT NEEDED FIXING
 * ============================== */
 
-h1, h2, h3, h4, h5,h6{
+h1, h2, h3, h4, h5, h6{
 	font-weight: 300;
 	margin: 15px 0px;
 }
@@ -107,9 +109,9 @@ body{
 }
 
 .spotlink{
-	display: block;
-	float: none;
+	z-index: 999;
 }
+
 .dateaccent{
 	margin-left: 10px;
 	color: orangered;
@@ -119,7 +121,6 @@ body{
 }
 #map, #listbutton{
 	clear: both !important;
-
 }
 
 /* =============================
@@ -133,6 +134,7 @@ body{
 
 .spotcontent{
 	clear: both;
+	width: 100%;
 	padding: 15px;
 	border-top: 1px solid #AAA;
 	padding-bottom: 25px;
@@ -144,6 +146,7 @@ body{
 
 .spotimg, .spotimg_noimg{
 	float: left;
+	clear: none !important;
 	margin-top: 25px;
 	margin-right: 50px;
 	max-width: 150px;
@@ -277,6 +280,7 @@ button#cancel, button#confirm {
 	font-style: italic;
 	text-transform: uppercase;
 	color: #999;
+	height: 50px;
 }
 
 button#cancel {text-align: left;}
@@ -287,6 +291,12 @@ button#confirm {text-align: right;}
 	float: left;
 	margin-bottom: 3em;
 	display: block;
+	cursor: pointer;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;
 }
 
 .icon-user {

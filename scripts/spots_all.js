@@ -35,14 +35,17 @@ $(function(){
 
 function showPicture(img){
 	if (img !== null){
-		return "<img class='spotimg' src='/Code9000/uploads/" + img + "'/>";
+		return "<img class='spotimg three columns' src='/Code9000/uploads/" + img + "'/>";
 	}else{
-		return "<img class='spotimg_noimg' src='/Code9000/img/NoImage.jpg'/>";
+		return "<img class='spotimg_noimg three columns' src='/Code9000/img/NoImage.jpg'/>";
 	}
 }
 
 function initMarker(lat, long, id, description, proposed, up, down){
     
+	if (description === null){description="";};
+	if (proposed === null){proposed="";};
+	
 	$("#map").width = $(window).width();
 	// Show the map if it was hidden
 	$("#map").css("display","block");
@@ -50,18 +53,22 @@ function initMarker(lat, long, id, description, proposed, up, down){
     marker = L.marker([lat, long]).addTo(map);
     marker.bindPopup("<a href='/Code9000/spots/" + id + "'>" +
 			"<div>" +
-			"<h3>" + description + "</h3>" + 
-			"<p>Solution: " + proposed + "</p>" +
-			"<p class='vote'>Score: " + (up - down) +
+			"<h3>" + htmlEncode(description.substring(0, 60)) + "(...)</h3>" + 
+			"<p>Solution: " + htmlEncode(proposed.substring(0, 120)) + "(...)</p>" +
+			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
 			"<span class='downvote'>-" + down + "</span>)</p></div></a>");
 }
 
 function addSpot(id, description, proposed, up, down, img){
+	
+	if (description === null){description="";};
+	if (proposed === null){proposed="";};
+	
 	var element = "<a class='spotlink' href='/Code9000/spots/" + id + "'>" +
-			"<div class='spotcontent'>" + showPicture(img) + "<section class='clearfix'><h3>" + description + "</h3>" + 
-			"<p>Solution: " + proposed + "</p>" +
-			"<p class='vote'>Score: " + (up - down) +
+			"<div class='spotcontent clearfix'>" + showPicture(img) + "<section class='clearfix eight columns'><h3>" + htmlEncode(description.substring(0, 120)) + "</h3>" + 
+			"<p>Solution: " + htmlEncode(proposed.substring(0,400)) + "</p>" +
+			"<p class='vote'>Score: " + (up - down)  + " (" +
 			"<span class='upvote'>+" + up + "</span>" + 
 			"<span class='downvote'>-" + down + "</span>)</p></section></div></a>";
 	$("#spotlist").append(element);

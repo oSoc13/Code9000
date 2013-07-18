@@ -1,17 +1,6 @@
 <?php
 /**
-9K SPOTTER HOMEPAGE
----------
-# COPYRIGHT
-(c) 2013, OKFN Belgium. Some rights reserved.
-
-# AUTHOR
-Nico Verbruggen (nico.verb@gmail.com)
-*/
-?>
-<?php
-/**
-9K SPOTTER ABOUT PAGE
+9K SPOTTER CREATE SPOT
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -27,11 +16,11 @@ Nico Verbruggen (nico.verb@gmail.com)
 	<div class="row">
 	<div id="Spotter">
 	<h1>Spot Something</h1>
-    <img src="../img/context/c-spots.png" class="cImg" alt="Spot something" />
+    <img src="/Code9000/img/context/c-spots.png" class="cImg" alt="Spot something" />
 	<section id="Spot1">
 		<h2>What did you spot?</h2>
 		<div class="row xwide valign">
-                <ul class="six columns centered">
+                <ul class="eleven columns centered">
                     <li class="field prepend">
                         <span class="adjoined"></span>
                         <input class="input" type="text" placeholder="What did you spot?" name="what" id="what" />
@@ -46,14 +35,15 @@ Nico Verbruggen (nico.verb@gmail.com)
 	<section id="Spot2">
 		<h2>Where are you?</h2>
 		<div class="row xwide valign">
-                <ul class="six columns centered">
+                <ul class="eleven columns centered">
                     <li class="field prepend">
                         <span class="adjoined"></span>
                         <input class='input' id="location_street" name="location_street" type="text" required placeholder="Your address">
 						
                     </li>
-					<li><a id="streetlocation" name="streetlocation">Use this address</a></li>
-					<li><a id="autolocation" name="autolocation">Get location</a></li>
+					<li><a id="streetlocation" name="streetlocation" class="center">Use this address</a></li>
+					
+					<li><a id="autolocation" name="autolocation" class="center">Get location</a></li>
                 </ul>
          </div>
 		
@@ -73,13 +63,10 @@ Nico Verbruggen (nico.verb@gmail.com)
         <button id="cancel" name="cancel" type="button">Cancel</button>
         <button id="confirm" name="confirm" type="submit">Spot</button>
     </div>
+    <div style="height:50px;"></div>
 </div>
 <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
-<!-- BOTTOM SCRIPTS -->
-<!-- 1. GRAB GOOGLE'S JQUERY CDN -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<!-- 2. FALLBACK TO LOCAL JQUERY IF CDN NOT ACTIVE -->
-<script>window.jQuery || document.write('<script src="scripts/vendor/jquery-2.0.2.min.js"><\/script>')</script>
+<?php echo $this->render('libsfooter.phtml') ?>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script src="/Code9000/scripts/spot_create.js"></script>
 </body>

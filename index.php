@@ -12,7 +12,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 */
 
 include_once('routes.php');
-include_once(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Authentication.php');
+include_once(__DIR__ . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'Authentication.php');
 
 
 // import the Intervention Image Class
@@ -55,6 +55,10 @@ $app->get('/breakthissite', function () use ($app) {
 
 $app->get('/home', function () use ($app) {
     $app->render('index.phtml');
+});
+
+$app->get('/admin', function () use ($app) {
+    $app->render('admin.phtml');
 });
 
 $app->get('/upload', function () use ($app) {
@@ -210,10 +214,9 @@ $app->post('/register', function () use ($app) {
     $email =    trim($req->post('email'     ));
     $dob =      trim($req->post('dob'       ));
     $pwd =      trim($req->post('password'  ));
-    $admin =    trim($req->post('admin'     ));
     $photo =    trim($req->post('avatarpic' ));
     
-    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'admin' => $admin, 'avatar' => $photo );
+    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'avatar' => $photo );
 
     $auth = new Authentication();
     $auth->register($test);
@@ -221,10 +224,11 @@ $app->post('/register', function () use ($app) {
 });
 
 
-$app->get('/activateaccount/:code/:email', function ($code, $email) use ($app) {
+$app->get('/activateaccount/:code/:id', function ($code, $id) use ($app) {
     $auth = new Authentication();
-    $count = $auth->activateAccount($email, $code);
+    $count = $auth->activateAccount($id, $code);
     if ($count > 0) {
+        $_SESSION["loginmsg"] = "Your account has been activated. You can now login.";
         $app->redirect('/code9000/login');
     }
     else
@@ -278,7 +282,8 @@ $app->post('/login', function () use ($app) {
             $app->redirect('/code9000/spottings');
             break;
     }
-    $app->redirect('/code9000/login/'.$msg);
+	$_SESSION["loginmsg"] = $msg;
+    $app->redirect('/code9000/login');
 });
 
 $app->get('/account', function () use ($app) {
@@ -356,11 +361,12 @@ $app->post('/account/edit', function () use ($app) {
                 $sql = "UPDATE users SET firstname = :firstname, surname =:surname, dateofbirth =:dateofbirth". $sqlAvatar ." , password=:password, passwordsalt=:salt WHERE user_id = :id";
             }
             UpdateDatabaseObject($sql,$user);
+            $app->redirect('/code9000/account');
         }
         else
         {
 			$_SESSION["loginmsg"] = "Your password was incorrect. Please enter the correct details.";
-            $app->redirect('/code9000/edit');  
+            $app->redirect('/code9000/account/edit');  
         }
      }
     else {
@@ -375,7 +381,7 @@ $app->get('/account/delete', function () use ($app) {
         $app->render('account-delete.phtml');
     }
  else {
-	 $_SESSION["loginmsg"] = "Please login first before deleting your profile.";
+	$_SESSION["loginmsg"] = "Please login first before deleting your profile.";
     $app->redirect('/code9000/login');    
     }
 });

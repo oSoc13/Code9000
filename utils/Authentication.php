@@ -1,7 +1,7 @@
 <?php
 
 /**
-9K AUTH SAMPLE 
+9K AUTH system
 ---------
 # COPYRIGHT
 (c) 2013, OKFN Belgium. Some rights reserved.
@@ -16,23 +16,23 @@ class Authentication {
     function __construct()
     {
         include_once('utils/connectiondb.php');
+        include_once('config/keys.php');
     }
     
     function register($data)
     {
-        $fname = mysql_real_escape_string($data['fname']);
-        $sname = mysql_real_escape_string($data['sname']);
-        $email = mysql_real_escape_string($data['email']);
-        $dob = mysql_real_escape_string($data['dob']);
-        $admin = ( $data['admin']? "admin" : "user" );
-        $passwordData = $this->hashPassword($data['pwd'], 'ALGO');
+        $fname = $data['fname'];
+        $sname = $data['sname'];
+        $email = $data['email'];
+        $dob = $data['dob'];
+        $passwordData = $this->hashPassword($data['pwd'], 'sha256');
         $activationcode = $this->generateRandomString(15);
         $avatar = $data['avatar'];
         
         //INSERT PROFILE PIC
         if (!empty($avatar)) {
             
-            $vars = array('avatar'=> $avatar, 'firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => $admin, 'activationcode' => $activationcode );
+            $vars = array('avatar'=> $avatar, 'firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => 'user', 'activationcode' => $activationcode );
         
             $sql =  "INSERT INTO users(email, password, passwordsalt, role, dateofbirth, firstname, surname, activationcode, avatar) " .
                     "values(:email , :password, :passwordsalt, :role, :dateofbirth, :firstname, :surname, :activationcode, :avatar)";
@@ -40,7 +40,7 @@ class Authentication {
         }
         else
         {
-            $vars = array('firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => $admin, 'activationcode' => $activationcode );
+            $vars = array('firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => 'user', 'activationcode' => $activationcode );
         
             $sql =  "INSERT INTO users(email, password, passwordsalt, role, dateofbirth, firstname, surname, activationcode) " .
                     "values(:email , :password, :passwordsalt, :role, :dateofbirth, :firstname, :surname, :activationcode)";
@@ -48,13 +48,13 @@ class Authentication {
                 
         $id = InsertDatabaseObject($sql, $vars);
                 
-        $this->sendRegistrationMail($email, $activationcode, $fname . " " . $sname);        
+        $this->sendRegistrationMail($id, $activationcode, $fname . " " . $sname);        
     }
     
     function hashPassword($pwd, $algo)
     {
         $salt = $this->generateSalt();
-        $pwdH = hash($algo, $pwd . $salt);
+        $pwdH = hash($algo, GLOBAL_SALT . $pwd . $salt);
         return array('salt' => $salt, 'pwdH' => $pwdH);
     }
     
@@ -72,24 +72,26 @@ class Authentication {
         return $randomString;
     }
     
-    function sendRegistrationMail($email, $code,  $name)
+    function sendRegistrationMail($id, $code,  $name)
     {
         $mail = new PHPMailer();
-        $mail->IsSMTP();                                      // Set mailer to use SMTP
+        $mail->IsSMTP();                                    // Set mailer to use SMTP
         $mail->Mailer = "smtp";
-        $mail->Host = 'ssl://smtp.gmail.com';  // Specify main and backup server
+        $mail->Host = 'ssl://smtp.gmail.com';				// Specify main and backup server
         $mail->Port = "465";
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = '9KBuilder@gmail.com';                            // SMTP username
-        $mail->Password = 'PASSWORD!';  
+        $mail->SMTPAuth = true;                             // Enable SMTP authentication
+        $mail->Username = '9KBuilder@gmail.com';            // SMTP username
+        $mail->Password = EMAIL_PWD;  
         $mail->SMTPDebug = 1;
         $mail->From = '9KBuilder@gmail.com';
         $mail->FromName = "9KBuilder";
-        $mail->AddAddress($email, $name);  // Add a recipient
-        $mail->IsHTML(true);                                  // Set email format to HTML
+        $mail->AddAddress($email, $name);					// Add a recipient
+        $mail->IsHTML(true);                                // Set email format to HTML
 
-        $mail->Subject = 'Activation code';
-        $mail->Body    = 'Welcome at 9KBuilder. <a href="localhost/Code9000/activateaccount/' . $code . '/'.$email.'">Activate now</a> or go to localhost/Code9000/activateaccount/' . $code . '/'.$email.' to activate your account';
+        $mail->Subject = '9K Spotter Activation';
+        $mail->Body    = '<h3>Hi there, and welcome to 9K Spotter!</h3>
+<p>You just registered a new account. Please activate your account before you can use the application. Thanks.</p>
+<p><a href="http://code9000.gent.be/Code9000/activateaccount/' . $code . '/'.$id.'">Please activate your account by clicking this link</a>.</p>';
                 
         if(!$mail->Send()) {
            echo 'Message could not be sent.';
@@ -98,10 +100,10 @@ class Authentication {
         }
     }
     
-    function activateAccount($email, $code)
+    function activateAccount($id, $code)
     {
-        $sqlcheck = "SELECT * From users where email = :email;";
-        $varscheck = array('email' => $email);
+        $sqlcheck = "SELECT * From users where user_id = :id;";
+        $varscheck = array('id' => $id);
         $output = GetFirstDatabaseObject($sqlcheck, $varscheck);
         
         if (empty($output)) {
@@ -114,8 +116,8 @@ class Authentication {
             }
             else
             {
-                $sql = "UPDATE users SET activationdate = NOW() where email = :email AND activationcode = :code";
-                $vars = array('email' =>$email, 'code' => $code);
+                $sql = "UPDATE users SET activationdate = NOW() where user_id = :id AND activationcode = :code";
+                $vars = array('id' =>$id, 'code' => $code);
                 return UpdateDatabaseObject($sql,$vars);
             }
         }
@@ -133,7 +135,7 @@ class Authentication {
         }
         else
         {
-            $pwdH = hash('ALGO', $password . $passwordArray['passwordsalt']);
+            $pwdH = hash('sha256', GLOBAL_SALT . $password . $passwordArray['passwordsalt']);
 
             if ($pwdH == $passwordArray['password']) 
             {
@@ -162,7 +164,7 @@ class Authentication {
     
     function checkPassword($pwd, $salt, $test)
     {
-        $pwdH = hash('ALGO', $test . $salt);
+        $pwdH = hash('sha256', GLOBAL_SALT . $test . $salt);
 
         return ($pwdH == $pwd? true:false); 
     }

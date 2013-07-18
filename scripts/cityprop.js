@@ -18,6 +18,7 @@ var map;
 var marker = null;
 
 var voted = false;
+var _user = 0;
 
 var edit = false;
 
@@ -43,13 +44,10 @@ function getData(){
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/cityproposals/" + prop_id,
         success: function(data){
-            
             voted = data.voted;
             showLocation(data[0].coords.split(" ")[0].substr(1), data[0].coords.split(" ")[1].substr(0, data[0].coords.split(" ")[1].length-2));
-            console.log(voted);
             showData(data[0]);
         },
         error: function(){
@@ -78,10 +76,17 @@ function showLocation(lat, lng){
 
 function showData(data){
     var s = "";
+<<<<<<< HEAD
     s+= "<section id='propData'>";
     s+= "<h3 class='italic uppercase title'>"+ data.name +"</h3>";
     s+= "<p>Description: "+ data.description +"</p>";
     s+= "<p class='italic lightgreen'>Created: "+ data.createddate +"</p>";
+=======
+    s+= "<section>";
+    s+= "<h3 class='italic uppercase negative'>"+ htmlEncode(data.name) +"</h3>";
+    s+= "<p>Description: "+ htmlEncode(data.description) +"</p>";
+    s+= "<p>Created: "+ data.createddate +"</p>";
+>>>>>>> c5498d3348e5fd6a4a9b20cfbde81fe67838b106
     s+= "<p class='btnFL'>Likes: <span id='up'>"+ data.upvotes +"</span></p>";
     if (!voted) {
         s+= "<input type='button' id='upbtn' value='Fancy that!' onclick='voteup()' />";
@@ -114,11 +119,11 @@ function getComments(prop)
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/cityproposals/" + prop_id + "/comments",
         success: function(data){
             var comments = data.comments;
             parseComments(comments);
+            _user = data.user;
         },
         error: function(){
             $("#comm_inh").html("No comments for this project.");
@@ -129,9 +134,15 @@ function getComments(prop)
 function parseComments(comments)
 {
     s= "";
+<<<<<<< HEAD
     for (i = 0; i < comments.length; i++) {		
 		s+="</span><span>" +" <strong>" + comments[i].firstname + " " + comments[i].surname + " </strong>" + "<span class='italic'>" + "posted on " + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) + '</span>' + "</span></p>";
 		s+="<p id='"+ comments[i].comment_id +"-comment'><span class='commentTxt'>" + comments[i].text + "</p> ";
+=======
+    for (i = 0; i < comments.length; i++) {
+        s+="<p id='"+ comments[i].comment_id +"-comment'><span class='text'>" + htmlEncode(comments[i].text) + " ";
+        s+="</span><span>By " + htmlEncode(comments[i].firstname) + " " + htmlEncode(comments[i].surname) + " <strong>" + (comments[i].modifieddate == null?comments[i].createddate:comments[i].modifieddate) +"</strong></span></p>";
+>>>>>>> c5498d3348e5fd6a4a9b20cfbde81fe67838b106
         
         console.log("User: " + _user + ". commentuser: " + comments[i].user_id);
 
@@ -182,7 +193,6 @@ function votedown()
         dataType: "json",
         contentType: "application/json",
         cache: false,
-        data: null,
         url: _root + "/api/cityproposals/" + prop_id + "/votedown",
         success: function(data){
             if (data != "voted") {

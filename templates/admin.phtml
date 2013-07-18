@@ -1,0 +1,22 @@
+	<?php
+		echo $this->render('header.phtml');
+	?>
+	<div class="row">		
+		<h1>Administration</h1>
+		<?php
+			if (isset($_SESSION['9K_ROLE']) && $_SESSION['9K_ROLE']== "admin"){
+			?>
+			<p class='large'>Hi there. You are an administrator and logged on. You have full access.</p>
+			<?php } else { ?>
+			<p class='large'>You do not have any administrator rights right now. Are you working for the city of Ghent? If YES, enter the city credentials on the login page so that you can get to moderating the site.</p>
+			<div class="medium btn primary"><a href="/code9000/login" >Go to the login page</a></div>
+			<?php } ?>
+		<footer class='row'>
+			<p><a href='http://okfn.be/'>&copy; 2013 OKFN</a>. Some rights reserved. <a href='#'>Developed by 9K.</a></p>
+		</footer>
+	</div>
+
+	<?php echo $this->render('libsfooter.phtml') ?>
+
+  </body>
+</html>
