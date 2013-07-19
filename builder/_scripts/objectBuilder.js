@@ -29,7 +29,9 @@ objectBuilder = (function(){
             var sideImage = '_styles/images/objects/building_1_2.png';
             var backImage = '_styles/images/objects/building_1_3.png';
             var topImage = '_styles/images/objects/building_1_4.png';
+            var topImage2;
             var roof = false;
+            var roofSize = 50;
 
             switch(type){
 
@@ -46,31 +48,70 @@ objectBuilder = (function(){
                     break;
 
                 case 2 :
-                    roof = true;
+                    roof = false;
 
+                    bh = 140;
+                    bw = 110;
+                    bd = 90;
+                    boxSize = {w:250,h:300,relu:130,relv:245};
+                    frontImage = '_styles/images/objects/building_2_1.png';
+                    sideImage = '_styles/images/objects/building_2_2.png';
+                    backImage = '_styles/images/objects/building_2_3.png';
+                    topImage = '_styles/images/objects/building_2_4.png';
+
+                    break;
+
+                case 3:
+                    roof = true;
+                    bh = 160;
+                    bw = 111;
+                    bd = 105;
+                    boxSize = {w:250,h:300,relu:130,relv:245};
+                    frontImage = '_styles/images/objects/building_3_1.png';
+                    sideImage = '_styles/images/objects/building_3_2.png';
+                    backImage = '_styles/images/objects/building_3_3.png';
+                    topImage = '_styles/images/objects/building_3_4.png';
+                    topImage2 = '_styles/images/objects/building_3_5.png';
+                    break;
+
+                case 4:
+                    roof = true;
+                    roofSize = 100;
+                    bh = 280;
+                    bw = 300;
+                    bd = 280;
+                    boxSize = {w:550,h:550,relu:280,relv:375};
+                    frontImage = '_styles/images/objects/building_4_1.png';
+                    sideImage = '_styles/images/objects/building_4_2.png';
+                    backImage = '_styles/images/objects/building_4_3.png';
+                    topImage = '_styles/images/objects/building_4_4.png';
+                    topImage2 = '_styles/images/objects/building_4_5.png';
+                    break;
+
+                case 5:
+                    roof = false;
                     bh = 200;
-                    bw = 150;
-                    bd = 120;
-                    boxSize = {w:300,h:350,relu:130,relv:285};
-                    frontImage = '_styles/images/objects/building_1_1.png';
-                    sideImage = '_styles/images/objects/building_1_2.png';
-                    backImage = '_styles/images/objects/building_1_3.png';
-                    topImage = '_styles/images/objects/building_1_4.png';
-
-                    roof = true;
-
+                    bw = 300;
+                    bd = 300;
+                    boxSize = {w:550,h:550,relu:280,relv:375};
+                    frontImage = '_styles/images/objects/building_5_1.png';
+                    sideImage = '_styles/images/objects/building_5_2.png';
+                    backImage = '_styles/images/objects/building_5_3.png';
+                    topImage = '_styles/images/objects/building_5_4.png';
                     break;
             }
 
-            var leftFront = new sheetengine.Sheet({x:0,y:bd/2,z:(roof == true ? (bh+50)/2 : bh/2)}, {alphaD:0,betaD:0,gammaD:0}, {w:bw,h:(roof == true ? bh+50 : bh)});
+            var angle = Math.atan2(roofSize,(bw/2)) * 180/Math.PI;
+            console.log(angle);
+            var leftFront = new sheetengine.Sheet({x:0,y:bd/2,z:bh/2}, {alphaD:0,betaD:0,gammaD:0}, {w:bw,h:bh});
 
             if(roof){
                 leftFront.context.fillStyle = '#FFF';
-                leftFront.context.fillRect(0,50,bw,bh);
-                leftFront.context.moveTo(0, 50); // give the (x,y) coordinates
+                leftFront.context.fillRect(0,roofSize,bw,bh);
+                leftFront.context.moveTo(0, roofSize); // give the (x,y) coordinates
                 leftFront.context.lineTo(bw/2, 0);
-                leftFront.context.lineTo(bw, 50);
-                leftFront.context.lineTo(0, 50);
+                leftFront.context.lineTo(bw, roofSize);
+                leftFront.context.lineTo(0, roofSize);
 
                 leftFront.context.closePath();
                 leftFront.context.fill();
@@ -82,21 +123,16 @@ objectBuilder = (function(){
 
             var img = new Image();
             img.onload = function() {
-                if(roof){
-                    leftFront.context.drawImage(img, 0,50);
-                }
-                else{
-                    leftFront.context.drawImage(img,0,0);
-                }
+                leftFront.context.drawImage(img,0,0);
 
                 // draw the scene
                 sheetengine.calc.calculateAllSheets();
                 sheetengine.drawing.drawScene(true);
             };
             img.src = frontImage;
-            var rightFront = new sheetengine.Sheet({x:bw/2,y:0,z:bh/2}, {alphaD:0,betaD:0,gammaD:90}, {w:bd,h:bh});
+            var rightFront = new sheetengine.Sheet({x:bw/2,y:0,z:(roof == true ? bh/2-roofSize : bh/2)}, {alphaD:0,betaD:0,gammaD:90}, {w:bd,h:bh});
             rightFront.context.fillStyle = '#FFF';
-            rightFront.context.fillRect(0,0,bd,bh);
+            rightFront.context.fillRect(0,0,bd,(roof == true ? bh-roofSize : bh));
             var img2 = new Image();
             img2.onload = function() {
                 rightFront.context.drawImage(img2, 0,0);
@@ -108,8 +144,8 @@ objectBuilder = (function(){
             img2.src = sideImage;
 
             if (roof){
-                var topw = Math.sqrt(Math.pow(50,2)+Math.pow(bw/2,2));
-                var top = new sheetengine.Sheet({x:-bw/4,y:0,z:bh+26}, {alphaD:90,betaD:0,gammaD:34}, {w:topw,h:bd});
+                var topw = Math.sqrt(Math.pow(roofSize,2)+Math.pow(bw/2,2));
+                var top = new sheetengine.Sheet({x:-bw/4,y:0,z:bh-roofSize/2}, {alphaD:90,betaD:0,gammaD:angle}, {w:topw,h:bd});
                 top.context.fillStyle = '#FFF';
                 top.context.fillRect(0,0,topw,bd);
                 var img3 = new Image();
@@ -121,7 +157,7 @@ objectBuilder = (function(){
                     sheetengine.drawing.drawScene(true);
                 };
                 img3.src = topImage;
-                var top2 = new sheetengine.Sheet({x:bw/4,y:0,z:bh+26}, {alphaD:90,betaD:0,gammaD:-34}, {w:topw,h:bd});
+                var top2 = new sheetengine.Sheet({x:bw/4,y:0,z:bh-roofSize/2}, {alphaD:90,betaD:0,gammaD:-angle}, {w:topw,h:bd});
                 top2.context.fillStyle = '#FFF';
                 top2.context.fillRect(0,0,topw,bd);
                 var img3_2 = new Image();
@@ -132,7 +168,7 @@ objectBuilder = (function(){
                     sheetengine.calc.calculateAllSheets();
                     sheetengine.drawing.drawScene(true);
                 };
-                img3_2.src = topImage;
+                img3_2.src = topImage2;
             }
             else{
                 var top = new sheetengine.Sheet({x:0,y:0,z:bh}, {alphaD:90,betaD:90,gammaD:0}, {w:bd,h:bw});
@@ -149,12 +185,13 @@ objectBuilder = (function(){
                 img3.src = topImage;
             }
 
-            var backLeft = new sheetengine.Sheet({x:-bw/2,y:00,z:bh/2}, {alphaD:0,betaD:0,gammaD:-90}, {w:bd,h:bh});
+            var backLeft = new sheetengine.Sheet({x:-bw/2,y:00,z:(roof == true ? bh/2-roofSize : bh/2)}, {alphaD:0,betaD:0,gammaD:-90}, {w:bd,h:bh});
             backLeft.context.fillStyle = '#FFF';
-            backLeft.context.fillRect(0,0,bd,bh);
+            backLeft.context.fillRect(0,0,bd,(roof == true ? bh-roofSize : bh));
 
             var img4 = new Image();
             img4.onload = function() {
+
                 backLeft.context.drawImage(img4, 0,0);
 
                 // draw the scene
@@ -163,15 +200,15 @@ objectBuilder = (function(){
             };
             img4.src = sideImage;
 
-            var backRight = new sheetengine.Sheet({x:0,y:-bd/2,z:(roof == true ? (bh+50)/2 : bh/2)}, {alphaD:0,betaD:0,gammaD:0}, {w:bw,h:(roof == true ? bh+50 : bh)});
+            var backRight = new sheetengine.Sheet({x:0,y:-bd/2,z:bh/2}, {alphaD:0,betaD:0,gammaD:0}, {w:bw,h:bh});
 
             if(roof){
                 backRight.context.fillStyle = '#FFF';
-                backRight.context.fillRect(0,50,bw,bh);
-                backRight.context.moveTo(0, 50); // give the (x,y) coordinates
+                backRight.context.fillRect(0,roofSize,bw,bh);
+                backRight.context.moveTo(0, roofSize); // give the (x,y) coordinates
                 backRight.context.lineTo(bw/2, 0);
-                backRight.context.lineTo(bw, 50);
-                backRight.context.lineTo(0, 50);
+                backRight.context.lineTo(bw, roofSize);
+                backRight.context.lineTo(0, roofSize);
 
                 backRight.context.closePath();
                 backRight.context.fill();
@@ -183,12 +220,9 @@ objectBuilder = (function(){
 
             var img5 = new Image();
             img5.onload = function() {
-                if(roof){
-                    backRight.context.drawImage(img5, 0,50);
-                }
-                else{
-                    backRight.context.drawImage(img5, 0,0);
-                }
+
+                backRight.context.drawImage(img5, 0,0);
+
                 // draw the scene
                 sheetengine.calc.calculateAllSheets();
                 sheetengine.drawing.drawScene(true);
@@ -224,21 +258,33 @@ objectBuilder = (function(){
                     imgLink = "_styles/images/objects/ground_4.png";
                     break;
                 case 5:
-                    imgLink = "_styles/images/objects/water.png";
+                    imgLink = "_styles/images/objects/ground_5.png";
                     break;
                 case 6:
-                    imgLink = "_styles/images/objects/sand.png";
+                    imgLink = "_styles/images/objects/ground_6.png";
                     break;
                 case 7:
-                    imgLink = "_styles/images/objects/grass_1.png";
+                    imgLink = "_styles/images/objects/water.png";
                     break;
                 case 8:
-                    imgLink = "_styles/images/objects/grass_2.png";
+                    imgLink = "_styles/images/objects/sand.png";
                     break;
                 case 9:
-                    imgLink = "_styles/images/objects/path_1.png";
+                    imgLink = "_styles/images/objects/grass_1.png";
                     break;
                 case 10:
+                    imgLink = "_styles/images/objects/grass_2.png";
+                    break;
+                case 10:
+                    imgLink = "_styles/images/objects/grass_3.png";
+                    break;
+                case 10:
+                    imgLink = "_styles/images/objects/grass_4.png";
+                    break;
+                case 11:
+                    imgLink = "_styles/images/objects/path_1.png";
+                    break;
+                case 12:
                     imgLink = "_styles/images/objects/path_2.png";
                     break;
             }
@@ -256,29 +302,19 @@ objectBuilder = (function(){
             img.src = imgLink;
             obj = new sheetengine.SheetObject(position,{alphaD:0,betaD:0,gammaD:rotation}, [sheet], {w:90,h:80,relu:42,relv:40});
             obj.data = {"category" : "ground", "type" : type, "rotation": obj.rot, "position": obj.centerp};
-
+            obj.setDimming(false, false)
             return obj;
         },
 
         buildTree:function(type,position,rotation){
-            var imgLink = "_styles/images/objects/tree_1.png";
+            var imgLink = "_styles/images/objects/tree_"+type+".png";
 
-            switch(type){
-                case 1:
-                    imgLink = "_styles/images/objects/tree_1.png";
-                    break;
-                case 2:
-                    imgLink = "_styles/images/objects/tree_2.png";
-                    break;
-
-            }
-
-            var sheet = new sheetengine.Sheet({x:0,y:0,z:60}, {alphaD:00,betaD:00,gammaD:0}, {w:60,h:120});
+            var sheet = new sheetengine.Sheet({x:0,y:0,z:60}, {alphaD:00,betaD:00,gammaD:0}, {w:86,h:120});
             sheet.context.fillStyle = '#FFF';
-            sheet.context.fillRect(27.5,20,5,100);
-            var sheet2 = new sheetengine.Sheet({x:0,y:0,z:60}, {alphaD:00,betaD:00,gammaD:90}, {w:60,h:120});
+            sheet.context.fillRect(40,20,6,100);
+            var sheet2 = new sheetengine.Sheet({x:0,y:0,z:60}, {alphaD:00,betaD:00,gammaD:90}, {w:86,h:120});
             sheet2.context.fillStyle = '#FFF';
-            sheet2.context.fillRect(27.5,20,5,100);
+            sheet2.context.fillRect(40,20,6,100);
             var img = new Image();
             img.onload = function() {
                 sheet.context.drawImage(img, 0,0);
@@ -290,7 +326,7 @@ objectBuilder = (function(){
             img.src = imgLink;
             obj = new sheetengine.SheetObject(position,{alphaD:0,betaD:0,gammaD:rotation}, [sheet,sheet2], {w:90,h:200,relu:42,relv:150});
             obj.data = {"category" : "tree", "type" : type, "rotation": obj.rot, "position": obj.centerp};
-
+            obj.setDimming(false, false)
             return obj;
         },
 
