@@ -1,0 +1,82 @@
+<!--    Author:     Robbe         -->
+<!--    Copyright:  2013 OKFN       -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>9kBuilder</title>
+    <link type="text/css" rel="stylesheet" href="_styles/main.css">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.createjs.com/preloadjs-0.3.1.min.js"></script>
+    <script type="text/javascript" src="_scripts/sheetengine.js"></script>
+    <script type="text/javascript" src="_scripts/canvas2image.js"></script>
+    <script type="text/javascript" src="_scripts/base64.js"></script>
+    <script type="text/javascript" src="_scripts/helperFunctions.js"></script>
+    <script type="text/javascript" src="_scripts/objectBuilder.js"></script>
+    <script type="text/javascript" src="_scripts/main.js"></script>
+</head>
+    <body>
+        <aside>
+            <ul class="mainButtons">
+                <li id="logo">
+                    <a href="index.html">9kBuilder</a>
+                </li>
+                <li>
+                    <span id="ecoBtn">eco</span>
+                    <ul>
+                        <li>
+                            <span>trees</span>
+                            <ul>
+                                <li><a id="tree_1" class="selectBtn" href=""><img src="_styles/images/objects/tree_1.png"></a></li>
+                                <li><a id="tree_2" class="selectBtn" href=""><img src="_styles/images/objects/tree_2.png"></a></li>
+                                <li><a id="tree_3" class="selectBtn" href=""><img src="_styles/images/tree3.png"></a></li>
+                                <li><a id="tree_4" class="selectBtn" href=""><img src="_styles/images/tree4.png"></a></li>
+                                <li><a id="tree_5" class="selectBtn" href=""><img src="_styles/images/tree5.png"></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>bushes</span>
+                            <ul>
+                                <li><a id="ground_1" class="selectBtn" href=""><img src="_styles/images/objects/ground_1.png"></a></li>
+                                <li><a id="ground_2" class="selectBtn" href=""><img src="_styles/images/objects/ground_2.png"></a></li>
+                                <li><a id="ground_3" class="selectBtn" href=""><img src="_styles/images/objects/ground_3.png"></a></li>
+                                <li><a id="ground_4" class="selectBtn" href=""><img src="_styles/images/objects/ground_4.png"></a></li>
+                                <li><a id="ground_5" class="selectBtn" href=""><img src="_styles/images/objects/water.png"></a></li>
+                                <li><a id="ground_6" class="selectBtn" href=""><img src="_styles/images/objects/sand.png"></a></li>
+                                <li><a id="ground_7" class="selectBtn" href=""><img src="_styles/images/objects/grass_1.png"></a></li>
+                                <li><a id="ground_8" class="selectBtn" href=""><img src="_styles/images/objects/grass_2.png"></a></li>
+                                <li><a id="ground_9" class="selectBtn" href=""><img src="_styles/images/objects/path_1.png"></a></li>
+                                <li><a id="ground_10" class="selectBtn" href=""><img src="_styles/images/objects/path_2.png"></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span id="publicBtn">public</span>
+                </li>
+                <li>
+                    <span id="constrBtn">construction</span>
+                </li>
+                <li>
+                    <span id="transportBtn">transport</span>
+                </li>
+                <li>
+                    <span id="miscBtn">misc</span>
+                </li>
+            </ul>
+        </aside>
+        <canvas id="maincanvas" width="1000" height="750">
+            If you can see this message, please download a decent, up-to-date browser.
+        </canvas>
+    <div id="navButtons">
+        <ul>
+            <li id="createBtn">create</li>
+            <li id="deleteBtn">delete</li>
+            <li id="moveBtn">move</li>
+            <li id="rotateBtn">rotate</li>
+
+        </ul>
+    </div>
+
+    </body>
+</html>
