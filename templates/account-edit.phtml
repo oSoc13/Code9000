@@ -13,7 +13,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 		echo $this->render('header.phtml');
 ?>
 	<div id="container" class="row">
-    <h1>edit Profile</h1>
+    <h1>Edit Profile</h1>
 <?php if (isset($this->data['user'])): ?>
     <form method="POST" action="/code9000/account/edit">
                         <div class="row xwide valign">
@@ -68,15 +68,14 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
                                             <li class="field">
                                                 <div class="medium primary btn" style="width: 100%"><input type="submit" value="Edit"></div>
-                                                <div class="medium primary btn" style="width: 100%"><input type="button" onclick="location='/code9000/account'" value="cancel" value="Cancel"></div>
+                                                <div class="medium primary btn" style="width: 100%"><input type="button" onclick="location='/code9000/account'" value="Cancel" value="Cancel"></div>
 
                                             </li>
                                         </ul>
                                     </div>
 
     </form>
-    <div class="small primary btn" style="width: 100%"><a href="/code9000/account/delete">Delete profile</a></div>
-    <a href="/code9000/account/delete">Delete profile</a>
+    <a href="/code9000/account/delete" class="uppercase italic">Delete profile</a>
 <?php endif;?>
 </div>
 

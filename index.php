@@ -214,14 +214,29 @@ $app->post('/register', function () use ($app) {
     $email =    trim($req->post('email'     ));
     $dob =      trim($req->post('dob'       ));
     $pwd =      trim($req->post('password'  ));
-    $admin =    trim($req->post('admin'     ));
     $photo =    trim($req->post('avatarpic' ));
     
-    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'admin' => $admin, 'avatar' => $photo );
+    $test = array('fname' => $fname, 'sname' => $sname, 'email' => $email, 'dob' => $dob, 'pwd' => $pwd, 'avatar' => $photo );
 
     $auth = new Authentication();
     $auth->register($test);
-    $app->redirect('/code9000');
+    $_SESSION["loginmsg"] = "An email has been sent to the emailaddress you provided. Click on the link inside to activate yuor account.";
+    $app->redirect('/code9000/login');
+});
+
+$app->post('/checkemail', function () use ($app) {
+    $requestBody = $app->request()->getBody();
+    $data = json_decode($requestBody);
+    $email = $data->email;
+    $auth = new Authentication();
+    $used = $auth->checkEmail($email);
+    if ($used[0] > 0) {
+        $result = array('status' =>"used");
+    }else
+        $result = array('status' =>"ok");
+
+        echo json_encode($result);
+                    
 });
 
 

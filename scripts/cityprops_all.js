@@ -48,21 +48,21 @@ function initMarker(lat, long, id, name, description, up, down, date){
 	$("#map").css("display","block");
 	// Add marker to map
     marker = L.marker([lat, long]).addTo(map);
-    marker.bindPopup("<a href='/Code9000/spots/" + id + "'>" +
+    marker.bindPopup("<a class='markera' href='/Code9000/spots/" + id + "'>" +
 			"<div>" +
 			"<h3>" + name + "</h3>" + 
-			"<p class='vote'>Score: " + (up - down)  + " (" +
-			"<span class='upvote'>+" + up + "</span>" + 
-			"<span class='downvote'>-" + down + "</span>)</p></div></a>");
+			"<p class='vote'>Score: " + (up - down) +
+			"<span class='upvote'>+" + up + "</span>" +
+			"<span class='downvote'>-" + down + "</span></p></div></a>");
 }
 
 function addSpot(id, name, description, up, down, date){
 	var element = "<a class='spotlink' href='/Code9000/cityproposals/" + id + "'>" +
 			"<div class='spotcontent'><section><h3>" + name + "<span class='dateaccent'>"+ date +"</span></h3>" + 
 			"<p>Description: " + description + "</p>" +
-			"<p class='vote'>Score: " + (up - down)  + " (" +
+			"<p class='vote'>Score: " + (up - down) +
 			"<span class='upvote'>+" + up + "</span>" + 
-			"<span class='downvote'>-" + down + "</span>)</p>" +
+			"<span class='downvote'>-" + down + "</span></p>" +
 			"</section></div></a>";
 	$("#spotlist").append(element);
 }

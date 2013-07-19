@@ -19,32 +19,33 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 		<h1>Registration</h1>
 		<p class='large'>Please register your account by providing your details so we can store your preferences and spottings in our database. You will be sent an activation email before you can use the service.</p>
 		<br/>
-        <form method="post" action="/code9000/register">
+        <form method="post" action="/code9000/register" id="registerform">
             <div class="row xwide valign">
+                <p id="emailinfo" class="danger alert"></p>
                 <ul class="seven columns centered">
                     <li class="field prepend">
                         <span class="adjoined"><i class="icon-user"></i></span>
-                        <input class="text input" type="text" placeholder="First Name" name="fname" id="fname" />
+                        <input class="text input" type="text" placeholder="First Name" name="fname" id="fname" required />
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"></span>
-                        <input class="text input" type="text" placeholder="Last Name" name="sname" id="sname" />
+                        <input class="text input" type="text" placeholder="Last Name" name="sname" id="sname" required />
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"><i class="icon-mail"></i></span>
-                        <input class="email input" type="email" placeholder="Email" name="email" id="email" />
+                        <input class="email input" type="email" placeholder="Email" name="email" id="email" required />
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"><i class="icon-calendar"></i></span>
-                        <input class="date input" type="date" placeholder="Birthday" name="dob" id="dob" />
+                        <input class="date input" type="date" placeholder="Birthday" name="dob" id="dob" required />
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"><i class="icon-lock"></i></span>
-                        <input class="password input" type="password" placeholder="Password" id="password" name="password" />
+                        <input class="password input" type="password" placeholder="Password" id="password" name="password" required />
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"><i class="icon-lock"></i></span>
-                        <input class="password input" type="password" placeholder="Retype password" name="passwordre" id="passwordre" />
+                        <input class="password input" type="password" placeholder="Retype password" name="passwordre" id="passwordre" required />
                     </li>
                     <li class="field prepend">
                         <span class="adjoined"><i class="icon-camera"></i></span>
@@ -54,15 +55,9 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
                     <li>
                         <div id="avatar"></div>
                     </li>
-                    <li class="field">
-                        <label class="checkbox checked" for="admin">
-                            <input name="admin" id="admin" value="1" type="checkbox" >
-                            <span></span> Admin
-                        </label>
-                    </li>
 
                     <li class="field">
-                        <div class="medium primary btn" style="width: 100%"><input type="submit" value="Register"></div>
+                        <div class="medium primary btn" style="width: 100%"><input type="button" value="Register" id="regbtn"></div>
                     </li>
                 </ul>
             </div>
@@ -73,6 +68,7 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
 	<?php echo $this->render('libsfooter.phtml') ?>
   <script src="/Code9000/scripts/avatarupload.js"></script>
+  <script src="/Code9000/scripts/register.js"></script>
 
   </body>
 </html>

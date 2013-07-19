@@ -25,7 +25,6 @@ class Authentication {
         $sname = $data['sname'];
         $email = $data['email'];
         $dob = $data['dob'];
-        $admin = ( $data['admin']? "admin" : "user" );
         $passwordData = $this->hashPassword($data['pwd'], 'sha256');
         $activationcode = $this->generateRandomString(15);
         $avatar = $data['avatar'];
@@ -33,7 +32,7 @@ class Authentication {
         //INSERT PROFILE PIC
         if (!empty($avatar)) {
             
-            $vars = array('avatar'=> $avatar, 'firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => $admin, 'activationcode' => $activationcode );
+            $vars = array('avatar'=> $avatar, 'firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => 'user', 'activationcode' => $activationcode );
         
             $sql =  "INSERT INTO users(email, password, passwordsalt, role, dateofbirth, firstname, surname, activationcode, avatar) " .
                     "values(:email , :password, :passwordsalt, :role, :dateofbirth, :firstname, :surname, :activationcode, :avatar)";
@@ -41,15 +40,15 @@ class Authentication {
         }
         else
         {
-            $vars = array('firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => $admin, 'activationcode' => $activationcode );
+            $vars = array('firstname' => $fname, 'surname' => $sname, 'email' => $email, 'dateofbirth' => $dob, 'password' => $passwordData['pwdH'] ,'passwordsalt'=>$passwordData['salt'], 'role' => 'user', 'activationcode' => $activationcode );
         
             $sql =  "INSERT INTO users(email, password, passwordsalt, role, dateofbirth, firstname, surname, activationcode) " .
                     "values(:email , :password, :passwordsalt, :role, :dateofbirth, :firstname, :surname, :activationcode)";
         }
                 
         $id = InsertDatabaseObject($sql, $vars);
-                
-        $this->sendRegistrationMail($id, $activationcode, $fname . " " . $sname);        
+                var_dump($id);
+        $this->sendRegistrationMail($email, $activationcode, $fname . " " . $sname, $id);        
     }
     
     function hashPassword($pwd, $algo)
@@ -73,7 +72,7 @@ class Authentication {
         return $randomString;
     }
     
-    function sendRegistrationMail($id, $code,  $name)
+    function sendRegistrationMail($email, $code,  $name, $id)
     {
         $mail = new PHPMailer();
         $mail->IsSMTP();                                    // Set mailer to use SMTP
@@ -168,5 +167,13 @@ class Authentication {
         $pwdH = hash('sha256', GLOBAL_SALT . $test . $salt);
 
         return ($pwdH == $pwd? true:false); 
+    }
+
+    function checkEmail($email)
+    {
+        $sql = "SELECT COUNT(*) FROM users where users.email LIKE :email";
+        $vars = array('email' => $email);
+        return GetFirstDatabaseObject($sql,$vars);
+
     }
 }
