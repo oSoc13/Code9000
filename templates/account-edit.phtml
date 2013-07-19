@@ -16,63 +16,54 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
     <h1>Edit Profile</h1>
 <?php if (isset($this->data['user'])): ?>
     <form method="POST" action="/code9000/account/edit">
-                        <div class="row xwide valign">
-                                        <ul class="seven columns centered">
-                                            <li class="field prepend">
-                                                <span class="adjoined"><i class="icon-user"></i></span>
-                                                <input class=" input" type="text" placeholder="First Name" value = "<?php echo $this->data['user']['firstname']?>" name="firstname" id="firstname" />
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"></span>
-                                                <input class=" input" type="text" placeholder="Surname" name="surname" id="surname" value="<?php echo $this->data['user']['surname']?>" />
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"><i class="icon-mail"></i></span>
-                                                <input class="email input" type="email" placeholder="Email" name="email" id="email" value="<?php echo $this->data['user']['email']?>" />
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"><i class="icon-calendar"></i></span>
-                                                <input class="date input" type="date" placeholder="Date of Birth" name="dateofbirth" id="dateofbirth" value="<?php echo explode(" ", $this->data['user']['dateofbirth'])[0]?>" />
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"><i class="icon-lock"></i></span>
-                                                <input class="password input" type="password" placeholder="New Password" id="newpassword" name="newpassword" />
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"></span>
-                                                <input class="password input" type="password" placeholder="Retype new password" name="newpassword_r" id="newpassword_r" />
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"><i class="icon-lock-open"></i></span>
-                                                <input class="password input" type="password" placeholder="Old Password" id="oldpassword" name="oldpassword" />
-                                            </li>
-                                            <li class="field">
-                                                <img src="<?php echo  "http://" . $_SERVER['HTTP_HOST'] . "/" . $this->data['user']['avatar']?>">
-                                            </li>
-                                            <li class="field prepend">
-                                                <span class="adjoined"><i class="icon-camera"></i></span>
-                                                <label id="fileButton" class="medium primary btn" for="file">Set Avatar...</label>
-                                                <input class="file input" type="file" value="change Avatar" id="file" name="file" />
-                                            </li>
-                                            <li class="field">
-                                                <div id="avatar"></div>
-                                            </li>
-                                            <li class="field">
-                                            <li class="field">
-                                                <label class="checkbox checked" for="admin">
-                                                    <input name="admin" id="admin" value="1" type="checkbox" >
-                                                    <span></span> Admin
-                                                </label>
-                                            </li>
+        <div class="row xwide valign">
+            <ul class="seven columns centered">
+                <li class="field prepend">
+                    <span class="adjoined"><i class="icon-user"></i></span>
+                    <input class="input" type="text" placeholder="First Name" value = "<?php echo $this->data['user']['firstname']?>" name="firstname" id="firstname" required  />
+                </li>
+                <li class="field prepend">
+                    <span class="adjoined"></span>
+                    <input class=" input" type="text" placeholder="Surname" name="surname" id="surname" value="<?php echo $this->data['user']['surname']?>" required />
+                </li>
+                <li class="field prepend">
+                    <span class="adjoined"><i class="icon-calendar"></i></span>
+                    <input class="date input" type="date" placeholder="Date of Birth" name="dateofbirth" id="dateofbirth" value="<?php echo explode(" ", $this->data['user']['dateofbirth'])[0]?>" required />
+                </li>
+                
+                <li class="field prepend">
+                    <span class="adjoined"><i class="icon-lock-open"></i></span>
+                    <input class="password input" type="password" placeholder="Old Password" id="oldpassword" name="oldpassword" required />
+                </li>
+                <li class="field">
+                    <div class="medium primary btn" style="width: 100%"><input type="button" id="pwdc" onclick="setNewPassword()" value="Change password"></div>
+                </li>
+                <li class="field prepend npwd">
+                    <span class="adjoined"><i class="icon-lock"></i></span>
+                    <input class="password input" type="password" placeholder="New Password" id="newpassword" name="newpassword" />
+                </li>
+                <li class="field prepend npwd">
+                    <span class="adjoined"></span>
+                    <input class="password input" type="password" placeholder="Retype new password" name="newpassword_r" id="newpassword_r" />
+                </li>
+                <li class="field">
+                    <img src="<?php echo  "http://" . $_SERVER['HTTP_HOST'] . "/" . $this->data['user']['avatar']?>">
+                </li>
+                <li class="field prepend">
+                    <span class="adjoined"><i class="icon-camera"></i></span>
+                    <label id="fileButton" class="medium primary btn" for="file">Set Avatar...</label>
+                    <input class="file input" type="file" value="change Avatar" id="file" name="file" />
+                </li>
+                <li class="field">
+                    <div id="avatar"></div>
+                </li>
+                <li class="field">
+                    <div class="medium primary btn" style="width: 100%"><input type="submit" value="Edit"></div>
+                    <div class="medium primary btn" style="width: 100%"><input type="button" onclick="location='/code9000/account'" value="Cancel"></div>
 
-
-                                            <li class="field">
-                                                <div class="medium primary btn" style="width: 100%"><input type="submit" value="Edit"></div>
-                                                <div class="medium primary btn" style="width: 100%"><input type="button" onclick="location='/code9000/account'" value="Cancel" value="Cancel"></div>
-
-                                            </li>
-                                        </ul>
-                                    </div>
+                </li>
+            </ul>
+        </div>
 
     </form>
     <a href="/code9000/account/delete" class="uppercase italic">Delete profile</a>
@@ -82,5 +73,6 @@ Stefaan Christiaens (stefaan.ch@gmail.com)
 
 <?php echo $this->render('libsfooter.phtml') ?>
 <script src="/Code9000/scripts/avatarupload.js"></script>
+<script src="/Code9000/scripts/account-edit.js"></script>
 </body>
 </html>
