@@ -16,6 +16,7 @@ body{
     background-color: #106359;
     background-repeat: no-repeat;
     background-position: center center;
+    cursor:url(images/cursor/basic.cur), default;
 }
 
 #maincanvas{
@@ -45,16 +46,16 @@ aside ul,aside ul li{
     position: relative;
 }
 
+
 aside ul li{
     width: 100%;
     height: 74px;
-
 }
 
-
-aside ul li:hover{
-    background-color: #464646;
+aside ul li:hover span{
+    background-color:#464646;
 }
+
 
 aside ul li ul{
     position: absolute;
@@ -67,39 +68,17 @@ aside ul li ul{
 aside ul li:hover ul{
     display: inherit;
 }
-aside ul li ul li{
 
-    height: inherit;
-    width: 100px;
-    background-color: #262626;
-    padding: 10px;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
 
-}
 
-aside .mainButtons li ul li span{
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    float: left;
-    text-align: center;
-}
 
-aside ul li:hover ul li:hover ul {
-    display: inherit;
-}
-
-aside ul li:hover ul li ul {
-    display: none;
-    height: 200px;
-    width: 500px;
+aside ul li:hover ul {
+    height: 180px;
+    width: 515px;
     background-color: #FFF;
-
+    overflow: auto;
 }
-aside ul li ul li ul li{
+aside ul li ul li {
     padding: 0;
     margin: 0;
     height: 70px;
@@ -109,10 +88,10 @@ aside ul li ul li ul li{
     background-color: #f0efed;
     margin: 10px;
 }
-aside ul li ul li ul li:hover{
+aside ul li ul li :hover{
     background-color: #cdccca;
 }
-aside ul li ul li ul li img{
+aside ul li ul li img{
     height: 100%;
 }
 
@@ -147,8 +126,8 @@ aside ul #constrBtn{
     width: 100%;
     float: left;
 }
-aside ul #transportBtn{
-     background-image: url("images/transport.png");
+aside ul #groundBtn{
+     background-image: url("images/ground.png");
      background-repeat: no-repeat;
      background-position: center;
      text-indent: -100%;
@@ -157,8 +136,8 @@ aside ul #transportBtn{
      width: 100%;
      float: left;
 }
-aside ul #miscBtn{
-    background-image: url("images/misc.png");
+aside ul #signalsBtn{
+    background-image: url("images/signals.png");
     background-repeat: no-repeat;
     background-position: center;
     text-indent: -100%;
@@ -212,10 +191,18 @@ aside ul #miscBtn{
 }
 
 #navButtons ul #moveBtn{
-    background-image: url("images/move.png");
+    background-image: url("images/pan.png");
 
 }
 
 #navButtons ul #rotateBtn{
     background-image: url("images/rotate.png");
+}
+
+#navButtons ul #createBtn{
+    background-image: url("images/create.png");
+}
+
+#navButtons ul #removeBtn{
+    background-image: url("images/remove.png");
 }

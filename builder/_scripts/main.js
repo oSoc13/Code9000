@@ -5,43 +5,7 @@
 
     $(init);
 
-var testJSON = {"objects":[{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-210,"z":0}},
-    {"category":"building","type":1,"rotation":90,"position":{"x":-200,"y":-75,"z":0}},
-    {"category":"building","type":1,"rotation":-270,"position":{"x":-200,"y":-225,"z":0}},
-    {"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-150,"z":0}},
-    {"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-90,"z":0}},
-    {"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-270,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-90,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-270,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-270,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-150,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-90,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-210,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-90,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-150,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-270,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-210,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-150,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-90,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-90,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-270,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-210,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-150,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-90,"z":0}},
-    {"category":"tree","type":1,"rotation":0,"position":{"x":255,"y":-80,"z":0}},
-    {"category":"tree","type":2,"rotation":0,"position":{"x":-50,"y":-345,"z":0}},
-    {"category":"tree","type":2,"rotation":0,"position":{"x":250,"y":-194,"z":0}},
-    {"category":"tree","type":2,"rotation":0,"position":{"x":229,"y":-286,"z":0}},
-    {"category":"tree","type":2,"rotation":0,"position":{"x":-47,"y":-231,"z":0}},
-    {"category":"tree","type":2,"rotation":0,"position":{"x":-45,"y":-108,"z":0}},
-    {"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-210,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-210,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-150,"z":0}},
-    {"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-270,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-150,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-210,"z":0}},
-    {"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-270,"z":0}},
-    {"category":"tree","type":2,"rotation":-90,"position":{"x":-45,"y":-420,"z":0}}]};
+var testJSON = {"objects":[{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-210,"z":0}},{"category":"building","type":1,"rotation":90,"position":{"x":-200,"y":-75,"z":0}},{"category":"building","type":3,"rotation":-270,"position":{"x":-200,"y":-225,"z":0}},{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-150,"z":0}},{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-90,"z":0}},{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-270,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-90,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-270,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-270,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-150,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-90,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-210,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-90,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-150,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-270,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-210,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-150,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-90,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-270,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-210,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-150,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-90,"z":0}},{"category":"tree","type":2,"rotation":0,"position":{"x":-47,"y":-231,"z":0}},{"category":"tree","type":2,"rotation":0,"position":{"x":-45,"y":-108,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-210,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-210,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-150,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-330,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-390,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-510,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-90,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-150,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-210,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-270,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-270,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-330,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-390,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-450,"z":0}},{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-330,"z":0}},{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-390,"z":0}},{"category":"ground","type":2,"rotation":0,"position":{"x":70,"y":-450,"z":0}},{"category":"ground","type":2,"rotation":-90,"position":{"x":250,"y":-510,"z":0}},{"category":"ground","type":2,"rotation":-90,"position":{"x":190,"y":-510,"z":0}},{"category":"ground","type":2,"rotation":90,"position":{"x":130,"y":-510,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":70,"y":-510,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":190,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":250,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":250,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":190,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":130,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":70,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":10,"y":-570,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":190,"y":-330,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":250,"y":-390,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":310,"y":-390,"z":0}},{"category":"ground","type":3,"rotation":0,"position":{"x":190,"y":-390,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":310,"y":-330,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":250,"y":-330,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":370,"y":-330,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":430,"y":-330,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":490,"y":-330,"z":0}},{"category":"building","type":4,"rotation":0,"position":{"x":130,"y":-740,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-330,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-390,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-450,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-510,"z":0}},{"category":"ground","type":4,"rotation":0,"position":{"x":-50,"y":-570,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":370,"y":-390,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":430,"y":-390,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":490,"y":-390,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":310,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":370,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":430,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":490,"y":-450,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":310,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":490,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":370,"y":-570,"z":0}},{"category":"ground","type":1,"rotation":0,"position":{"x":430,"y":-570,"z":0}},{"category":"ground","type":2,"rotation":-90,"position":{"x":310,"y":-510,"z":0}},{"category":"ground","type":2,"rotation":-90,"position":{"x":370,"y":-510,"z":0}},{"category":"ground","type":2,"rotation":-90,"position":{"x":430,"y":-510,"z":0}},{"category":"ground","type":2,"rotation":-90,"position":{"x":490,"y":-510,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-330,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-390,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-450,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-510,"z":0}},{"category":"ground","type":10,"rotation":0,"position":{"x":-110,"y":-570,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":-110,"y":-630,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":-50,"y":-630,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":310,"y":-630,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":370,"y":-630,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":430,"y":-630,"z":0}},{"category":"ground","type":4,"rotation":-90,"position":{"x":490,"y":-630,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":310,"y":-690,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":370,"y":-690,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":430,"y":-690,"z":0}},{"category":"ground","type":10,"rotation":-90,"position":{"x":490,"y":-690,"z":0}}]};
 
 
 var canvasElement,
@@ -59,7 +23,9 @@ var canvasElement,
     mouseStart,
     startOrientation,
     selectedObject = ["building","1"],
-    mouseObject = null
+    mouseObject = null,
+    mouseOffsetX = 0,
+    mouseOffsetY = 0
     ;
 
 // enumerate mouseStates
@@ -68,33 +34,64 @@ Object.freeze(mouseStates);
 
 function init(){
     //preload images
-    $("#maincanvas").hide
-
+    $("#maincanvas").hide();
 
     var queue = new createjs.LoadQueue();
+    queue.installPlugin(createjs.Sound);
     queue.addEventListener("complete", handleComplete);
+    queue.addEventListener("progress", progressHandler);
     queue.loadManifest([
-        {id: "building", src:"_styles/images/objects/building_1_1.png"},
-        {id: "building", src:"_styles/images/objects/building_1_2.png"},
-        {id: "building", src:"_styles/images/objects/building_1_3.png"},
-        {id: "building", src:"_styles/images/objects/building_1_4.png"},
-        {id: "grass", src:"_styles/images/objects/grass_1.png"},
-        {id: "grass", src:"_styles/images/objects/grass_2.png"},
-        {id: "ground", src:"_styles/images/objects/ground_1.png"},
-        {id: "ground", src:"_styles/images/objects/ground_2.png"},
-        {id: "ground", src:"_styles/images/objects/ground_3.png"},
-        {id: "ground", src:"_styles/images/objects/ground_4.png"},
-        {id: "path", src:"_styles/images/objects/path_1.png"},
-        {id: "path", src:"_styles/images/objects/path_2.png"},
+        {id: "building_1_1", src:"_styles/images/objects/building_1_1.png"},
+        {id: "building_1_2", src:"_styles/images/objects/building_1_2.png"},
+        {id: "building_1_3", src:"_styles/images/objects/building_1_3.png"},
+        {id: "building_1_4", src:"_styles/images/objects/building_1_4.png"},
+        {id: "building_2_1", src:"_styles/images/objects/building_2_1.png"},
+        {id: "building_2_2", src:"_styles/images/objects/building_2_2.png"},
+        {id: "building_2_3", src:"_styles/images/objects/building_2_3.png"},
+        {id: "building_2_4", src:"_styles/images/objects/building_2_4.png"},
+        {id: "building_3_1", src:"_styles/images/objects/building_3_1.png"},
+        {id: "building_3_2", src:"_styles/images/objects/building_3_2.png"},
+        {id: "building_3_3", src:"_styles/images/objects/building_3_3.png"},
+        {id: "building_3_4", src:"_styles/images/objects/building_3_4.png"},
+        {id: "building_3_5", src:"_styles/images/objects/building_3_5.png"},
+        {id: "building_4_1", src:"_styles/images/objects/building_4_1.png"},
+        {id: "building_4_2", src:"_styles/images/objects/building_4_2.png"},
+        {id: "building_4_3", src:"_styles/images/objects/building_4_3.png"},
+        {id: "building_4_4", src:"_styles/images/objects/building_4_4.png"},
+        {id: "building_4_5", src:"_styles/images/objects/building_4_5.png"},
+        {id: "building_5_1", src:"_styles/images/objects/building_5_1.png"},
+        {id: "building_5_2", src:"_styles/images/objects/building_5_2.png"},
+        {id: "building_5_3", src:"_styles/images/objects/building_5_3.png"},
+        {id: "building_5_4", src:"_styles/images/objects/building_5_4.png"},
+        {id: "grass_1", src:"_styles/images/objects/grass_1.png"},
+        {id: "grass_2", src:"_styles/images/objects/grass_2.png"},
+        {id: "ground_1", src:"_styles/images/objects/ground_1.png"},
+        {id: "ground_2", src:"_styles/images/objects/ground_2.png"},
+        {id: "ground_3", src:"_styles/images/objects/ground_3.png"},
+        {id: "ground_4", src:"_styles/images/objects/ground_4.png"},
+        {id: "ground_5", src:"_styles/images/objects/ground_5.png"},
+        {id: "ground_6", src:"_styles/images/objects/ground_6.png"},
+        {id: "path_1", src:"_styles/images/objects/path_1.png"},
+        {id: "path_2", src:"_styles/images/objects/path_2.png"},
         {id: "sand", src:"_styles/images/objects/sand.png"},
-        {id: "tree", src:"_styles/images/objects/tree_1.png"},
-        {id: "tree", src:"_styles/images/objects/tree_2.png"},
-        {id: "water", src:"_styles/images/objects/water.png"}
+        {id: "tree_1", src:"_styles/images/objects/tree_1.png"},
+        {id: "tree_2", src:"_styles/images/objects/tree_2.png"},
+        {id: "tree_3", src:"_styles/images/objects/tree_3.png"},
+        {id: "tree_4", src:"_styles/images/objects/tree_4.png"},
+        {id: "tree_5", src:"_styles/images/objects/tree_5.png"},
+        {id: "water", src:"_styles/images/objects/water.png"},
+
     ]);
+    function progressHandler(e){
+        console.log(e.loaded)
+    }
     function handleComplete() {
+
+
         $("#maincanvas").css("background-color","#FFF").show();
         initButtons();
         initCanvas();
+
     }
 
 }
@@ -105,7 +102,7 @@ function initButtons(){
         mouseState = mouseStates.create;
         return false;
     });
-    $("#deleteBtn").click(function(){
+    $("#removeBtn").click(function(){
         $(this).addClass("selected");
         mouseState = mouseStates.delete;
         return false;
@@ -120,11 +117,7 @@ function initButtons(){
         mouseState = mouseStates.rotate;
         return false;
     });
-    $("#panBtn").click(function(){
-        $(this).addClass("selected");
-        mouseState = mouseStates.pan;
-        return false;
-    })
+
 
     $(".selectBtn").click(function(){
         var catType=$(this).attr("id").split("_");
@@ -152,13 +145,14 @@ function initCanvas(){
     }
 
 // add mouseObject to the stage
+    /*
     var mouseSheet = new sheetengine.Sheet({x:0,y:0,z:0}, {alphaD:90,betaD:00,gammaD:0}, {w:60,h:60});
     mouseSheet.context.fillStyle = "rgba(255, 255, 255, 0)";
     mouseSheet.context.fillRect(0,0,60,60);
     mouseSheet.setDimming(true,true);
 
     mouseObject = new sheetengine.SheetObject({x:0,y:0,z:0},{alphaD:0,betaD:0,gammaD:0}, [mouseSheet], {w:90,h:80,relu:42,relv:40});
-
+*/
 
 
 // add objects to stage. and objects array
@@ -186,6 +180,7 @@ function initCanvas(){
     window.onkeyup = function(event) { setKeys(event, 0); };
 
 // mousehandlers
+    canvasElement.onselectstart = function () { return false; } // ie
     canvasElement.onmousedown = function(event){
         mouseDown = true;
         // get the mousedown coordinates
@@ -203,8 +198,16 @@ function initCanvas(){
 
         if(target != null){
             startOrientation = target.rot.gammaD;
+            if(mouseState == mouseStates.move){
+                target.setDimming(true, true);
+            }
         }
+        event.preventDefault();
+
+        return false;
+
     }
+
     canvasElement.onmouseup = function(event){
         mouseDown = false;
         // get the mousup coordinates
@@ -223,7 +226,6 @@ function initCanvas(){
                 case "building":
                     obj = objectBuilder.buildBuilding(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0);
                     break;
-
                 case "ground":
                     obj = objectBuilder.buildGround(parseInt(selectedObject[1]),{x:pxy.x,y:pxy.y,z:0},0);
                     break;
@@ -234,6 +236,7 @@ function initCanvas(){
 
             hoverObjects.push(obj);
             densityMap.addSheets(obj.sheets);
+
         }
 
 
@@ -248,19 +251,20 @@ function initCanvas(){
 
             target.destroy();
 
-
             helperFunctions.removeFromArray(target,hoverObjects);
 
         }
 
         if(target != null){
-            target.setDimming(true,true);
+            target.setDimming(false,false);
             target = null;
-
         }
 
         sheetengine.calc.calculateAllSheets();
         sheetengine.drawing.drawScene();
+
+        event.preventDefault();
+        return false;
 
     }
 
@@ -300,10 +304,35 @@ function initCanvas(){
                 hover = objhovered;
 
         }
-        mouseObject.setPosition({x:pxy.x,y:pxy.y,z:0});
+        //mouseObject.setPosition({x:pxy.x,y:pxy.y,z:0});
         sheetengine.calc.calculateAllSheets();
         sheetengine.drawing.drawScene();
+
+
+
     }
+
+    $("body").mousemove(function(event){
+        // change cursors
+
+        if(hover && target != null){
+            if(mouseState == mouseStates.delete){
+                $("body").css("cursor","url(_styles/images/cursor/remove.cur), default");
+
+            }
+            else if(mouseState == mouseStates.rotate){
+                $("body").css("cursor","url(_styles/images/cursor/rotate.cur), default");
+            }
+            else if(mouseState == mouseStates.move){
+                $("body").css("cursor","url(_styles/images/cursor/drag.cur), default");
+
+            }
+        }
+        else{
+            $("body").css("cursor","url(_styles/images/cursor/basic.png), default");
+
+        }
+    });
 
 //  enter frame method
     setInterval(mainloop, 30);
@@ -425,12 +454,14 @@ function isObjectHovered(puv) {
         var relu = hoverObjects[i].canvasSize.relu;;
         var relv = hoverObjects[i].canvasSize.relv;
 
-        if (puv.u > ouv.u - 40&&
-            puv.u < ouv.u - 40 + 80 &&
-            puv.v > ouv.v - 40 &&
-            puv.v < ouv.v - 40 + 80){
+        if (puv.u > ouv.u - 30&&
+            puv.u < ouv.u + 30 &&
+            puv.v > ouv.v - 30 &&
+            puv.v < ouv.v + 30 &&
+            tester!= true){
             target = hoverObjects[i];
             tester =  true;
+            break;
         }
     }
 
@@ -493,7 +524,7 @@ function mainloop() {
     }
 
     // draw rectangle
-    if (hover && mouseState == mouseStates.delete && target != null) {
+    if (hover && target != null) {
         var ctx = sheetengine.context;
 
         sheetengine.drawing.drawScene();
@@ -502,11 +533,9 @@ function mainloop() {
         ctx.globalAlpha = 0.8;
         ctx.strokeStyle = '#FFF';
         var ouv = sheetengine.drawing.getPointuv(target.centerp);
-        ctx.strokeRect(Math.round(ouv.u) - 35, Math.round(ouv.v) - 55, 70, 70);
+        ctx.strokeRect(Math.round(ouv.u) - 35, Math.round(ouv.v) - 35, 70, 70);
         ctx.restore();
-
     }
-
 
 }
 
@@ -533,4 +562,5 @@ exportAndSaveCanvas = function () {
         }
     });
 }
+
 
